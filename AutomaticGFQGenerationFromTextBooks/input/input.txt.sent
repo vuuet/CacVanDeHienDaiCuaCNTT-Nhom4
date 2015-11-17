@@ -1,0 +1,334 @@
+title: Tổng quan về kiểm thử .
+
+first==>Mục đích của kiểm thử là đánh giá chất lượng hoặc tính chấp nhận được của sản phẩm .
+Tính chấp nhận được ở đây có thể hiểu là sản phẩm dùng được, có ích ở một mức độ nào đó .
+Kiểm thử cũng nhằm phát hiện sai sót hoặc các vấn đề về sản phẩm .
+Một số kiểm thử viên đôi khi nghĩ kiểm thử là tìm sai sót và khi kiểm tra chương trình chỉ chú trọng vào việc tìm các vấn đề của sản phẩm hơn là kiểm tra mức độ đúng đắn của chương trình .
+Quan điểm này đôi khi rất thực tế, vì họ nghĩ phần chạy đúng của chương trình người lập trình đã làm rồi, đã chạy thử rồi, xong mới chuyển cho kiểm thử viên kiểm tra lại .
+Do đó họ tập trung vào kiểm tra những trường hợp mà người lập trình chưa tính đến .
+Chúng ta cần kiểm thử vì kinh nghiệm cho thấy con người luôn có thể mắc lỗi .
+Điều này đặc biệt hay xảy ra trong lĩnh vực phát triển phần mềm .
+Chương này sẽ phác họa một bức tranh tổng thể về kiểm thử phần mềm .
+Các chương còn lại sẽ mô tả bức tranh này chi tiết hơn .
+
+sub-title: Các thuật ngữ và định nghĩa cơ bản về kiểm thử .
+
+first==>Kỹ nghệ kiểm thử đã phát triển và tiến hoá hàng chục năm nhưng các thuật ngữ trong các tài liệu khác nhau vẫn chưa thực sự thống nhất, trong cả tiếng Anh lẫn tiếng Việt .
+Các thuật ngữ được trình bày trong cuốn sách này dựa vào các thuật ngữ chuẩn được phát triển bởi IEEE (Viện Kỹ nghệ điện và điện tử) với việc chọn lọc cẩn thận các thuật ngữ tiếng Việt tương ứng .
+
+first==>Lỗi (Error): Con người luôn có thể phạm lỗi .
+Khi lập trình viên phạm lỗi trong lập trình, họ đã tạo ra các bug (con bọ), hay nói chung là các sai sót .
+Lỗi có thể phát tán .
+Chẳng hạn, một lỗi về xác định yêu cầu có thể dẫn đến sai sót trong bản thiết kế và nó lại gây sai tiếp khi lập trình theo thiết kế này .
+Lỗi là nguyên nhân dẫn đến sai .
+
+first==>Sai sót (Fault): Sai sót, đôi khi chúng ta sẽ gọi ngắn gọn là sai, là kết quả của lỗi .
+Nói khác đi, khi chúng ta mắc lỗi thì chúng ta đã tạo ra sai sót .
+Cũng có thể nói sai sót là một biểu hiện của lỗi ở dạng cụ thể, chẳng hạn chương trình, văn bản, sơ đồ dòng dữ liệu, biểu đồ lớp, v.v .
+Sai sót nhiều khi rất khó phát hiện .
+Sai sót có hai loại: sai và sót .
+Khi người thực hiện làm không đúng việc đáng phải làm họ đã gây ra sai về nhiệm vụ .
+Khi người thực hiện mắc lỗi quên, làm thiếu thì họ đã làm sót .
+Ví dụ khi người thu thập yêu cầu ghi chép thiếu yêu cầu của khách hàng thì họ đã mắc lỗi làm sót .
+Hay khi người thiết kế mắc lỗi quên, làm thiếu trong quá trình thiết kế thì kết quả của lỗi này là thiết kế bị thiếu một phần nào đó .
+Loại sai do quên khó phát hiện và khó sửa hơn loại sai về nhiệm vụ .
+Một số thuật ngữ khác cũng được dùng cho sai sót là khiếm khuyết (defect), hay bọ (bug) .
+
+first==>Có lẽ cần phải nói rằng trên thực tế chúng ta thường sử dụng từ lỗi thay cho từ sai .
+Khi phát hiện sai sót trong chương trình, chúng ta hay nói chương trình có lỗi, hay hàm này có lỗi, hay dòng lệnh này có lỗi. Ở đây chúng ta đều cùng hiểu đúng ý nghĩa của từ lỗi này - chỉ là cách dùng từ đôi khi chưa cần chính xác để phân biệt hành động mắc lỗi, và sản phẩm của việc mắc lỗi đó .
+
+first==>Thất bại (Failure): Giả sử chúng ta có một chương trình có một sai sót ở dòng lệnh số 10 .
+Khi chúng ta chạy chương trình và câu lệnh ở dòng số 10 này được thực hiện thì chúng ta nói là một sai đã được thực thi .
+Khi một sai được thực thi thì một thất bại đã xảy ra .
+Có hai điều cần lưu ý ở đây: một là thất bại chỉ xuất hiện ở dạng sai có thể thực thi được mà thông thường là mã nguồn, hai là các thất bại chỉ liên kết với các lỗi về nhiệm vụ .
+
+first==>Một câu hỏi đặt ra là các thất bại do lỗi quên thì được xử lý thế nào và những lỗi không bao giờ được thực thi, hoặc không được thực thi trong khoảng thời gian dài cần được xử lý ra sao ?
+Vi-rút Michaelangelo là một ví dụ về lỗi loại này .
+Nó chỉ được tiến hành vào ngày sinh của Michael Angelo, tức ngày 6/3 mà thôi .
+Câu trả lời nằm ở chỗ: việc khảo sát, tức là phân tích và duyệt mã, thiết kế hoặc đặc tả có thể ngăn chặn nhiều thất bại bằng cách phát hiện ra các lỗi thuộc cả hai loại .
+
+first==>Sự cố (Incident): Khi một thất bại xảy ra đôi khi khi người dùng hoặc người kiểm thử không nhìn thấy được .
+Khi thất bại là nhìn thấy được thì chúng ta gọi nó là sự cố .
+Như vậy sự cố là triệu chứng của thất bại và người dùng hoặc người kiểm thử có thể dựa trên các triệu chứng này để nhận biết ra thất bại .
+Ví dụ lỗi người lập trình quên giải phóng một vùng bộ nhớ sẽ gây ra thất bại là bị mất bộ nhớ (memory leak) .
+Khi chương trình chạy, thất bại xảy ra là bộ nhớ bị mất nhưng người dùng và người kiểm thử đều không nhận thấy ngay .
+Chỉ sau một thời gian đủ dài thì bộ nhớ mới bị hết và lúc này mới gây ra sự cố là chương trình thông báo lỗi hoặc có các biểu hiện không bình thường nhận thấy được .
+
+first==>Kiểm thử: Rõ ràng việc kiểm thử liên quan đến các khái niệm trên: lỗi, sai, thất bại và sự cố .
+Tuy nhiên cũng có hai mục đích của một phép thử: tìm thất bại hoặc chứng tỏ phần mềm là chạy đúng đắn .
+Việc tìm thất bại đa số dựa trên việc phát hiện sự cố .
+
+first==>Ca kiểm thử: Mỗi ca kiểm thử có một tên (định danh) và được gắn với một hành vi của chương trình .
+Một ca kiểm thử gồm một bộ dữ liệu đầu vào và một danh sách các giá trị đầu ra mong đợi mà phần mềm sẽ tạo ra với bộ dữ liệu đầu vào đó .
+
+first==>Yêu cầu của khách hàng và đặc tả của phần mềm: Phần mềm được viết để thực hiện các nhu cầu của khách hàng .
+Các nhu cầu của khách hàng được thu thập, phân tích và khảo cứu và là cơ sở để quyết định chính xác các chức năng mà sản phẩm phần mềm cần phải có .
+Dựa trên nhu cầu của khách hàng và các yêu cầu bắt buộc khác, tài liệu đặc tả được xây dựng để mô tả chính xác các yêu cầu mà sản phẩm phần mềm cần đáp ứng, và có giao diện thế nào .
+Tài liệu đặc tả là cơ sở để đội ngũ phát triển phần mềm xây dựng sản phẩm phần mềm .
+Khi chúng ta nói đến thất bại ở trên là chúng ta nói đến việc sản phẩm phần mềm khộng hoạt động đúng như đặc tả .
+Do đó, lỗi do quên được coi là tương ứng với các lỗi khi xây dựng đặc tả .
+
+first==>Kiểm chứng và thẩm định: Kiểm chứng (verification) và thẩm định (validation) hay được dùng lẫn lộn, nhưng thực ra chúng có ý nghĩa khác nhau .
+Kiểm chứng là quá trình để đảm bảo rằng một sản phẩm phần mềm thỏa mãn đặc tả của nó .
+Còn thẩm định là quá trình để đảm bảo rằng sản phẩm đáp ứng được yêu cầu của người dùng .
+Trong thực tế, chúng ta cần thực hiện kiểm chứng trước khi thực hiện việc thẩm định .
+Vì vậy, chúng ta có thuật ngữ V&V (Verification & Validation) .
+Lý do của việc này là chúng ta cần đảm bảo sản phẩm đúng với đặc tả trước .
+Nếu thực hiện việc thẩm định trước thì khi phát hiện ra lỗi chúng ta không thể xác định được lỗi này do đặc tả sai hay do lập trình sai so với đặc tả .
+
+first==>Chất lượng và độ tin cậy của phần mềm: Theo từ điển, chất lượng của một sản phẩm được thể hiện bằng các đặc trưng phù hợp với đặc tả của nó .
+Theo cách hiểu này, chất lượng của một sản phẩm phần mềm là sự đáp ứng các yêu cầu về chức năng, sự hoàn thiện và các chuẩn đã được đặc tả, cùng các đặc trưng mong chờ từ mọi sản phẩm phần mềm chuyên nghiệp .
+Chất lượng phần mềm đặc trưng cho “độ tốt, độ tuyệt hảo” của phần mềm, và gồm có các yếu tố về chất lượng như: tính đúng đắn (hành vi đúng như đặc tả), tính hiệu quả (tiết kiệm thời gian và tiền bạc), độ tin cậy, tính khả kiểm thử (kiểm thử được và dễ), dễ học, dễ sử dụng, dễ bảo trì, v.v .
+
+first==>Như vậy, độ tin cậy chỉ là một yếu tố để đánh giá chất lượng phầm mềm .
+Người kiểm thử hay nhầm lẫn độ tin cậy với chất lượng .
+Khi kiểm thử đạt tới mức phần mềm chạy ổn định, có thể tin và dựa vào nó được (theo thuật ngữ công nghệ phần mềm là có thể phụ thuộc vào nó), người kiểm thử thường cho rằng phần mềm đã đạt chất lượng cao .
+Các yếu tố về mặt chất lượng mà liên quan trực tiếp đến việc phát triển phần mềm được gọi là các tiêu chuẩn chất luợng như tính có cấu trúc, tính đơn thể, tính khả kiểm thử, v.v .
+
+first==>Độ tin cậy của phần mềm là xác suất để phần mềm chạy không có thất bại trong một khoảng thời gian nhất định .
+Nó được xem là một yếu tố quan trọng của chất lượng phần mềm .
+Ngoài ra, thời gian trung bình cho việc khắc phục một sự cố cũng là một thông số quan trọng trong việc đánh giá độ tin cậy của sản phẩm phần mềm .
+
+first==>Vai trò của kiểm thử phần mềm: Kiểm thử phần mềm đóng vai trò quan trọng trong việc đánh giá và nâng cao chất lượng của sản phẩm phần mềm trong quá trình phát triển .
+Một mặt, thông qua chu trình “kiểm thử - tìm lỗi - sửa lỗi” ta hy vọng chất lượng của sản phẩm phần mềm sẽ được cải tiến .
+Mặt khác, thông qua việc tiến hành kiểm thử mức hệ thống trước khi cho lưu hành sản phẩm, ta biết được sản phẩm của ta tốt ở mức nào .
+Vì thế, nhiều tác giả đã mô tả việc kiểm thử phần mềm là một qui trình kiểm chứng để đánh giá và tăng cường chất lượng của sản phẩm phần mềm .
+Qui trình này gồm hai công việc chính là phân tích động và phân tích tĩnh .
+
+first==>• Phân tích tĩnh: Việc phân tích tĩnh được làm dựa trên việc khảo sát các tài liệu được xây dựng trong quá trình phát triển sản phẩm như tài liệu đặc tả yêu cầu người dùng, mô hình phần mềm, hồ sơ thiết kế và mã nguồn phần mềm .
+Các phương pháp phân tích tĩnh truyền thống bao gồm việc khảo sát đặc tả và mã nguồn cùng các tài liệu thiết kế .
+Các kỹ thuật khảo sát này sẽ được giới thiệu trong Chương 4 .
+Ta cũng có thể dùng các kỹ thuật phân tích hình thức như kiểm chứng mô hình (model checking) và chứng minh định lý (theorem proving) để chứng minh tính đúng đắn của thiết kế và mã nguồn .
+
+first==>Các kỹ thuật này tương đối phức tạp và nằm ngoài khuôn khổ của cuốn giáo trình này .
+Đặc điểm chung của các phương pháp phân tích tĩnh là ta không cần thực thi chương trình phần mềm mà chỉ duyệt, lý giải về tất cả các hành vi có thể của chương trình khi nó được thực thi .
+Tối ưu hóa của chương trình dịch là một ví dụ về phân tích tĩnh .
+
+first==>• Phân tích động: Phân tích động cần thực thi chương trình để phát hiện những thất bại có thể có của chương trình .
+Vì gần như không thể thực thi chương trình với tất cả các dữ liệu vào có thể, ta chỉ có thể chọn một tập con các dữ liệu vào để thực thi, gọi là các “ca kiểm thử” .
+Chọn như thế nào để được một tập các bộ dữ liệu vào hiệu quả (tức là các bộ dữ liệu có xác suất phát hiện thất bại (nếu có) cao hơn) là công việc cần suy nghĩ và là nội dung cơ bản của các giáo trình này .
+
+first==>Bằng việc phân tích tĩnh và động, người kiểm thử muốn phát hiện nhiều thất bại nhất có thể được để chúng có thể được sửa ở các giai đoạn sớm nhất trong quá trình phát triển .
+Phân tích tĩnh và động là hai kỹ thuật bổ sung cho nhau và cần được làm lặp đi lặp lại nhiều trong quá trình kiểm thử .
+
+first==>Hình 1.1 mô tả một mô hình vòng đời kiểm thử .
+Chúng ta có thể thấy trong quá trình phát triển phần mềm có ba giai đoạn chúng ta có thể mắc lỗi: lúc đặc tả, lúc thiết kế và lúc lập trình .
+Lỗi ở giai đoạn trước tạo ra sai lan truyền sang các giai đoạn sau của quá trình phát triển .
+Một nhà kiểm thử lỗi lạc đã tóm tắt vòng đời này như sau: Ba giai đoạn đầu là “gây ra sai”, giai đoạn kiểm thử là để tìm sai, và ba giai đoạn cuối là để “sửa sai” [Pos90] .
+Bước sửa sai lại có thể không những không sửa được sai mà còn gây ra các sai mới, hoặc sửa được sai nhưng lại gây ra sai khác .
+Tức là việc sửa sai có thể làm cho phần mềm đang đúng trở thành sai .
+
+first==>Chúng ta sẽ thảo luận thêm việc này trong phần kiểm thử hồi quy ở Chương 10 .
+
+first==>Các khái niệm mô tả các thuật ngữ trên đây cho thấy các ca kiểm thử chiếm vị trí trung tâm trong kiểm thử dựa trên phân tích động .
+Quá trình kiểm thử dựa trên phân tích động được chia thành các bước sau: lập kế hoạch kiểm thử, phát triển ca kiểm thử, chạy các ca kiểm thử, và đánh giá kết quả kiểm thử .
+Tiêu điểm của cuốn giáo trình này là việc xác định tập hiệu quả các ca kiểm thử, tức là các ca kiểm thử giúp ta giảm chi phí phát hiện sai sót trong phần mềm và khẳng định chất lượng của phần mềm .
+
+sub-title: Ca kiểm thử .
+
+first==>Cốt lõi của kiểm thử phần mềm là việc xác định một tập các ca kiểm thử cho phần tử cần kiểm thử .
+Vậy các ca kiểm thử cần có những thông tin gì ?
+Hiển nhiên nhất là đầu vào .
+Đầu vào có hai kiểu: tiền điều kiện (pre-condition) - tức là điều kiện cần thỏa mãn trước khi tiến hành ca kiểm thử - và dữ liệu đầu vào thực sự được xác định bởi phương pháp kiểm thử .
+Thông tin tiếp theo của ca kiểm thử là đầu ra mong đợi .
+Cũng có hai loại đầu ra: hậu điều kiện (post-condition) và dữ liệu đầu ra thực sự .
+Phần đầu ra của ca kiểm thử thường hay bị xem nhẹ vì nó là phần khó xác định .
+Ví dụ ta cần kiểm thử phần mềm tìm đường đi tối ưu cho máy bay khi cho trước các ràng buộc về hành lang bay và dữ liệu về thời tiết trong ngày của chuyến bay .
+Đường đi tối ưu thực sự là gì? Có nhiều câu trả lời cho câu hỏi này .
+
+first==>Câu trả lời của giới học giả sẽ là: tồn tại một đường đi tối ưu .
+Câu trả lời trên thực tế cho bài toán này, được gọi là kiểm thử tham chiếu, là hệ thống được kiểm thử dưới sự giám sát của các chuyên gia về lĩnh vực ứng dụng của phần mềm và người này sẽ kết luận kết quả đầu ra đối với dữ liệu đầu vào đó có chấp nhận được hay không .
+
+first==>Hoạt động kiểm thử kéo theo các việc thiết lập các tiền điều kiện cần thiết, cung cấp đầu vào của ca kiểm thử, quan sát các đầu ra và so sánh các đầu ra với các đầu ra mong đợi để kết luận kiểm thử đã đạt (passed) hay trượt (failed) .
+
+first==>Hình 1.2 mô tả các thông tin cơ bản của một ca kiểm thử .
+Các trường thông tin này chủ yếu phục vụ việc quản lí kiểm thử .
+Các ca kiểm thử cần phải có mã số và lý do tồn tại (theo đặc tả yêu cầu cũng là một lý do tốt) .
+Lịch sử tiến hành của một ca kiểm thử bao gồm cả việc chúng được chạy bởi ai và chạy khi nào, kết quả của mỗi lần chạy ra sao, đạt hay trượt và được chạy trên phiên bản nào của phần mềm cũng là thông tin hữu ích .
+Với các ca kiểm thử cho các hoạt động kiểm thử giao diện người dùng, ngoài thông tin về đầu vào, chúng ta cần bổ sung thêm các thông tin về trình tự nhập các đầu vào cho giao diện .
+Tóm lại, ta cần nhận thức rằng ca kiểm thử ít nhất cũng quan trọng như mã nguồn .
+Các ca kiểm thử cần được phát triển, khảo duyệt (review), sử dụng, quản lý và lưu trữ một cách khoa học .
+
+sub-title: Mô tả bài toán kiểm thử qua biểu đồ Venn .
+
+first==>Kiểm thử chủ yếu quan tâm đến hành vi của chương trình; mà hành vi lại độc lập với cấu trúc của chương trình - góc nhìn chính của người lập trình .
+Góc nhìn cấu trúc tập trung vào “nó là cái gì”, còn góc nhìn hành vi lại tập trung vào “nó làm gì” .
+
+first==>Một trong những khó khăn của người kiểm thử là các tài liệu họ sử dụng thường được người phát triển viết ra và viết cho họ (người phát triển), nên chúng thiên về thông tin cấu trúc và coi nhẹ thông tin về hành vi .
+Chuúng ta sẽ sử dụng một biểu đồ Venn để làm rõ một số băn khoăn về kiểm thử và chương trình .
+Khái biệm biểu đồ Venn được trình bày trong Chương 3 .
+
+first==>Xét một vũ trụ các hành vi chương trình .
+Cho một chương trình cùng đặc tả của nó .
+Gọi S là tập các hành vi được đặc tả và P là tập các hành vi của chương trình .
+Hình 1.3 mô tả mối quan hệ giữa vũ trụ các hành vi, các hành vi được lập trình và các hành vi được đặc tả .
+Trong vũ trụ các hành vi, những hành vi được đặc tả nằm trong vòng tròn với nhãn S, còn những hành vi được lập trình nằm trong vòng tròn với nhãn P  .
+Từ biểu đồ này, ta thấy rõ các bài toán mà người kiểm thử phải giải quyết .
+Nếu có hành vi được đặc tả nhưng không được lập trình thì đây là những sai do quên .
+Ngượ lại, nếu có những hành vi được lập trình nhưng không được đặc tả, thì đây là sai về nhiệm vụ (commission) - làm sai nên hành vi không đúng như mong muốn .
+Phần giao giữa S và P là phần "‘đúng đắn"’, các hành vi vừa được đặc tả vừa được cài đặt .
+Chú ý rằng tính đúng đắn phải gắn với đặc tả và cài đặt và là khái niệm tương đối, không phải tuyệt đối .
+
+first==>Vòng tròn mới (vòng tròn T ) trong Hình 1.4 là hành vi của các ca kiểm thử .
+
+first==>Lưu ý rằng tập các hành vi của chương trình nằm trọn trong vũ trụ hành vi của ta. Ở đây một ca kiểm thử cũng được coi là xác định một hành vi .
+Xét mối quan hệ giữa S, P và T  .
+Có thể có các hành vi được đặc tả mà không được kiểm thử (các miền 2 và 5), các hành vi được đặc tả và được kiểm thử (các miền 1 và 4), và các ca kiểm thử tương ứng với các hành vi không được đặc tả (các miền 3 và 7) .
+
+first==>Tương tự, có thể có các hành vi được lập trình mà không được kiểm thử (các miền 2 và 6), các hành vi được lập trình và được kiểm thử (các miền 1 và 3), và các ca kiểm thử tương ứng với các hành vi không được lập trình (các miền 4 và 7) .
+
+first==>Việc xem xét tất cả các miền này là hết sức quan trọng .
+Nếu có các hành vi được đặc tả mà không có các ca kiểm thử tương ứng, việc kiểm thử là chưa đầy đủ .
+Nếu có các ca kiểm thử tương ứng với các hành vi không được đặc tả, có thể có hai khả năng: hoặc đặc tả còn thiếu hoặc ca kiểm thử không đảm bảo .
+Theo kinh nghiệm, một người kiểm thử tốt sẽ thường cho các ca kiểm thử thuộc loại đầu, và đấy chính là lý do người kiểm thử cần tham gia vào giai đoạn khảo duyệt đặc tả và thiết kế (xem chương 4) .
+
+first==>Ta có thể thấy việc kiểm thử như là công việc của một nghệ nhân: người kiểm thử có thể làm gì để làm cho miền tương tương giao của các tập (miền 1) là lớn nhất có thể ?
+Làm thế nào để xác định các ca kiểm thử trong tập T  ?
+Câu trả lời là các ca kiểm thử cần được xác định bởi một phương pháp kiểm thử .
+Chính khuôn khổ này cho phép ta so sánh tính hiệu quả của các phương pháp kiểm thử khác nhau như sẽ được giới thiệu trong các chương 5, 6 và 7 .
+
+sub-title: Việc xác định các ca kiểm thử .
+
+first==>Có hai cách tiếp cận cơ bản để xác định các ca kiểm thử là kiểm thử chức năng hay kiểm thử hộp đen (black-box testing) và kiểm thử cấu trúc (kiểm thử hộp trắng - white-box testing) .
+Mỗi cách tiếp cận có phương pháp xác định ca kiểm thử khác nhau và được gọi chung là phương pháp kiểm thử .
+
+sub-title: Kiểm thử chức năng .
+
+first==>Kiểm thử chức năng (kiểm thử hộp đen) dựa trên quan niệm rằng bất kỳ chương trình nào cũng được coi là một hàm ánh xạ các giá trị từ miền dữ liệu đầu vào vào miền dữ liệu đầu ra của nó .
+Khái niệm này được dùng chung trong kỹ thuật khi các hệ thống đều được coi là các hộp đen .
+Chính điều này dẫn đến thuật ngữ kiểm thử hộp đen, trong đó nội dung của hộp đen (việc cài đặt) không được biết, và chức năng của hộp đen được hiểu theo các dữ liệu đầu vào và dữ liệu đầu ra của nó .
+Trong thực tế, chúng ta thường thao tác hiệu quả với những kiến thức về hộp đen .
+Chính điều này là trung tâm của khái niệm định hướng đối tượng .
+Chẳng hạn, hầu hết mọi người lái xe thành thạo với kiến thức hộp đen .
+
+first==>Với cách tiếp cận của kiểm thử chức năng, để xác định các ca kiểm thử, thông tin duy nhất được dùng là đặc tả của phần mềm cần kiểm thử .
+Có hai lợi điểm chính của các ca kiểm thử được sinh ra bởi cách tiếp cận kiểm thử chức năng: chúng độc lập với việc phần mềm được cài đặt thế nào, và vì thế khi cài đặt thay đổi thì các ca kiểm thử vẫn dùng được, đồng thời các ca kiểm thử được phát triển song song và độc lập với việc cài đặt hệ thống .
+Do đó, cách tiếp cận này rút gọn được thời gian phát triển của dự án .
+Điểm yếu của cách tiếp cận này là các ca kiểm thử thường có thể có tính dư thừa đáng kể trong các ca kiểm thử và hố phân cách .
+
+first==>Hình 1.6 mô tả các ca kiểm thử kết quả xác định bởi các phương pháp kiểm thử chức năng khác nhau .
+Phương pháp A xác định một tập các ca kiểm thử lớn hơn so với phương pháp B .
+Lưu ý rằng đối với cả hai phương pháp, tập các ca kiểm thử đều chứa trọn trong tập các hành vi được đặc tả .
+Do các phương pháp kiểm thử chức năng đều dựa trên các hành vi đặc tả, các phương pháp này khó có thể xác định được các hành vi không được đặc tả .
+Trong chương 5 ta sẽ so sánh các ca kiểm thử sinh bởi các phương pháp kiểm thử chức năng khác nhau cho các ví dụ nêu trong chương 2 .
+
+first==>Trong chương 5, chúng ta sẽ khảo sát các cách tiếp cận chủ yếu cho các phương pháp kiểm thử chức năng bao gồm phân tích giá trị biên, kiểm thử tính bền vững, phân tích trường hợp xấu nhất, kiểm thử giá trị đặc biệt, kiểm thử phân lớp tương đương của miền dữ liệu đầu vào, lớp tương đương của miền dữ liệu đầu ra, kiểm thử dựa trên bảng quyết định .
+Điều xuyên suốt trong các kỹ thuật này là tất cả đều dựa trên thông tin xác định về các thành phần đang được kiểm thử .
+Cơ sở toán học trình bày trong chương 3 chủ yếu được áp dụng cho cách tiếp cận kiểm thử chức năng .
+
+sub-title: Kiểm thử cấu trúc .
+
+first==>Kiểm thử cấu trúc (kiểm thử hộp trắng) là cách tiếp cận khác để xác định các ca kiểm thử .
+Trái ngược với cách tiếp cận của kiểm thử chức năng, đôi khi nó được gọi là kiểm thử hộp trắng .
+Biểu tượng hộp trong suốt là thích hợp cho cách tiếp cận này vì sự khác nhau cốt lõi với kiểm thử hộp đen là việc cài đặt của hộp đen được cho và được dùng làm cơ sở để xác định các ca kiểm thử .
+Việc biết được bên trong của hộp đen cho phép người kiểm thử dựa trên việc cài đặt của hàm để xác định ca kiểm thử .
+
+first==>Kiểm thử cấu trúc đã trở thành chủ đề của một lý thuyết tương đối mạnh .
+Để hiểu rõ kiểm thử cấu trúc, các khái niệm về lý thuyết đồ thị tuyến tính được trình bày trong chương 3 là cần thiết .
+Với những khái niệm này, người kiểm thử có thể mô tả chính xác các yêu cầu kiểm thử và hệ thống cần kiểm thử .
+Do có cơ sở lý thuyết mạnh, kiểm thử cấu trúc cho phép định nghĩa chính xác và sử dụng các độ đo về độ bao phủ .
+Các độ đo về độ phủ cho phép khẳng định tường minh phần mềm đã được kiểm thử tới mức nào và do đó giúp cho việc quản lý quá trình kiểm thử tốt hơn .
+
+first==>Hình 1.7 phản ánh các ca kiểm thử kết quả xác định bởi hai phương pháp kiểm thử cấu trúc khác nhau .
+Giống như trước đây, phương pháp A xác định tập các ca kiểm thử lớn hơn so với phương pháp B .
+Có chắc là tập các ca kiểm thử lớn hơn là tốt hơn không? Đây là một câu hỏi thú vị và kiểm thử cấu trúc cung cấp các giải pháp để tìm câu trả lời cho vấn đề này .
+Lưu ý rằng cả hai phương pháp A và B đều cho các tập các ca kiểm thử nằm trọn trong tập các hành vi được lập trình .
+
+first==>Do các ca kiểm thử của các phương pháp này được sinh ra dựa trên chương trình nên rất khó để xác định các lỗi liên quan đến các hành vi đã được đặc tả nhưng không được lập trình .
+Tuy nhiên, dễ thấy rằng tập các ca kiểm thử cấu trúc là tương đối nhỏ so với tập tất cả các hành vi được lập trình .
+Ta sẽ trình bày các so sánh về các ca kiểm thử sinh bởi các phương pháp kiểm thử cấu trúc khác nhau ở mục 1.4.3 .
+Một số phương pháp kiểm thử cấu trúc (kiểm thử dòng điều khiển và kiểm thử dòng dữ liệu) sẽ được giới thiệu chi tiết trong các Chương 6 và 7 .
+
+sub-title: Tranh luận về kiểm thử chắc năng so với kiểm thử cấu trúc .
+
+first==>Cho trước hai phương pháp khác nhau để xác định các ca kiểm thử, câu hỏi tự nhiên được đặt ra là phương pháp nào tốt hơn ?
+Cho đến nay chúng ta vẫn chưa có câu trả lời thỏa đáng cho câu hỏi này .
+Nói về kiểm thử cấu trúc, Robert Poston viết: công cụ này lãng phí thời gian của người kiểm thử vì từ những năm bảy mươi (của thế kỷ trước) nó chẳng trợ giúp tốt việc thực hành kiểm thử phần mềm và đừng có đưa nó vào bộ công cụ của người kiểm thử [Pos91] .
+Nhằm bảo vệ cho việc kiểm thử cấu trúc, Edward Miller [Mil91] viết: Độ bao phủ nhánh [một độ đo độ bao phủ của kiểm thử], nếu đạt được 85% hoặc cao hơn, có thể xác định số lỗi gấp đôi so với số lỗi phát hiện bởi kiểm thử trực quan (kiểm thử chức năng) .
+
+first==>Biểu đồ Venn được mô tả trong Hình 1.8 có thể giúp ta trả lời câu hỏi mà cuộc tranh luận này đã đề cập .
+Chúng ta cần khẳng định lại rằng mục đích của cả hai cách tiếp cận là để xác định các ca kiểm thử .
+Kiểm thử chức năng chỉ dùng đặc tả để xác định ca kiểm thử, trong khi kiểm thử cấu trúc dùng mã nguồn của chương trình (cài đặt) để làm cơ sở xác định ca kiểm thử .
+Những bàn luận trước đây cho thấy chẳng có cách tiếp cận nào là đủ tốt .
+Xét các hành vi chương trình: nếu tất cả các hành vi được đặc tả vẫn chưa được cài đặt, kiểm thử cấu trúc sẽ không thể nhận biết được điều đó .
+Ngược lại, nếu các hành vi được cài đặt chưa được đặc tả, điều đó chẳng khi nào có thể được phơi bày nhờ kiểm thử chức năng. (Một con vi rút là một ví dụ tốt về các hành vi không được đặc tả) .
+Câu trả lời sơ bộ là cả hai cách tiếp cận đều là cần thiết cả; còn câu trả lời cẩn thận hơn là cách kết hợp khôn khéo sẽ cung cấp niềm tin cho kiểm thử chức năng và độ đo của kiểm thử cấu trúc .
+Ta đã khẳng định ở trên rằng kiểm thử chức năng có khiếm khuyết về tính dư thừa và hố phân cách .
+Nếu kiểm thử chức năng được tiến hành kết hợp với các số đo về độ phủ của kiểm thử cấu trúc thì khiếm khuyết trên có thể được phát hiện và giải quyết .
+
+first==>Quan điểm biểu đồ Venn cho việc kiểm thử cung cấp một chi tiết nữa .
+Mối quan hệ giữa tập T các ca kiểm thử và các tập S và P của các hành vi cài đặt và đặc tả thế nào? Rõ ràng, các ca kiểm thử trong T được xác định bởi phương pháp xác định ca kiểm thử được dùng .
+Một câu hỏi rất hay cần đặt ra là thế thì phương pháp này thích hợp và hiệu quả ra sao .
+Ta có thể đóng lại vòng luẩn quẩn này bằng những lời bàn trước đây .
+Nhắc lại đường đi từ lỗi đến sai, thất bại và sự cố .
+Nếu ta biết loại lỗi nào ta hay phạm, và loại sai nào hay có trong phần mềm được kiểm thử, ta có thể dùng thông tin này để lựa chọn phương pháp thích hợp hơn để xác định các ca kiểm thử .
+Chính điểm này làm cho việc kiểm thử thành một nghệ thuật .
+
+sub-title: Phân loại các lỗi và sai .
+
+first==>Các định nghĩa về lỗi và sai được trình bày trong mục 1.1 xoay quanh sự phân biệt giữa quy trình và sản phẩm: quy trình nói chúng ta cần làm điều gì đó như thế nào, còn sản phẩm là kết quả cuối cùng của quy trình .
+Kiểm thử phần mềm và đảm bảo chất lượng phần mềm (Software Quality Assurance - SQA) gặp nhau ở điểm là SQA cố gắng cải tiến chất lượng sản phẩm bằng việc cải tiến quy trình .
+
+first==>Theo nghĩa này thì kiểm thử là các hoạt động định hướng sản phẩm. SQA quan tâm nhiều hơn đến việc giảm thiểu lỗi trong quá trình phát triển, còn kiểm thử quan tâm chủ yếu đến phát hiện sai trong sản phẩm .
+Cả hai nguyên lý này đều sử dụng định nghĩa về các loại sai .
+Các sai được phân loại theo nhiều cách khác nhau: giai đoạn phát triển khi cái sai tương ứng xuất hiện, các hậu quả của các thất bại tương ứng, độ khó cho việc giải quyết, độ rủi ro của việc không giải quyết được, v.v .
+Một cách phân loại được ưa thích là dựa trên việc xuất hiện bất thường: chỉ một lần, thỉnh thoảng, xuất hiện lại hoặc lặp đi lặp lại nhiều lần .
+Hình 1.9 minh họa một cách phân loại sai [Bor84] dựa trên độ nghiêm trọng của hậu quả mà các lỗi gây ra .
+
+first==>Để xử lý các loại sai, chúng ta có thể tham khảo [IEE93] về việc phân loại các chuẩn cho các bất thường của phần mềm .
+Chuẩn IEEE định nghĩa quy trình giải quyết bất thường một cách chi tiết gồm bốn giai đoạn: nhận biết, khảo sát, hành động và bố trí lại .
+Một số bất thường phổ biến được mô tả trong các bảng từ Bảng 1.1 đến Bảng 1.5 .
+Hầu hết các bất thường này đều đã được đề cập trong chuẩn IEEE .
+Ngoài ra, chúng tôi cũng bổ sung thêm một số bất thường khác .
+
+sub-title: Các mức kiểm thử .
+
+first==>Một trong các khái niệm then chốt của việc kiểm thử là các mức của việc kiểm thử .
+Các mức của việc kiểm thử phản ánh mức độ trừu tượng được thấy trong mô hình thác nước của vòng đời của việc phát triển phần mềm .
+Dù có một số nhược điểm, mô hình này vẫn rất hữu ích cho việc kiểm thử, là phương tiện để xác định các mức kiểm thử khác nhau và làm sáng tỏ mục đích của mỗi mức .
+Một dạng của mô hình thác nước được trình bày trong Hình 1.10 .
+Dạng này nhấn mạnh sự tương ứng của việc kiểm thử với các mức thiết kế .
+Lưu ý rằng theo các thuật ngữ của việc kiểm thử chức năng, ba mức của định nghĩa (đặc tả, thiết kế sơ bộ và thiết kế chi tiết) tương ứng trực tiếp với bốn mức của việc kiểm thử là kiểm thử đơn vị Hình 1.10: Các mức trừu tượng và mức kiểm thử trong mô hình thác nước .
+
+first==>(unit testing), kiểm thử tích hợp (integration testing), kiểm thử hệ thống (system testing) và kiểm thử chấp nhận (acceptance testing) .
+Các mức của kiểm thử cũng làm nảy sinh vấn đề về thứ tự kiểm thử: dưới lên, trên xuống hoặc các khả năng khác .
+
+first==>Các mức kiểm thử có thể được mô tả sơ bộ như sau: • Kiểm thử đơn vị: Kiểm thử đơn vị là việc kiểm thử các đơn vị chương trình một cách cô lập .
+Thế nào là một đơn vị chương trình ?
+Câu trả lời phụ thuộc vào ngữ cảnh công việc .
+Một đơn vị chương trình là một đoạn mã nguồn như hàm hoặc phương thức của một lớp, có thể được gọi từ ngoài, và cũng có thể gọi đến các đơn vị chương trình khác .
+Đơn vị cũng còn được coi là một đơn thể để kết hợp .
+Đơn vị chương trình cần được kiểm thử riêng biệt để phát hiện lỗi trong nội tại và khắc phục trước khi được tích hợp với các đơn vị khác .
+Kiểm thử đơn vị thường được làm bởi chính tác giả của chương trình, và có thể tiến hành theo hai giai đoạn: kiểm thử đơn vị tĩnh, sử dụng các kỹ thuật ở chương 4, và kiểm thử đơn vị động, sử các kỹ thuật ở chương 6 và 7 .
+
+first==>• Kiểm thử tích hợp: Mức kế tiếp với kiểm thử đơn vị là kiểm thử tích hợp .
+
+first==>Sau khi các đơn vị chương trình để cấu thành hệ thống đã được kiểm thử, chúng cần được kết nối với nhau để tạo thành hệ thống đầy đủ và có thể làm việc .
+Công việc này không hề đơn giản và có thể có những lỗi về giao diện giữa các đơn vị, và cần phẩi kiểm thử để phát hiện những lỗi này .
+Công đoạn này gồm hai giai đoạn: giai đoạn kiểm thử tích hợp và giai đoạn kiểm thử hệ thống .
+Kiểm thử tích hợp nhằm đảm bảo hệ thống làm việc ổn định trong môi trường thí nghiệm để sẵn sàng cho việc đưa vào môi trường thực sự bằng cách đặt các đơn vị với nhau theo phương pháp tăng dần .
+Kỹ thuật kiểm thử tích hợp sẽ được mô tả chi tiết trong chương 10 .
+
+first==>• Kiểm thử hệ thống: Kiểm thử mức này được áp dụng khi đã có một hệ thống đầy đủ sau khi tất cả các thành phần đã được tích hợp .
+Mục đích của kiểm thử hệ thống là để đảm bảo rằng việc cài đặt tuân thủ đầy đủ các yêu cầu được đặc tả của người dùng .
+Công việc này tốn nhiều công sức, vì có nhiều khía cạnh về yêu cầu người dùng cần được kiểm thử .
+Các phương pháp kiểm thử chức năng được trình bày trong chương 5 là thích hợp nhất cho việc kiểm thử này .
+Các kỹ thuật kiểm thử hệ thống được trình bày trong chương 10 .
+
+first==>• Kiểm thử chấp nhận: Khi nhóm kiểm thử hệ thống đã thỏa mãn với một sản phẩm, sản phẩm đó đã sẵn sàng để đưa vào sử dụng .
+Khi đó hệ thống cần trải qua giai đoạn kiểm thử chấp nhận .
+Kiểm thử chấp nhận được thực thi bởi chính các khách hàng nhằm đảm bảo rằng sản phẩm phần mềm làm việc đúng như họ mong đợi .
+Có hai loại kiểm thử chấp nhận: kiểm thử chấp nhận người dùng, được tiến hành bởi người dùng, và kiẻm thử chấp nhận doanh nghiệp, được tiến hành bởi nhà sản xuất ra sản phẩm phần mềm .
+Chương 10 mô tả chi tiết việc kiểm thử chấp nhận .
+
+sub-title: Tổng kết .
+
+first==>Chúng ta đã trình bày trong chương này một bức tranh tổng thể về việc kiểm thử phần mềm bao gồm các thuật ngữ và khái niệm cơ bản trong lĩnh vực kiểm thử, mục đích và vai trò của việc kiểm thử phần mềm .
+Chúng ta cũng mô tả sơ lược về bài toán kiểm thử và qui trình để giải bài toán này gồm việc phân tích tĩnh và phân tích động .
+Đóng vai tró trung tâm của phân tích động là việc xây dựng các ca kiểm thử .
+Hai cách tiếp cận cơ bản để xác định các ca kiểm thử là kiểm thử chức năng (kiểm thử hộp đen) và kiểm thử cấu trúc (kiểm thử hộp trắng) .
+Cả hai cách tiếp cận này bổ sung cho nhau để xây dựng tập các ca kiểm thử hiệu quả .
+
+first==>Chúng ta cũng đã giới thiệu trong chương này bốn mức kiểm thử, mỗi mức tương ứng với một giai đoạn của việc phát triển phần mềm .
+Các mức đó là: kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ thống và kiểm thử chấp nhận .
+Chi tiết về các phương pháp kiểm thử sẽ được trình bày trong các chương sau .
