@@ -1,0 +1,334 @@
+title: Tổng_quan về kiểm thử .
+
+first==>Mục đích của kiểm thử là đánh_giá chất_lượng hoặc tính chấp_nhận được của sản_phẩm .
+Tính chấp_nhận được ở_đây có_thể hiểu là sản_phẩm dùng được, có_ích ở một mức_độ nào_đó .
+Kiểm thử cũng nhằm phát_hiện sai_sót hoặc các vấn_đề về sản_phẩm .
+Một_số kiểm thử_viên đôi_khi nghĩ kiểm thử là tìm sai_sót và khi kiểm_tra chương_trình chỉ chú_trọng vào việc tìm các vấn_đề của sản_phẩm hơn là kiểm_tra mức_độ đúng_đắn của chương_trình .
+Quan_điểm này đôi_khi rất thực_tế, vì họ nghĩ phần chạy đúng của chương_trình người lập_trình đã làm rồi, đã chạy_thử rồi, xong mới chuyển cho kiểm thử_viên kiểm_tra lại .
+Do_đó họ tập_trung vào kiểm_tra những trường_hợp mà người lập_trình chưa_tính đến .
+Chúng_ta cần kiểm thử vì kinh_nghiệm cho_thấy con_người luôn có_thể mắc_lỗi .
+Điều này đặc_biệt hay xảy_ra trong lĩnh_vực phát_triển phần_mềm .
+Chương này sẽ phác_họa một bức_tranh tổng_thể về kiểm thử phần_mềm .
+Các chương còn_lại sẽ mô_tả bức_tranh này chi_tiết hơn .
+
+sub-title: Các thuật_ngữ và định_nghĩa cơ_bản về kiểm thử .
+
+first==>Kỹ nghệ kiểm thử đã phát_triển và tiến_hoá hàng chục năm nhưng các thuật_ngữ trong các tài_liệu khác_nhau vẫn chưa thực_sự thống_nhất, trong cả_tiếng Anh lẫn tiếng Việt .
+Các thuật_ngữ được trình_bày trong cuốn_sách này dựa_vào các thuật_ngữ chuẩn được phát_triển bởi IEEE (Viện Kỹ_nghệ điện và điện_tử) với việc chọn_lọc cẩn_thận các thuật_ngữ tiếng Việt tương_ứng .
+
+first==>Lỗi (Error): Con_người luôn có_thể phạm lỗi .
+Khi lập trình viên phạm lỗi trong lập trình, họ đã tạo_ra các bug (con_bọ), hay_nói chung là các sai_sót .
+Lỗi có_thể phát_tán .
+Chẳng hạn, một lỗi về xác_định yêu_cầu có_thể dẫn đến sai_sót trong bản thiết_kế và nó lại gây sai tiếp khi lập_trình theo thiết_kế này .
+Lỗi là nguyên_nhân dẫn đến sai .
+
+first==>Sai sót (Fault): Sai sót, đôi_khi chúng_ta sẽ gọi ngắn_gọn là sai, là kết_quả của lỗi .
+Nói khác đi, khi chúng_ta mắc_lỗi thì chúng_ta đã tạo_ra sai_sót .
+Cũng có_thể nói_sai sót là một biểu_hiện của lỗi ở dạng cụ thể, chẳng_hạn chương trình,_văn bản, sơ_đồ dòng_dữ liệu, biểu_đồ lớp,_v.v .
+Sai_sót nhiều khi rất khó phát_hiện .
+Sai_sót có hai loại: sai và sót .
+Khi người thực_hiện làm không đúng việc đáng phải làm họ đã gây_ra sai về nhiệm_vụ .
+Khi người thực_hiện mắc_lỗi quên, làm thiếu thì họ đã làm sót .
+Ví_dụ khi người thu_thập yêu_cầu ghi_chép thiếu yêu_cầu của khách_hàng thì họ đã mắc_lỗi làm sót .
+Hay khi người thiết_kế mắc_lỗi quên, làm thiếu trong quá_trình thiết_kế thì kết_quả của lỗi này là thiết_kế bị thiếu một phần_nào_đó .
+Loại sai do quên khó phát_hiện và khó sửa hơn loại sai về nhiệm_vụ .
+Một_số_thuật_ngữ khác cũng_được dùng_cho sai_sót là khiếm_khuyết (defect), hay bọ (bug) .
+
+first==>Có lẽ cần phải nói rằng trên thực_tế chúng_ta thường sử_dụng từ lỗi thay_cho từ sai .
+Khi phát_hiện sai_sót trong chương trình, chúng_ta hay_nói chương_trình có lỗi, hay hàm này có lỗi, hay dòng lệnh này có lỗi. Ở đây chúng_ta đều cùng hiểu đúng ý_nghĩa của từ lỗi này - chỉ_là cách dùng từ đôi_khi chưa_cần chính_xác để phân_biệt hành_động mắc lỗi, và sản_phẩm của việc mắc_lỗi đó .
+
+first==>Thất bại (Failure): Giả_sử chúng_ta có một chương_trình có một sai_sót ở dòng lệnh số 10 .
+Khi chúng_ta chạy chương_trình và câu lệnh ở dòng số 10 này được thực_hiện thì chúng_ta nói_là một sai đã được thực_thi .
+Khi một sai được thực_thi thì một thất_bại đã xảy_ra .
+Có hai điều cần lưu_ý ở đây: một là thất_bại chỉ xuất_hiện ở dạng sai có_thể thực_thi được mà thông_thường là mã nguồn, hai là các thất_bại chỉ liên_kết với các lỗi về nhiệm_vụ .
+
+first==>Một câu_hỏi đặt_ra là các thất_bại do lỗi quên thì được xử_lý thế_nào và những lỗi không_bao_giờ được thực_thi, hoặc không_được thực_thi trong khoảng thời_gian dài cần được xử_lý ra sao ?
+Vi-rút Michaelangelo là một ví_dụ về lỗi loại này .
+Nó chỉ được tiến_hành vào ngày_sinh của Michael Angelo, tức ngày 6/3 mà thôi .
+Câu_trả_lời nằm ở chỗ: việc khảo sát, tức_là phân_tích và duyệt mã, thiết_kế hoặc đặc tả có_thể ngăn_chặn nhiều thất_bại bằng cách phát_hiện ra các lỗi thuộc cả_hai loại .
+
+first==>Sự cố (Incident): Khi một thất_bại xảy_ra đôi_khi khi người_dùng hoặc người kiểm thử không nhìn_thấy được .
+Khi thất_bại là nhìn_thấy được thì chúng_ta gọi nó là sự_cố .
+Như_vậy sự_cố là triệu_chứng của thất_bại và người_dùng hoặc người kiểm thử có_thể dựa_trên các triệu_chứng này để nhận_biết ra thất_bại .
+Ví_dụ lỗi người lập_trình quên giải_phóng một vùng bộ_nhớ sẽ gây_ra thất_bại là bị mất bộ_nhớ (memory_leak) .
+Khi chương_trình chạy, thất_bại xảy_ra là bộ_nhớ bị mất nhưng người_dùng và người kiểm thử đều không_nhận thấy ngay .
+Chỉ sau một thời_gian đủ dài thì bộ_nhớ mới bị hết và lúc_này mới gây_ra sự_cố là chương_trình thông_báo lỗi hoặc có các biểu_hiện không bình_thường nhận_thấy được .
+
+first==>Kiểm thử: Rõ_ràng việc kiểm thử liên_quan đến các khái_niệm trên:_lỗi, sai, thất_bại và sự_cố .
+Tuy_nhiên cũng có hai mục_đích của một phép thử: tìm thất_bại hoặc chứng_tỏ phần_mềm là chạy đúng_đắn .
+Việc tìm thất_bại đa_số dựa_trên việc phát_hiện sự_cố .
+
+first==>Ca_kiểm thử: Mỗi ca_kiểm thử có một tên (định_danh) và được gắn với một hành_vi của chương_trình .
+Một ca_kiểm thử gồm một bộ_dữ_liệu đầu vào và một danh_sách các giá_trị đầu_ra mong_đợi mà phần_mềm sẽ tạo_ra với bộ_dữ_liệu đầu vào đó .
+
+first==>Yêu_cầu của khách_hàng và đặc tả của phần mềm: Phần_mềm được viết để thực_hiện các nhu_cầu của khách_hàng .
+Các nhu_cầu của khách_hàng được thu thập, phân_tích và khảo_cứu và là cơ_sở để quyết_định chính_xác các chức_năng mà sản_phẩm phần_mềm cần phải có .
+Dựa_trên nhu_cầu của khách_hàng và các yêu_cầu bắt_buộc khác, tài_liệu đặc tả được xây_dựng để mô_tả chính_xác các yêu_cầu mà sản_phẩm phần_mềm cần đáp_ứng, và có giao_diện thế_nào .
+Tài_liệu đặc tả là cơ_sở để đội_ngũ phát_triển phần_mềm xây_dựng sản_phẩm phần_mềm .
+Khi chúng_ta nói_đến thất_bại ở trên là chúng_ta nói_đến việc sản_phẩm phần_mềm khộng hoạt_động đúng như đặc_tả .
+Do đó, lỗi do quên được coi là tương_ứng với các lỗi khi xây_dựng đặc tả .
+
+first==>Kiểm chứng và thẩm định: Kiểm_chứng (verification) và thẩm_định (validation) hay được dùng lẫn lộn, nhưng thực_ra chúng có_ý nghĩa khác_nhau .
+Kiểm_chứng là quá_trình để đảm_bảo rằng một sản_phẩm phần_mềm thỏa_mãn đặc tả của nó .
+Còn thẩm_định là quá_trình để đảm_bảo rằng sản_phẩm đáp_ứng được yêu_cầu của người_dùng .
+Trong thực tế, chúng_ta cần thực_hiện kiểm_chứng trước_khi thực_hiện việc thẩm_định .
+Vì vậy, chúng_ta có thuật_ngữ V&V_(Verification &_Validation) .
+Lý_do của việc này là chúng_ta cần đảm_bảo sản_phẩm đúng_với đặc tả trước .
+Nếu thực_hiện việc thẩm_định trước thì khi phát_hiện ra lỗi chúng_ta không_thể xác_định được lỗi này do đặc tả sai hay do lập_trình sai so với đặc_tả .
+
+first==>Chất_lượng và độ_tin_cậy của phần mềm: Theo từ điển, chất_lượng của một sản_phẩm được thể_hiện bằng các đặc_trưng phù_hợp với đặc tả của nó .
+Theo cách hiểu này, chất_lượng của một sản_phẩm phần_mềm là sự_đáp_ứng các yêu_cầu về chức năng, sự_hoàn_thiện và các chuẩn đã được đặc_tả, cùng các đặc_trưng mong_chờ từ mọi sản_phẩm phần_mềm chuyên_nghiệp .
+Chất_lượng phần_mềm đặc_trưng cho “độ tốt,_độ tuyệt_hảo” của phần mềm, và gồm có các yếu_tố về chất_lượng như: tính đúng_đắn (hành_vi đúng như đặc_tả), tính hiệu_quả (tiết kiệm thời_gian và tiền bạc), độ tin cậy, tính khả_kiểm thử (kiểm thử được và dễ), dễ học, dễ sử_dụng, dễ_bảo trì,_v.v .
+
+first==>Như vậy, độ_tin_cậy chỉ_là một yếu_tố để đánh_giá chất_lượng phầm_mềm .
+Người kiểm thử hay nhầm_lẫn độ_tin_cậy với chất_lượng .
+Khi kiểm thử đạt tới mức phần_mềm chạy ổn định, có_thể tin và dựa_vào nó được (theo thuật_ngữ công_nghệ phần_mềm là có_thể phụ_thuộc vào nó), người kiểm thử thường cho_rằng phần_mềm đã đạt chất_lượng cao .
+Các yếu_tố về mặt chất_lượng mà liên_quan trực_tiếp đến việc phát_triển phần_mềm được gọi_là các tiêu_chuẩn chất luợng như tính có cấu trúc, tính đơn thể,_tính khả_kiểm thử,_v.v .
+
+first==>Độ tin_cậy của phần_mềm là xác_suất để_phần mềm chạy không có thất_bại trong một khoảng thời_gian nhất_định .
+Nó được xem là một yếu_tố quan_trọng của chất_lượng phần_mềm .
+Ngoài ra, thời_gian trung_bình cho việc khắc_phục một sự_cố cũng là một thông_số quan_trọng trong việc đánh_giá độ tin_cậy của sản_phẩm phần_mềm .
+
+first==>Vai_trò của kiểm thử phần mềm: Kiểm thử phần_mềm đóng_vai trò quan_trọng trong việc đánh_giá và nâng_cao chất_lượng của sản_phẩm phần_mềm trong quá_trình phát_triển .
+Một mặt, thông_qua chu_trình “kiểm thử - tìm lỗi - sửa lỗi” ta hy_vọng chất_lượng của sản_phẩm phần_mềm sẽ được cải_tiến .
+Mặt_khác, thông_qua việc tiến_hành kiểm thử mức hệ_thống trước_khi cho lưu_hành sản phẩm, ta biết_được sản_phẩm của ta tốt ở mức nào .
+Vì thế, nhiều tác_giả đã mô_tả việc kiểm thử phần_mềm là một qui_trình kiểm_chứng để đánh_giá và tăng_cường chất_lượng của sản_phẩm phần_mềm .
+Qui_trình này gồm hai công_việc chính là phân_tích động và phân_tích tĩnh .
+
+first==>• Phân_tích tĩnh: Việc phân_tích tĩnh được làm dựa_trên việc khảo_sát các tài_liệu được xây_dựng trong quá_trình phát_triển sản_phẩm như tài_liệu đặc tả yêu_cầu người dùng, mô_hình phần mềm, hồ_sơ thiết_kế và mã nguồn phần_mềm .
+Các phương_pháp phân_tích tĩnh truyền_thống bao_gồm việc khảo_sát đặc tả và mã nguồn cùng các tài_liệu thiết_kế .
+Các kỹ_thuật khảo_sát này sẽ được giới_thiệu trong Chương 4 .
+Ta cũng có_thể dùng các kỹ_thuật phân_tích hình_thức như kiểm_chứng mô_hình (model_checking) và chứng_minh định_lý (theorem proving) để chứng_minh tính đúng_đắn của thiết_kế và mã nguồn .
+
+first==>Các kỹ_thuật này tương_đối phức_tạp và nằm ngoài khuôn_khổ của cuốn giáo_trình này .
+Đặc_điểm chung của các phương_pháp phân_tích tĩnh là ta không_cần thực_thi chương_trình phần_mềm mà chỉ duyệt, lý_giải về tất_cả các hành_vi có_thể của chương_trình khi nó được thực_thi .
+Tối_ưu_hóa của chương_trình dịch là một ví_dụ về phân_tích tĩnh .
+
+first==>• Phân_tích động: Phân_tích động cần thực_thi chương_trình để phát_hiện những thất_bại có_thể có của chương_trình .
+Vì gần_như không_thể thực_thi chương_trình với tất_cả các dữ_liệu vào có thể,_ta chỉ có_thể chọn một tập con các dữ_liệu vào để thực thi, gọi_là các “ca kiểm_thử” .
+Chọn như_thế_nào để_được một tập các bộ_dữ_liệu vào hiệu_quả (tức là các bộ_dữ_liệu có xác_suất phát_hiện thất_bại (nếu có) cao hơn) là công_việc cần suy_nghĩ và là nội_dung cơ_bản của các giáo_trình này .
+
+first==>Bằng việc phân_tích tĩnh và động, người kiểm thử muốn phát_hiện nhiều thất_bại nhất có_thể được để chúng có_thể được sửa ở các giai_đoạn sớm nhất trong quá_trình phát_triển .
+Phân_tích tĩnh và động là hai kỹ_thuật bổ_sung cho_nhau và cần được làm lặp đi lặp_lại nhiều trong quá_trình kiểm thử .
+
+first==>Hình 1.1 mô_tả một mô_hình vòng đời kiểm thử .
+Chúng_ta có_thể thấy trong quá_trình phát_triển phần_mềm có ba giai_đoạn chúng_ta có_thể mắc lỗi: lúc đặc_tả, lúc thiết_kế và lúc lập_trình .
+Lỗi ở giai_đoạn trước tạo_ra sai lan_truyền sang các giai_đoạn sau của quá_trình phát_triển .
+Một nhà_kiểm thử lỗi_lạc đã tóm_tắt vòng đời này như sau: Ba giai_đoạn đầu là “gây ra sai”, giai_đoạn kiểm thử là để tìm sai, và ba giai_đoạn cuối là để “sửa sai”_[Pos90] .
+Bước sửa sai lại có_thể không_những không sửa được sai mà còn gây_ra các sai_mới, hoặc sửa được sai nhưng lại gây_ra sai_khác .
+Tức_là việc sửa sai có_thể làm_cho phần_mềm đang đúng trở_thành sai .
+
+first==>Chúng_ta sẽ thảo_luận thêm việc này trong phần kiểm thử hồi_quy ở Chương 10 .
+
+first==>Các khái_niệm mô_tả các thuật_ngữ trên đây cho_thấy các ca_kiểm thử chiếm vị_trí trung_tâm trong kiểm thử dựa_trên phân_tích động .
+Quá_trình kiểm thử dựa_trên phân_tích động được chia thành các bước_sau: lập_kế_hoạch kiểm thử, phát_triển ca_kiểm thử, chạy các ca_kiểm thử, và đánh_giá kết_quả kiểm thử .
+Tiêu_điểm của cuốn giáo_trình này là việc xác_định tập hiệu_quả các ca_kiểm thử, tức_là các ca_kiểm thử giúp ta giảm chi_phí phát_hiện sai_sót trong phần_mềm và khẳng_định chất_lượng của phần_mềm .
+
+sub-title: Ca kiểm thử .
+
+first==>Cốt lõi của kiểm thử phần_mềm là việc xác_định một tập các ca_kiểm thử cho phần_tử cần kiểm thử .
+Vậy các ca kiểm thử cần có những thông_tin gì ?
+Hiển_nhiên nhất là đầu vào .
+Đầu vào có hai kiểu: tiền điều_kiện (pre-condition) - tức_là điều_kiện cần thỏa_mãn trước_khi tiến_hành ca_kiểm thử - và dữ_liệu đầu vào thực_sự được xác_định bởi phương_pháp kiểm_thử .
+Thông_tin tiếp_theo của ca_kiểm thử là đầu_ra mong_đợi .
+Cũng có hai loại đầu ra:_hậu điều_kiện (post-condition) và dữ_liệu đầu_ra thực_sự .
+Phần đầu_ra của ca_kiểm thử thường_hay bị xem_nhẹ vì nó là phần khó xác_định .
+Ví_dụ ta cần kiểm thử phần_mềm tìm đường_đi tối_ưu cho máy_bay khi cho trước các ràng_buộc về hành_lang bay và dữ_liệu về thời_tiết trong ngày của chuyến_bay .
+Đường_đi tối_ưu thực_sự là gì? Có nhiều câu trả_lời cho câu_hỏi này .
+
+first==>Câu trả_lời của giới học_giả sẽ là: tồn_tại một đường_đi tối_ưu .
+Câu_trả_lời trên thực_tế cho bài_toán này, được gọi là kiểm thử tham_chiếu, là hệ_thống được kiểm thử dưới sự_giám_sát của các chuyên_gia về lĩnh_vực ứng_dụng của phần_mềm và người này sẽ kết_luận kết_quả đầu_ra đối_với dữ_liệu đầu vào đó có chấp_nhận được hay_không .
+
+first==>Hoạt động_kiểm thử kéo_theo các việc thiết_lập các tiền điều_kiện cần thiết, cung_cấp đầu vào của ca_kiểm thử, quan_sát các đầu_ra và so_sánh các đầu_ra với các đầu_ra mong_đợi để kết_luận kiểm thử đã đạt (passed) hay trượt (failed) .
+
+first==>Hình 1.2 mô_tả các thông_tin cơ_bản của một ca_kiểm thử .
+Các trường_thông_tin này chủ_yếu phục_vụ việc quản lí kiểm thử .
+Các ca_kiểm thử cần phải có mã_số và lý_do tồn_tại (theo đặc tả yêu_cầu cũng là một lý_do tốt) .
+Lịch_sử tiến_hành của một ca_kiểm thử bao_gồm cả việc chúng được chạy bởi_ai và chạy khi nào, kết_quả của mỗi_lần chạy ra sao, đạt hay trượt và được chạy trên phiên_bản nào của phần_mềm cũng là thông_tin hữu_ích .
+Với các ca_kiểm thử cho các hoạt_động kiểm thử giao_diện người dùng,_ngoài thông_tin về đầu vào, chúng_ta cần bổ_sung thêm các thông_tin về trình_tự nhập các đầu vào cho giao_diện .
+Tóm lại, ta cần nhận_thức rằng ca_kiểm thử ít_nhất cũng quan_trọng như mã_nguồn .
+Các ca_kiểm thử cần được phát triển, khảo_duyệt (review), sử dụng, quản_lý và lưu_trữ một_cách khoa_học .
+
+sub-title: Mô_tả bài_toán kiểm thử qua biểu_đồ Venn .
+
+first==>Kiểm thử chủ_yếu quan_tâm đến hành_vi của chương_trình; mà hành_vi lại độc_lập với cấu_trúc của chương_trình - góc nhìn chính của người lập_trình .
+Góc nhìn cấu_trúc tập_trung vào “nó là cái gì”, còn góc nhìn hành_vi lại tập_trung vào “nó làm gì” .
+
+first==>Một trong những khó_khăn của người kiểm thử là các tài_liệu họ sử_dụng thường được người phát_triển viết ra và viết cho họ (người phát triển), nên chúng thiên về thông_tin cấu_trúc và coi_nhẹ thông_tin về hành_vi .
+Chuúng_ta sẽ sử_dụng một biểu_đồ Venn để làm rõ một_số băn_khoăn về kiểm thử và chương_trình .
+Khái biệm biểu_đồ Venn được trình_bày trong Chương 3 .
+
+first==>Xét một vũ_trụ các hành_vi chương_trình .
+Cho một chương_trình cùng đặc tả của nó .
+Gọi_S là tập các hành_vi được đặc tả và P là tập các hành_vi của chương_trình .
+Hình 1.3 mô_tả mối quan_hệ giữa vũ_trụ các hành vi, các hành_vi được lập_trình và các hành_vi được đặc tả .
+Trong vũ_trụ các hành vi, những hành_vi được đặc tả nằm_trong vòng_tròn với nhãn S, còn những hành_vi được lập_trình nằm_trong vòng_tròn với nhãn P .
+Từ biểu_đồ này, ta thấy rõ các bài_toán mà người kiểm thử phải giải_quyết .
+Nếu có hành_vi được đặc tả nhưng không_được lập_trình thì đây là những sai do quên .
+Ngượ_lại, nếu_có những hành_vi được lập_trình nhưng không_được đặc tả, thì đây là sai về nhiệm_vụ (commission) - làm_sai nên hành_vi không đúng như mong_muốn .
+Phần giao giữa_S và P là phần "‘đúng đắn"’, các hành_vi vừa được đặc tả vừa được cài_đặt .
+Chú_ý rằng tính đúng_đắn phải gắn với đặc tả và cài_đặt và là khái_niệm tương đối, không_phải tuyệt_đối .
+
+first==>Vòng tròn mới (vòng tròn T ) trong Hình 1.4 là hành_vi của các ca_kiểm thử .
+
+first==>Lưu ý rằng tập các hành_vi của chương_trình nằm trọn trong vũ_trụ hành_vi của ta. Ở_đây một ca_kiểm thử cũng_được coi là xác_định một hành_vi .
+Xét mối quan_hệ giữa S,_P và T .
+Có_thể có các hành_vi được đặc tả mà không được kiểm thử (các miền 2 và 5), các hành_vi được đặc tả và được kiểm thử (các miền 1 và 4), và các ca_kiểm thử tương_ứng với các hành_vi không_được đặc tả (các miền 3 và 7) .
+
+first==>Tương tự, có_thể có các hành_vi được lập_trình mà_không được kiểm thử (các miền 2 và 6), các hành_vi được lập_trình và được kiểm thử (các miền 1 và 3), và các ca_kiểm thử tương_ứng với các hành_vi không_được lập_trình (các miền 4 và 7) .
+
+first==>Việc xem_xét tất_cả các miền này là hết_sức quan_trọng .
+Nếu có các hành_vi được đặc tả mà không có các ca_kiểm thử tương ứng, việc kiểm thử là chưa đầy_đủ .
+Nếu có các ca_kiểm thử tương_ứng với các hành_vi không_được đặc tả, có_thể có hai khả_năng: hoặc đặc tả còn thiếu hoặc ca_kiểm thử không đảm_bảo .
+Theo kinh nghiệm, một người kiểm thử tốt sẽ thường cho các ca_kiểm thử thuộc loại đầu, và đấy chính là lý_do người kiểm thử cần tham_gia vào giai_đoạn khảo_duyệt đặc tả và thiết_kế (xem chương_4) .
+
+first==>Ta có_thể thấy việc kiểm thử như là công_việc của một nghệ_nhân: người kiểm thử có_thể làm_gì để làm_cho miền tương tương_giao của các tập (miền 1) là lớn nhất có_thể ?
+Làm thế_nào để xác_định các ca_kiểm thử trong tập T ?
+Câu_trả_lời là các ca kiểm thử cần được xác_định bởi một phương_pháp kiểm_thử .
+Chính khuôn_khổ này cho_phép ta so_sánh tính hiệu_quả của các phương_pháp kiểm thử khác_nhau như sẽ được giới_thiệu trong các chương 5, 6 và 7 .
+
+sub-title:_Việc xác_định các ca_kiểm thử .
+
+first==>Có hai cách tiếp_cận cơ_bản để xác_định các ca_kiểm thử là kiểm thử chức_năng hay kiểm thử hộp_đen (black-box_testing) và kiểm thử cấu_trúc (kiểm thử hộp trắng - white-box_testing) .
+Mỗi cách tiếp_cận có phương_pháp xác_định ca_kiểm thử khác_nhau và được gọi chung là phương_pháp kiểm_thử .
+
+sub-title: Kiểm thử chức_năng .
+
+first==>Kiểm thử chức_năng (kiểm thử hộp đen) dựa_trên quan_niệm rằng bất_kỳ chương_trình nào_cũng được coi là một hàm ánh_xạ các giá_trị từ miền dữ_liệu đầu vào vào miền dữ_liệu đầu_ra của nó .
+Khái_niệm này được dùng chung trong kỹ_thuật khi các hệ_thống đều được coi là các hộp_đen .
+Chính điều này dẫn đến thuật_ngữ kiểm thử hộp đen, trong_đó nội_dung của hộp_đen (việc cài_đặt) không_được biết, và chức_năng của hộp_đen được hiểu theo các dữ_liệu đầu vào và dữ_liệu đầu_ra của nó .
+Trong thực tế, chúng_ta thường thao_tác hiệu_quả với những kiến_thức về hộp_đen .
+Chính điều này là trung_tâm của khái_niệm định_hướng đối_tượng .
+Chẳng hạn, hầu_hết mọi_người lái_xe thành_thạo với kiến_thức hộp_đen .
+
+first==>Với cách tiếp_cận của kiểm thử chức_năng, để xác_định các ca_kiểm thử, thông_tin duy_nhất được dùng là đặc tả của phần_mềm cần kiểm thử .
+Có hai lợi_điểm chính của các ca_kiểm thử được sinh_ra bởi cách tiếp_cận kiểm thử chức năng: chúng độc_lập với việc phần_mềm được cài_đặt thế_nào, và vì_thế khi cài_đặt thay_đổi thì các ca_kiểm thử vẫn dùng được, đồng_thời các ca_kiểm thử được phát_triển song_song và độc_lập với việc cài đặt hệ_thống .
+Do_đó, cách tiếp_cận này rút_gọn được thời_gian phát_triển của dự_án .
+Điểm_yếu của cách tiếp_cận này là các ca_kiểm thử thường có_thể có tính dư_thừa đáng_kể trong các ca_kiểm thử và hố_phân_cách .
+
+first==>Hình 1.6 mô_tả các ca_kiểm thử kết_quả xác_định bởi các phương_pháp kiểm thử chức_năng khác_nhau .
+Phương_pháp A xác_định một tập các ca_kiểm thử lớn hơn so với phương_pháp B .
+Lưu_ý rằng đối_với cả_hai phương pháp,_tập các ca_kiểm thử đều chứa trọn trong tập các hành_vi được đặc tả .
+Do các phương_pháp kiểm thử chức_năng đều dựa_trên các hành_vi đặc tả, các phương_pháp này khó có_thể xác_định được các hành_vi không_được đặc tả .
+Trong chương 5 ta sẽ so_sánh các ca_kiểm thử_sinh bởi các phương_pháp kiểm thử chức_năng khác_nhau cho các ví_dụ nêu trong chương 2 .
+
+first==>Trong chương 5, chúng_ta sẽ khảo_sát các cách tiếp_cận chủ_yếu cho các phương_pháp kiểm thử chức_năng bao_gồm phân_tích giá_trị biên, kiểm thử tính bền vững, phân_tích trường_hợp xấu nhất, kiểm thử giá_trị đặc biệt, kiểm thử phân_lớp tương_đương của miền dữ_liệu đầu vào, lớp tương_đương của miền dữ_liệu đầu ra, kiểm thử dựa_trên bảng quyết_định .
+Điều xuyên_suốt trong các kỹ_thuật này là tất_cả đều dựa_trên thông_tin xác_định về các thành_phần đang được kiểm thử .
+Cơ_sở toán_học trình_bày trong chương 3 chủ_yếu được áp_dụng cho cách tiếp_cận kiểm thử chức_năng .
+
+sub-title: Kiểm thử cấu_trúc .
+
+first==>Kiểm thử cấu_trúc (kiểm thử hộp trắng) là cách tiếp_cận khác để xác_định các ca_kiểm thử .
+Trái_ngược với cách tiếp_cận của kiểm thử chức năng, đôi_khi nó được gọi là kiểm thử hộp trắng .
+Biểu_tượng hộp trong_suốt là thích_hợp cho cách tiếp_cận này vì sự_khác_nhau cốt_lõi với kiểm thử hộp_đen là việc cài_đặt của hộp_đen được cho và được dùng_làm cơ_sở để xác_định các ca_kiểm thử .
+Việc biết_được bên_trong của hộp_đen cho_phép người kiểm thử dựa_trên việc cài_đặt của hàm để xác_định ca_kiểm thử .
+
+first==>Kiểm thử cấu_trúc đã trở_thành chủ_đề của một lý_thuyết tương_đối mạnh .
+Để hiểu_rõ kiểm thử cấu trúc, các khái_niệm về lý_thuyết đồ_thị tuyến_tính được trình_bày trong chương 3 là cần_thiết .
+Với những khái_niệm này, người kiểm thử có_thể mô_tả chính_xác các yêu_cầu kiểm_thử và hệ_thống cần kiểm thử .
+Do có cơ_sở lý_thuyết mạnh, kiểm thử cấu_trúc cho_phép định_nghĩa chính_xác và sử_dụng các độ đo về độ bao_phủ .
+Các độ đo về độ phủ cho_phép khẳng_định tường_minh phần_mềm đã được kiểm thử tới mức nào và do_đó giúp cho việc quản_lý quá_trình kiểm thử tốt_hơn .
+
+first==>Hình 1.7 phản_ánh các ca_kiểm thử kết_quả xác_định bởi hai phương_pháp kiểm thử cấu_trúc khác_nhau .
+Giống như trước đây, phương_pháp A xác_định tập các ca_kiểm thử lớn hơn so với phương_pháp B .
+Có chắc là tập các ca_kiểm thử lớn hơn là tốt_hơn không? Đây là một câu_hỏi thú_vị và kiểm thử cấu_trúc cung_cấp các giải_pháp để tìm câu_trả_lời cho vấn_đề này .
+Lưu_ý rằng cả_hai phương_pháp A và B đều cho các tập các ca_kiểm thử nằm trọn trong tập các hành_vi được lập_trình .
+
+first==>Do các ca_kiểm thử của các phương_pháp này được sinh_ra dựa_trên chương_trình nên rất khó để xác_định các lỗi liên_quan đến các hành_vi đã được đặc tả nhưng không_được lập_trình .
+Tuy nhiên, dễ_thấy rằng tập các ca_kiểm thử cấu_trúc là tương_đối nhỏ so với tập tất_cả các hành_vi được lập_trình .
+Ta sẽ trình_bày các so_sánh về các ca_kiểm thử_sinh bởi các phương_pháp kiểm thử cấu_trúc khác_nhau ở mục 1.4.3 .
+Một_số phương_pháp kiểm thử cấu_trúc (kiểm thử dòng điều_khiển và kiểm thử dòng_dữ liệu) sẽ được giới_thiệu chi_tiết trong các Chương 6 và 7 .
+
+sub-title: Tranh_luận về kiểm thử chắc năng so với kiểm thử cấu_trúc .
+
+first==>Cho trước hai phương_pháp khác_nhau để xác_định các ca_kiểm thử, câu_hỏi tự_nhiên được đặt_ra là phương_pháp nào tốt_hơn ?
+Cho đến nay chúng_ta vẫn chưa có câu_trả_lời thỏa đáng cho câu_hỏi này .
+Nói về kiểm thử cấu trúc, Robert_Poston viết: công_cụ này lãng_phí thời_gian của người kiểm thử vì từ những năm_bảy mươi (của thế_kỷ trước) nó chẳng trợ_giúp tốt việc thực_hành kiểm thử phần_mềm và đừng_có đưa nó vào bộ công_cụ của người kiểm thử_[Pos91] .
+Nhằm bảo_vệ cho việc kiểm thử cấu trúc, Edward_Miller [Mil91] viết: Độ bao_phủ nhánh [một_độ đo độ bao_phủ của kiểm thử], nếu đạt được 85% hoặc cao hơn, có_thể xác_định số lỗi gấp_đôi so với số lỗi phát_hiện bởi kiểm thử trực_quan (kiểm thử chức_năng) .
+
+first==>Biểu đồ Venn được mô_tả trong Hình 1.8 có_thể giúp ta trả_lời câu_hỏi mà cuộc tranh_luận này đã đề_cập .
+Chúng_ta cần khẳng_định lại rằng mục_đích của cả_hai cách tiếp_cận là để xác_định các ca_kiểm thử .
+Kiểm thử chức_năng chỉ dùng đặc tả để xác_định ca_kiểm thử, trong_khi kiểm thử cấu_trúc dùng mã nguồn của chương_trình (cài_đặt) để làm cơ_sở xác_định ca_kiểm thử .
+Những bàn_luận trước_đây cho_thấy chẳng có cách tiếp_cận nào_là đủ tốt .
+Xét các hành_vi chương trình: nếu tất_cả các hành_vi được đặc tả vẫn chưa được cài đặt, kiểm thử cấu_trúc sẽ không_thể nhận_biết được điều_đó .
+Ngược lại, nếu các hành_vi được cài_đặt chưa được đặc_tả, điều đó chẳng_khi_nào có_thể được phơi_bày nhờ kiểm thử chức năng. (Một con_vi_rút là một ví_dụ tốt về các hành_vi không_được đặc_tả) .
+Câu_trả_lời sơ_bộ là cả_hai cách tiếp_cận đều là cần_thiết cả; còn câu_trả_lời cẩn_thận hơn là cách kết_hợp khôn_khéo sẽ cung_cấp niềm_tin cho kiểm thử chức_năng và độ đo của kiểm thử cấu_trúc .
+Ta đã khẳng_định ở trên rằng kiểm thử chức_năng có khiếm_khuyết về tính dư_thừa và hố_phân_cách .
+Nếu kiểm thử chức_năng được tiến_hành kết_hợp với các số_đo về độ phủ của kiểm thử cấu_trúc thì khiếm_khuyết trên có_thể được phát_hiện và giải_quyết .
+
+first==>Quan điểm biểu_đồ Venn cho việc kiểm thử cung_cấp một chi_tiết nữa .
+Mối quan_hệ giữa tập T các ca_kiểm thử và các tập_S và P của các hành_vi cài_đặt và đặc tả thế nào?_Rõ ràng, các ca_kiểm thử trong T_được xác_định bởi phương_pháp xác_định ca_kiểm thử được dùng .
+Một câu_hỏi rất hay cần đặt_ra là thế thì phương_pháp này thích_hợp và hiệu_quả ra_sao .
+Ta có_thể đóng lại vòng_luẩn_quẩn này bằng những lời bàn trước_đây .
+Nhắc_lại đường_đi từ lỗi đến sai, thất_bại và sự_cố .
+Nếu ta biết loại lỗi nào ta hay phạm, và loại sai nào_hay có trong phần_mềm được kiểm thử, ta có_thể dùng thông_tin này để lựa_chọn phương_pháp thích_hợp hơn để xác_định các ca_kiểm thử .
+Chính_điểm này làm_cho việc kiểm thử thành một nghệ_thuật .
+
+sub-title: Phân_loại các lỗi và sai .
+
+first==>Các định_nghĩa về lỗi và sai được trình_bày trong mục 1.1 xoay_quanh sự_phân_biệt giữa quy_trình và sản phẩm: quy_trình nói chúng_ta cần làm điều_gì_đó như_thế nào, còn sản_phẩm là kết_quả cuối_cùng của quy_trình .
+Kiểm thử phần_mềm và đảm_bảo chất_lượng phần_mềm (Software Quality_Assurance - SQA) gặp_nhau ở điểm là SQA cố_gắng cải_tiến chất_lượng sản_phẩm bằng việc cải_tiến quy_trình .
+
+first==>Theo_nghĩa này thì kiểm thử là các hoạt_động định_hướng sản_phẩm. SQA quan_tâm nhiều hơn đến việc giảm_thiểu lỗi trong quá_trình phát_triển, còn kiểm thử quan_tâm chủ_yếu đến phát_hiện sai trong sản_phẩm .
+Cả hai nguyên_lý này đều sử_dụng định_nghĩa về các loại sai .
+Các sai được phân_loại theo nhiều cách khác nhau: giai_đoạn phát_triển khi cái sai tương_ứng xuất hiện, các hậu_quả của các thất_bại tương ứng, độ khó cho việc giải quyết, độ rủi_ro của việc không giải_quyết được,_v.v .
+Một_cách phân_loại được ưa_thích là dựa_trên việc xuất_hiện bất_thường: chỉ một lần,_thỉnh thoảng, xuất_hiện lại hoặc lặp đi lặp_lại nhiều lần .
+Hình 1.9 minh_họa một_cách phân_loại sai [Bor84] dựa_trên độ nghiêm_trọng của hậu_quả mà các lỗi gây_ra .
+
+first==>Để xử_lý các loại sai, chúng_ta có_thể tham_khảo [IEE93] về việc phân_loại các chuẩn cho các bất_thường của phần_mềm .
+Chuẩn_IEEE định_nghĩa quy_trình giải_quyết bất_thường một_cách chi_tiết gồm bốn giai đoạn: nhận biết,_khảo sát, hành_động và bố_trí lại .
+Một_số bất_thường phổ_biến được mô_tả trong các bảng từ Bảng 1.1 đến Bảng 1.5 .
+Hầu_hết các bất_thường này đều đã được đề_cập trong chuẩn_IEEE .
+Ngoài ra, chúng_tôi cũng bổ_sung thêm một số bất_thường khác .
+
+sub-title: Các mức kiểm thử .
+
+first==>Một trong các khái_niệm then_chốt của việc kiểm thử là các mức của việc kiểm thử .
+Các mức của việc kiểm thử phản_ánh mức_độ trừu_tượng được thấy trong mô_hình thác_nước của vòng đời của việc phát_triển phần_mềm .
+Dù có một số nhược điểm, mô_hình này vẫn rất hữu_ích cho việc kiểm thử, là phương_tiện để xác_định các mức kiểm thử khác_nhau và làm sáng_tỏ mục_đích của mỗi mức .
+Một dạng của mô_hình thác_nước được trình_bày trong Hình 1.10 .
+Dạng này nhấn_mạnh sự_tương_ứng của việc kiểm thử với các mức thiết_kế .
+Lưu_ý rằng theo các thuật_ngữ của việc kiểm thử chức năng, ba mức của định_nghĩa (đặc tả, thiết_kế sơ_bộ và thiết_kế chi tiết) tương_ứng trực_tiếp với bốn mức của việc kiểm thử là kiểm thử đơn_vị Hình 1.10: Các mức trừu_tượng và mức kiểm thử trong mô_hình thác_nước .
+
+first==>(unit testing), kiểm thử tích_hợp (integration testing), kiểm thử hệ_thống (system_testing) và kiểm thử chấp_nhận (acceptance_testing) .
+Các mức của kiểm thử cũng làm nảy_sinh vấn_đề về thứ_tự kiểm thử: dưới lên, trên xuống hoặc các khả_năng khác .
+
+first==>Các mức kiểm thử có_thể được mô_tả sơ_bộ như sau: • Kiểm thử đơn vị: Kiểm thử đơn_vị là việc kiểm thử các đơn_vị chương_trình một_cách cô_lập .
+Thế_nào là một đơn_vị chương_trình ?
+Câu_trả_lời phụ_thuộc vào ngữ_cảnh công_việc .
+Một đơn_vị chương_trình là một đoạn mã nguồn như hàm hoặc phương_thức của một lớp, có_thể được gọi từ ngoài, và cũng có_thể gọi đến các đơn_vị chương_trình khác .
+Đơn_vị cũng còn được coi là một đơn_thể để kết_hợp .
+Đơn_vị chương_trình cần được kiểm thử riêng_biệt để phát_hiện lỗi trong nội_tại và khắc_phục trước_khi được tích_hợp với các đơn_vị khác .
+Kiểm thử đơn_vị thường được làm bởi chính tác_giả của chương_trình, và có_thể tiến_hành theo hai giai đoạn: kiểm thử đơn_vị tĩnh, sử_dụng các kỹ_thuật ở chương_4, và kiểm thử đơn_vị động, sử các kỹ_thuật ở chương 6 và 7 .
+
+first==>• Kiểm thử tích hợp: Mức kế_tiếp với kiểm thử đơn_vị là kiểm thử tích_hợp .
+
+first==>Sau khi các đơn_vị chương_trình để cấu_thành hệ_thống đã được kiểm thử, chúng cần được kết_nối với_nhau để tạo thành_hệ_thống đầy_đủ và có_thể làm_việc .
+Công_việc này không_hề đơn_giản và có_thể có những lỗi về giao_diện giữa các đơn vị, và cần phẩi kiểm thử để phát_hiện những lỗi này .
+Công_đoạn này gồm hai giai đoạn: giai_đoạn kiểm thử tích_hợp và giai_đoạn kiểm thử hệ_thống .
+Kiểm thử tích_hợp nhằm đảm_bảo hệ_thống làm_việc ổn_định trong môi_trường thí_nghiệm để sẵn_sàng cho việc đưa_vào môi_trường thực_sự bằng cách đặt các đơn_vị với_nhau theo phương_pháp tăng dần .
+Kỹ_thuật kiểm thử tích_hợp sẽ được mô_tả chi_tiết trong chương 10 .
+
+first==>• Kiểm thử hệ_thống: Kiểm thử mức này được áp_dụng khi đã có một hệ_thống đầy_đủ sau khi tất_cả các thành_phần đã được tích_hợp .
+Mục_đích của kiểm thử hệ_thống là để đảm_bảo rằng việc cài_đặt tuân_thủ đầy_đủ các yêu_cầu được đặc_tả của người_dùng .
+Công_việc này tốn nhiều công sức, vì có_nhiều khía_cạnh về yêu_cầu người_dùng cần được kiểm thử .
+Các phương_pháp kiểm thử chức_năng được trình_bày trong chương 5 là thích_hợp_nhất cho việc kiểm thử này .
+Các kỹ_thuật kiểm thử hệ_thống được trình_bày trong chương 10 .
+
+first==>• Kiểm thử chấp nhận: Khi nhóm kiểm thử hệ_thống đã thỏa_mãn với một sản_phẩm, sản_phẩm đó đã sẵn_sàng để đưa_vào sử_dụng .
+Khi đó hệ_thống cần trải_qua giai_đoạn kiểm thử chấp_nhận .
+Kiểm thử chấp_nhận được thực_thi bởi chính các khách_hàng nhằm đảm_bảo rằng sản_phẩm phần_mềm làm_việc đúng như họ mong_đợi .
+Có hai loại kiểm thử chấp nhận: kiểm thử chấp_nhận người dùng, được tiến_hành bởi người dùng, và kiẻm thử chấp_nhận doanh nghiệp, được tiến_hành bởi nhà_sản_xuất ra sản_phẩm phần_mềm .
+Chương 10 mô_tả chi_tiết việc kiểm thử chấp_nhận .
+
+sub-title: Tổng_kết .
+
+first==>Chúng_ta đã trình_bày trong chương này một bức_tranh tổng_thể về việc kiểm thử phần_mềm bao_gồm các thuật_ngữ và khái_niệm cơ_bản trong lĩnh_vực kiểm thử, mục_đích và vai_trò của việc kiểm thử phần_mềm .
+Chúng_ta cũng mô_tả sơ_lược về bài_toán kiểm thử và qui_trình để giải bài_toán này gồm việc phân_tích tĩnh và phân_tích động .
+Đóng_vai tró trung_tâm của phân_tích động là việc xây_dựng các ca_kiểm thử .
+Hai cách tiếp_cận cơ_bản để xác_định các ca_kiểm thử là kiểm thử chức_năng (kiểm thử hộp đen) và kiểm thử cấu_trúc (kiểm thử hộp trắng) .
+Cả hai cách tiếp_cận này bổ_sung cho_nhau để xây_dựng tập các ca_kiểm thử hiệu_quả .
+
+first==>Chúng_ta cũng đã giới_thiệu trong chương này bốn mức kiểm thử, mỗi mức tương_ứng với một giai_đoạn của việc phát_triển phần_mềm .
+Các mức_đó là: kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ_thống và kiểm thử chấp_nhận .
+Chi_tiết về các phương_pháp kiểm thử sẽ được trình_bày trong các chương sau .
