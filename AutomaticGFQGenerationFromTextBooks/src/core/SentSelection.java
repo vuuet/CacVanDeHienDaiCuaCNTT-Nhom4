@@ -32,7 +32,7 @@ public class SentSelection {
 		double l = (double)numberOfWord()/20;
 		double nouns = numberOfNoun();
 		double pronouns = numberOfPronoun();
-		return (f+sim+abb+Super+discon+l+nouns+pronouns);
+		return (1.5*f+1.5*sim+abb+2*Super+1.5*discon+l+nouns+pronouns);
 	}
 	
 	// 
@@ -92,7 +92,7 @@ public class SentSelection {
 	
 	//
 	public int DiscourseConnectives(){
-		String discourses[] = {"Thế_là", "Thế_nên", "Vậy_nên", "Tóm_lại", "Như_vậy"};
+		String discourses[] = {"Thế_là", "Thế_nên", "Vậy_nên", "Tóm_lại", "Như_vậy", "Vậy"};
 		for( int i = 0; i < discourses.length; i ++ ){
 			if( sentence.startsWith(discourses[i]) ){
 				return 1;

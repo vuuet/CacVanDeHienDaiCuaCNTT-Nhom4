@@ -16,12 +16,14 @@ public class PrepareInput {
 		List<String> lines = FileLoader.execute(location);
 		for( int i = 0; i < lines.size(); i ++ ){
 			String line = lines.get(i);
-			if( lines.get(i).startsWith("title:") || lines.get(i).startsWith("sub-title:"))
+			System.out.println(lines.get(i));
+			if( lines.get(i).startsWith("title:") || lines.get(i).startsWith("sub_title:")){
 				output.add(line+".");
 				//System.out.println(lines.get(i));
+			}
 			else {
 				String newline = "first==>";
-				while( !line.endsWith(".") ){
+				while (!line.endsWith(".") && line.contains("title:")){
 					newline += line + " ";
 					i++;
 					line = lines.get(i);
@@ -31,6 +33,7 @@ public class PrepareInput {
 				//System.out.println(newline);
 			}
 		}
+		System.out.println(lines.size());
 		FileWritter.execute(output, location2);
 	}
 	

@@ -1,334 +1,523 @@
-title: Tổng_quan về kiểm thử .
-
-first==>Mục đích của kiểm thử là đánh_giá chất_lượng hoặc tính chấp_nhận được của sản_phẩm .
-Tính chấp_nhận được ở_đây có_thể hiểu là sản_phẩm dùng được, có_ích ở một mức_độ nào_đó .
-Kiểm thử cũng nhằm phát_hiện sai_sót hoặc các vấn_đề về sản_phẩm .
-Một_số kiểm thử_viên đôi_khi nghĩ kiểm thử là tìm sai_sót và khi kiểm_tra chương_trình chỉ chú_trọng vào việc tìm các vấn_đề của sản_phẩm hơn là kiểm_tra mức_độ đúng_đắn của chương_trình .
-Quan_điểm này đôi_khi rất thực_tế, vì họ nghĩ phần chạy đúng của chương_trình người lập_trình đã làm rồi, đã chạy_thử rồi, xong mới chuyển cho kiểm thử_viên kiểm_tra lại .
-Do_đó họ tập_trung vào kiểm_tra những trường_hợp mà người lập_trình chưa_tính đến .
-Chúng_ta cần kiểm thử vì kinh_nghiệm cho_thấy con_người luôn có_thể mắc_lỗi .
-Điều này đặc_biệt hay xảy_ra trong lĩnh_vực phát_triển phần_mềm .
-Chương này sẽ phác_họa một bức_tranh tổng_thể về kiểm thử phần_mềm .
-Các chương còn_lại sẽ mô_tả bức_tranh này chi_tiết hơn .
-
-sub-title: Các thuật_ngữ và định_nghĩa cơ_bản về kiểm thử .
-
-first==>Kỹ nghệ kiểm thử đã phát_triển và tiến_hoá hàng chục năm nhưng các thuật_ngữ trong các tài_liệu khác_nhau vẫn chưa thực_sự thống_nhất, trong cả_tiếng Anh lẫn tiếng Việt .
-Các thuật_ngữ được trình_bày trong cuốn_sách này dựa_vào các thuật_ngữ chuẩn được phát_triển bởi IEEE (Viện Kỹ_nghệ điện và điện_tử) với việc chọn_lọc cẩn_thận các thuật_ngữ tiếng Việt tương_ứng .
-
-first==>Lỗi (Error): Con_người luôn có_thể phạm lỗi .
-Khi lập trình viên phạm lỗi trong lập trình, họ đã tạo_ra các bug (con_bọ), hay_nói chung là các sai_sót .
-Lỗi có_thể phát_tán .
-Chẳng hạn, một lỗi về xác_định yêu_cầu có_thể dẫn đến sai_sót trong bản thiết_kế và nó lại gây sai tiếp khi lập_trình theo thiết_kế này .
-Lỗi là nguyên_nhân dẫn đến sai .
-
-first==>Sai sót (Fault): Sai sót, đôi_khi chúng_ta sẽ gọi ngắn_gọn là sai, là kết_quả của lỗi .
-Nói khác đi, khi chúng_ta mắc_lỗi thì chúng_ta đã tạo_ra sai_sót .
-Cũng có_thể nói_sai sót là một biểu_hiện của lỗi ở dạng cụ thể, chẳng_hạn chương trình,_văn bản, sơ_đồ dòng_dữ liệu, biểu_đồ lớp,_v.v .
-Sai_sót nhiều khi rất khó phát_hiện .
-Sai_sót có hai loại: sai và sót .
-Khi người thực_hiện làm không đúng việc đáng phải làm họ đã gây_ra sai về nhiệm_vụ .
-Khi người thực_hiện mắc_lỗi quên, làm thiếu thì họ đã làm sót .
-Ví_dụ khi người thu_thập yêu_cầu ghi_chép thiếu yêu_cầu của khách_hàng thì họ đã mắc_lỗi làm sót .
-Hay khi người thiết_kế mắc_lỗi quên, làm thiếu trong quá_trình thiết_kế thì kết_quả của lỗi này là thiết_kế bị thiếu một phần_nào_đó .
-Loại sai do quên khó phát_hiện và khó sửa hơn loại sai về nhiệm_vụ .
-Một_số_thuật_ngữ khác cũng_được dùng_cho sai_sót là khiếm_khuyết (defect), hay bọ (bug) .
-
-first==>Có lẽ cần phải nói rằng trên thực_tế chúng_ta thường sử_dụng từ lỗi thay_cho từ sai .
-Khi phát_hiện sai_sót trong chương trình, chúng_ta hay_nói chương_trình có lỗi, hay hàm này có lỗi, hay dòng lệnh này có lỗi. Ở đây chúng_ta đều cùng hiểu đúng ý_nghĩa của từ lỗi này - chỉ_là cách dùng từ đôi_khi chưa_cần chính_xác để phân_biệt hành_động mắc lỗi, và sản_phẩm của việc mắc_lỗi đó .
-
-first==>Thất bại (Failure): Giả_sử chúng_ta có một chương_trình có một sai_sót ở dòng lệnh số 10 .
-Khi chúng_ta chạy chương_trình và câu lệnh ở dòng số 10 này được thực_hiện thì chúng_ta nói_là một sai đã được thực_thi .
-Khi một sai được thực_thi thì một thất_bại đã xảy_ra .
-Có hai điều cần lưu_ý ở đây: một là thất_bại chỉ xuất_hiện ở dạng sai có_thể thực_thi được mà thông_thường là mã nguồn, hai là các thất_bại chỉ liên_kết với các lỗi về nhiệm_vụ .
-
-first==>Một câu_hỏi đặt_ra là các thất_bại do lỗi quên thì được xử_lý thế_nào và những lỗi không_bao_giờ được thực_thi, hoặc không_được thực_thi trong khoảng thời_gian dài cần được xử_lý ra sao ?
-Vi-rút Michaelangelo là một ví_dụ về lỗi loại này .
-Nó chỉ được tiến_hành vào ngày_sinh của Michael Angelo, tức ngày 6/3 mà thôi .
-Câu_trả_lời nằm ở chỗ: việc khảo sát, tức_là phân_tích và duyệt mã, thiết_kế hoặc đặc tả có_thể ngăn_chặn nhiều thất_bại bằng cách phát_hiện ra các lỗi thuộc cả_hai loại .
-
-first==>Sự cố (Incident): Khi một thất_bại xảy_ra đôi_khi khi người_dùng hoặc người kiểm thử không nhìn_thấy được .
-Khi thất_bại là nhìn_thấy được thì chúng_ta gọi nó là sự_cố .
-Như_vậy sự_cố là triệu_chứng của thất_bại và người_dùng hoặc người kiểm thử có_thể dựa_trên các triệu_chứng này để nhận_biết ra thất_bại .
-Ví_dụ lỗi người lập_trình quên giải_phóng một vùng bộ_nhớ sẽ gây_ra thất_bại là bị mất bộ_nhớ (memory_leak) .
-Khi chương_trình chạy, thất_bại xảy_ra là bộ_nhớ bị mất nhưng người_dùng và người kiểm thử đều không_nhận thấy ngay .
-Chỉ sau một thời_gian đủ dài thì bộ_nhớ mới bị hết và lúc_này mới gây_ra sự_cố là chương_trình thông_báo lỗi hoặc có các biểu_hiện không bình_thường nhận_thấy được .
-
-first==>Kiểm thử: Rõ_ràng việc kiểm thử liên_quan đến các khái_niệm trên:_lỗi, sai, thất_bại và sự_cố .
-Tuy_nhiên cũng có hai mục_đích của một phép thử: tìm thất_bại hoặc chứng_tỏ phần_mềm là chạy đúng_đắn .
-Việc tìm thất_bại đa_số dựa_trên việc phát_hiện sự_cố .
-
-first==>Ca_kiểm thử: Mỗi ca_kiểm thử có một tên (định_danh) và được gắn với một hành_vi của chương_trình .
-Một ca_kiểm thử gồm một bộ_dữ_liệu đầu vào và một danh_sách các giá_trị đầu_ra mong_đợi mà phần_mềm sẽ tạo_ra với bộ_dữ_liệu đầu vào đó .
-
-first==>Yêu_cầu của khách_hàng và đặc tả của phần mềm: Phần_mềm được viết để thực_hiện các nhu_cầu của khách_hàng .
-Các nhu_cầu của khách_hàng được thu thập, phân_tích và khảo_cứu và là cơ_sở để quyết_định chính_xác các chức_năng mà sản_phẩm phần_mềm cần phải có .
-Dựa_trên nhu_cầu của khách_hàng và các yêu_cầu bắt_buộc khác, tài_liệu đặc tả được xây_dựng để mô_tả chính_xác các yêu_cầu mà sản_phẩm phần_mềm cần đáp_ứng, và có giao_diện thế_nào .
-Tài_liệu đặc tả là cơ_sở để đội_ngũ phát_triển phần_mềm xây_dựng sản_phẩm phần_mềm .
-Khi chúng_ta nói_đến thất_bại ở trên là chúng_ta nói_đến việc sản_phẩm phần_mềm khộng hoạt_động đúng như đặc_tả .
-Do đó, lỗi do quên được coi là tương_ứng với các lỗi khi xây_dựng đặc tả .
-
-first==>Kiểm chứng và thẩm định: Kiểm_chứng (verification) và thẩm_định (validation) hay được dùng lẫn lộn, nhưng thực_ra chúng có_ý nghĩa khác_nhau .
-Kiểm_chứng là quá_trình để đảm_bảo rằng một sản_phẩm phần_mềm thỏa_mãn đặc tả của nó .
-Còn thẩm_định là quá_trình để đảm_bảo rằng sản_phẩm đáp_ứng được yêu_cầu của người_dùng .
-Trong thực tế, chúng_ta cần thực_hiện kiểm_chứng trước_khi thực_hiện việc thẩm_định .
-Vì vậy, chúng_ta có thuật_ngữ V&V_(Verification &_Validation) .
-Lý_do của việc này là chúng_ta cần đảm_bảo sản_phẩm đúng_với đặc tả trước .
-Nếu thực_hiện việc thẩm_định trước thì khi phát_hiện ra lỗi chúng_ta không_thể xác_định được lỗi này do đặc tả sai hay do lập_trình sai so với đặc_tả .
-
-first==>Chất_lượng và độ_tin_cậy của phần mềm: Theo từ điển, chất_lượng của một sản_phẩm được thể_hiện bằng các đặc_trưng phù_hợp với đặc tả của nó .
-Theo cách hiểu này, chất_lượng của một sản_phẩm phần_mềm là sự_đáp_ứng các yêu_cầu về chức năng, sự_hoàn_thiện và các chuẩn đã được đặc_tả, cùng các đặc_trưng mong_chờ từ mọi sản_phẩm phần_mềm chuyên_nghiệp .
-Chất_lượng phần_mềm đặc_trưng cho “độ tốt,_độ tuyệt_hảo” của phần mềm, và gồm có các yếu_tố về chất_lượng như: tính đúng_đắn (hành_vi đúng như đặc_tả), tính hiệu_quả (tiết kiệm thời_gian và tiền bạc), độ tin cậy, tính khả_kiểm thử (kiểm thử được và dễ), dễ học, dễ sử_dụng, dễ_bảo trì,_v.v .
-
-first==>Như vậy, độ_tin_cậy chỉ_là một yếu_tố để đánh_giá chất_lượng phầm_mềm .
-Người kiểm thử hay nhầm_lẫn độ_tin_cậy với chất_lượng .
-Khi kiểm thử đạt tới mức phần_mềm chạy ổn định, có_thể tin và dựa_vào nó được (theo thuật_ngữ công_nghệ phần_mềm là có_thể phụ_thuộc vào nó), người kiểm thử thường cho_rằng phần_mềm đã đạt chất_lượng cao .
-Các yếu_tố về mặt chất_lượng mà liên_quan trực_tiếp đến việc phát_triển phần_mềm được gọi_là các tiêu_chuẩn chất luợng như tính có cấu trúc, tính đơn thể,_tính khả_kiểm thử,_v.v .
-
-first==>Độ tin_cậy của phần_mềm là xác_suất để_phần mềm chạy không có thất_bại trong một khoảng thời_gian nhất_định .
-Nó được xem là một yếu_tố quan_trọng của chất_lượng phần_mềm .
-Ngoài ra, thời_gian trung_bình cho việc khắc_phục một sự_cố cũng là một thông_số quan_trọng trong việc đánh_giá độ tin_cậy của sản_phẩm phần_mềm .
-
-first==>Vai_trò của kiểm thử phần mềm: Kiểm thử phần_mềm đóng_vai trò quan_trọng trong việc đánh_giá và nâng_cao chất_lượng của sản_phẩm phần_mềm trong quá_trình phát_triển .
-Một mặt, thông_qua chu_trình “kiểm thử - tìm lỗi - sửa lỗi” ta hy_vọng chất_lượng của sản_phẩm phần_mềm sẽ được cải_tiến .
-Mặt_khác, thông_qua việc tiến_hành kiểm thử mức hệ_thống trước_khi cho lưu_hành sản phẩm, ta biết_được sản_phẩm của ta tốt ở mức nào .
-Vì thế, nhiều tác_giả đã mô_tả việc kiểm thử phần_mềm là một qui_trình kiểm_chứng để đánh_giá và tăng_cường chất_lượng của sản_phẩm phần_mềm .
-Qui_trình này gồm hai công_việc chính là phân_tích động và phân_tích tĩnh .
-
-first==>• Phân_tích tĩnh: Việc phân_tích tĩnh được làm dựa_trên việc khảo_sát các tài_liệu được xây_dựng trong quá_trình phát_triển sản_phẩm như tài_liệu đặc tả yêu_cầu người dùng, mô_hình phần mềm, hồ_sơ thiết_kế và mã nguồn phần_mềm .
-Các phương_pháp phân_tích tĩnh truyền_thống bao_gồm việc khảo_sát đặc tả và mã nguồn cùng các tài_liệu thiết_kế .
-Các kỹ_thuật khảo_sát này sẽ được giới_thiệu trong Chương 4 .
-Ta cũng có_thể dùng các kỹ_thuật phân_tích hình_thức như kiểm_chứng mô_hình (model_checking) và chứng_minh định_lý (theorem proving) để chứng_minh tính đúng_đắn của thiết_kế và mã nguồn .
-
-first==>Các kỹ_thuật này tương_đối phức_tạp và nằm ngoài khuôn_khổ của cuốn giáo_trình này .
-Đặc_điểm chung của các phương_pháp phân_tích tĩnh là ta không_cần thực_thi chương_trình phần_mềm mà chỉ duyệt, lý_giải về tất_cả các hành_vi có_thể của chương_trình khi nó được thực_thi .
-Tối_ưu_hóa của chương_trình dịch là một ví_dụ về phân_tích tĩnh .
-
-first==>• Phân_tích động: Phân_tích động cần thực_thi chương_trình để phát_hiện những thất_bại có_thể có của chương_trình .
-Vì gần_như không_thể thực_thi chương_trình với tất_cả các dữ_liệu vào có thể,_ta chỉ có_thể chọn một tập con các dữ_liệu vào để thực thi, gọi_là các “ca kiểm_thử” .
-Chọn như_thế_nào để_được một tập các bộ_dữ_liệu vào hiệu_quả (tức là các bộ_dữ_liệu có xác_suất phát_hiện thất_bại (nếu có) cao hơn) là công_việc cần suy_nghĩ và là nội_dung cơ_bản của các giáo_trình này .
-
-first==>Bằng việc phân_tích tĩnh và động, người kiểm thử muốn phát_hiện nhiều thất_bại nhất có_thể được để chúng có_thể được sửa ở các giai_đoạn sớm nhất trong quá_trình phát_triển .
-Phân_tích tĩnh và động là hai kỹ_thuật bổ_sung cho_nhau và cần được làm lặp đi lặp_lại nhiều trong quá_trình kiểm thử .
-
-first==>Hình 1.1 mô_tả một mô_hình vòng đời kiểm thử .
-Chúng_ta có_thể thấy trong quá_trình phát_triển phần_mềm có ba giai_đoạn chúng_ta có_thể mắc lỗi: lúc đặc_tả, lúc thiết_kế và lúc lập_trình .
-Lỗi ở giai_đoạn trước tạo_ra sai lan_truyền sang các giai_đoạn sau của quá_trình phát_triển .
-Một nhà_kiểm thử lỗi_lạc đã tóm_tắt vòng đời này như sau: Ba giai_đoạn đầu là “gây ra sai”, giai_đoạn kiểm thử là để tìm sai, và ba giai_đoạn cuối là để “sửa sai”_[Pos90] .
-Bước sửa sai lại có_thể không_những không sửa được sai mà còn gây_ra các sai_mới, hoặc sửa được sai nhưng lại gây_ra sai_khác .
-Tức_là việc sửa sai có_thể làm_cho phần_mềm đang đúng trở_thành sai .
-
-first==>Chúng_ta sẽ thảo_luận thêm việc này trong phần kiểm thử hồi_quy ở Chương 10 .
-
-first==>Các khái_niệm mô_tả các thuật_ngữ trên đây cho_thấy các ca_kiểm thử chiếm vị_trí trung_tâm trong kiểm thử dựa_trên phân_tích động .
-Quá_trình kiểm thử dựa_trên phân_tích động được chia thành các bước_sau: lập_kế_hoạch kiểm thử, phát_triển ca_kiểm thử, chạy các ca_kiểm thử, và đánh_giá kết_quả kiểm thử .
-Tiêu_điểm của cuốn giáo_trình này là việc xác_định tập hiệu_quả các ca_kiểm thử, tức_là các ca_kiểm thử giúp ta giảm chi_phí phát_hiện sai_sót trong phần_mềm và khẳng_định chất_lượng của phần_mềm .
-
-sub-title: Ca kiểm thử .
-
-first==>Cốt lõi của kiểm thử phần_mềm là việc xác_định một tập các ca_kiểm thử cho phần_tử cần kiểm thử .
-Vậy các ca kiểm thử cần có những thông_tin gì ?
-Hiển_nhiên nhất là đầu vào .
-Đầu vào có hai kiểu: tiền điều_kiện (pre-condition) - tức_là điều_kiện cần thỏa_mãn trước_khi tiến_hành ca_kiểm thử - và dữ_liệu đầu vào thực_sự được xác_định bởi phương_pháp kiểm_thử .
-Thông_tin tiếp_theo của ca_kiểm thử là đầu_ra mong_đợi .
-Cũng có hai loại đầu ra:_hậu điều_kiện (post-condition) và dữ_liệu đầu_ra thực_sự .
-Phần đầu_ra của ca_kiểm thử thường_hay bị xem_nhẹ vì nó là phần khó xác_định .
-Ví_dụ ta cần kiểm thử phần_mềm tìm đường_đi tối_ưu cho máy_bay khi cho trước các ràng_buộc về hành_lang bay và dữ_liệu về thời_tiết trong ngày của chuyến_bay .
-Đường_đi tối_ưu thực_sự là gì? Có nhiều câu trả_lời cho câu_hỏi này .
-
-first==>Câu trả_lời của giới học_giả sẽ là: tồn_tại một đường_đi tối_ưu .
-Câu_trả_lời trên thực_tế cho bài_toán này, được gọi là kiểm thử tham_chiếu, là hệ_thống được kiểm thử dưới sự_giám_sát của các chuyên_gia về lĩnh_vực ứng_dụng của phần_mềm và người này sẽ kết_luận kết_quả đầu_ra đối_với dữ_liệu đầu vào đó có chấp_nhận được hay_không .
-
-first==>Hoạt động_kiểm thử kéo_theo các việc thiết_lập các tiền điều_kiện cần thiết, cung_cấp đầu vào của ca_kiểm thử, quan_sát các đầu_ra và so_sánh các đầu_ra với các đầu_ra mong_đợi để kết_luận kiểm thử đã đạt (passed) hay trượt (failed) .
-
-first==>Hình 1.2 mô_tả các thông_tin cơ_bản của một ca_kiểm thử .
-Các trường_thông_tin này chủ_yếu phục_vụ việc quản lí kiểm thử .
-Các ca_kiểm thử cần phải có mã_số và lý_do tồn_tại (theo đặc tả yêu_cầu cũng là một lý_do tốt) .
-Lịch_sử tiến_hành của một ca_kiểm thử bao_gồm cả việc chúng được chạy bởi_ai và chạy khi nào, kết_quả của mỗi_lần chạy ra sao, đạt hay trượt và được chạy trên phiên_bản nào của phần_mềm cũng là thông_tin hữu_ích .
-Với các ca_kiểm thử cho các hoạt_động kiểm thử giao_diện người dùng,_ngoài thông_tin về đầu vào, chúng_ta cần bổ_sung thêm các thông_tin về trình_tự nhập các đầu vào cho giao_diện .
-Tóm lại, ta cần nhận_thức rằng ca_kiểm thử ít_nhất cũng quan_trọng như mã_nguồn .
-Các ca_kiểm thử cần được phát triển, khảo_duyệt (review), sử dụng, quản_lý và lưu_trữ một_cách khoa_học .
-
-sub-title: Mô_tả bài_toán kiểm thử qua biểu_đồ Venn .
-
-first==>Kiểm thử chủ_yếu quan_tâm đến hành_vi của chương_trình; mà hành_vi lại độc_lập với cấu_trúc của chương_trình - góc nhìn chính của người lập_trình .
-Góc nhìn cấu_trúc tập_trung vào “nó là cái gì”, còn góc nhìn hành_vi lại tập_trung vào “nó làm gì” .
-
-first==>Một trong những khó_khăn của người kiểm thử là các tài_liệu họ sử_dụng thường được người phát_triển viết ra và viết cho họ (người phát triển), nên chúng thiên về thông_tin cấu_trúc và coi_nhẹ thông_tin về hành_vi .
-Chuúng_ta sẽ sử_dụng một biểu_đồ Venn để làm rõ một_số băn_khoăn về kiểm thử và chương_trình .
-Khái biệm biểu_đồ Venn được trình_bày trong Chương 3 .
-
-first==>Xét một vũ_trụ các hành_vi chương_trình .
-Cho một chương_trình cùng đặc tả của nó .
-Gọi_S là tập các hành_vi được đặc tả và P là tập các hành_vi của chương_trình .
-Hình 1.3 mô_tả mối quan_hệ giữa vũ_trụ các hành vi, các hành_vi được lập_trình và các hành_vi được đặc tả .
-Trong vũ_trụ các hành vi, những hành_vi được đặc tả nằm_trong vòng_tròn với nhãn S, còn những hành_vi được lập_trình nằm_trong vòng_tròn với nhãn P .
-Từ biểu_đồ này, ta thấy rõ các bài_toán mà người kiểm thử phải giải_quyết .
-Nếu có hành_vi được đặc tả nhưng không_được lập_trình thì đây là những sai do quên .
-Ngượ_lại, nếu_có những hành_vi được lập_trình nhưng không_được đặc tả, thì đây là sai về nhiệm_vụ (commission) - làm_sai nên hành_vi không đúng như mong_muốn .
-Phần giao giữa_S và P là phần "‘đúng đắn"’, các hành_vi vừa được đặc tả vừa được cài_đặt .
-Chú_ý rằng tính đúng_đắn phải gắn với đặc tả và cài_đặt và là khái_niệm tương đối, không_phải tuyệt_đối .
-
-first==>Vòng tròn mới (vòng tròn T ) trong Hình 1.4 là hành_vi của các ca_kiểm thử .
-
-first==>Lưu ý rằng tập các hành_vi của chương_trình nằm trọn trong vũ_trụ hành_vi của ta. Ở_đây một ca_kiểm thử cũng_được coi là xác_định một hành_vi .
-Xét mối quan_hệ giữa S,_P và T .
-Có_thể có các hành_vi được đặc tả mà không được kiểm thử (các miền 2 và 5), các hành_vi được đặc tả và được kiểm thử (các miền 1 và 4), và các ca_kiểm thử tương_ứng với các hành_vi không_được đặc tả (các miền 3 và 7) .
-
-first==>Tương tự, có_thể có các hành_vi được lập_trình mà_không được kiểm thử (các miền 2 và 6), các hành_vi được lập_trình và được kiểm thử (các miền 1 và 3), và các ca_kiểm thử tương_ứng với các hành_vi không_được lập_trình (các miền 4 và 7) .
-
-first==>Việc xem_xét tất_cả các miền này là hết_sức quan_trọng .
-Nếu có các hành_vi được đặc tả mà không có các ca_kiểm thử tương ứng, việc kiểm thử là chưa đầy_đủ .
-Nếu có các ca_kiểm thử tương_ứng với các hành_vi không_được đặc tả, có_thể có hai khả_năng: hoặc đặc tả còn thiếu hoặc ca_kiểm thử không đảm_bảo .
-Theo kinh nghiệm, một người kiểm thử tốt sẽ thường cho các ca_kiểm thử thuộc loại đầu, và đấy chính là lý_do người kiểm thử cần tham_gia vào giai_đoạn khảo_duyệt đặc tả và thiết_kế (xem chương_4) .
-
-first==>Ta có_thể thấy việc kiểm thử như là công_việc của một nghệ_nhân: người kiểm thử có_thể làm_gì để làm_cho miền tương tương_giao của các tập (miền 1) là lớn nhất có_thể ?
-Làm thế_nào để xác_định các ca_kiểm thử trong tập T ?
-Câu_trả_lời là các ca kiểm thử cần được xác_định bởi một phương_pháp kiểm_thử .
-Chính khuôn_khổ này cho_phép ta so_sánh tính hiệu_quả của các phương_pháp kiểm thử khác_nhau như sẽ được giới_thiệu trong các chương 5, 6 và 7 .
-
-sub-title:_Việc xác_định các ca_kiểm thử .
-
-first==>Có hai cách tiếp_cận cơ_bản để xác_định các ca_kiểm thử là kiểm thử chức_năng hay kiểm thử hộp_đen (black-box_testing) và kiểm thử cấu_trúc (kiểm thử hộp trắng - white-box_testing) .
-Mỗi cách tiếp_cận có phương_pháp xác_định ca_kiểm thử khác_nhau và được gọi chung là phương_pháp kiểm_thử .
-
-sub-title: Kiểm thử chức_năng .
-
-first==>Kiểm thử chức_năng (kiểm thử hộp đen) dựa_trên quan_niệm rằng bất_kỳ chương_trình nào_cũng được coi là một hàm ánh_xạ các giá_trị từ miền dữ_liệu đầu vào vào miền dữ_liệu đầu_ra của nó .
-Khái_niệm này được dùng chung trong kỹ_thuật khi các hệ_thống đều được coi là các hộp_đen .
-Chính điều này dẫn đến thuật_ngữ kiểm thử hộp đen, trong_đó nội_dung của hộp_đen (việc cài_đặt) không_được biết, và chức_năng của hộp_đen được hiểu theo các dữ_liệu đầu vào và dữ_liệu đầu_ra của nó .
-Trong thực tế, chúng_ta thường thao_tác hiệu_quả với những kiến_thức về hộp_đen .
-Chính điều này là trung_tâm của khái_niệm định_hướng đối_tượng .
-Chẳng hạn, hầu_hết mọi_người lái_xe thành_thạo với kiến_thức hộp_đen .
-
-first==>Với cách tiếp_cận của kiểm thử chức_năng, để xác_định các ca_kiểm thử, thông_tin duy_nhất được dùng là đặc tả của phần_mềm cần kiểm thử .
-Có hai lợi_điểm chính của các ca_kiểm thử được sinh_ra bởi cách tiếp_cận kiểm thử chức năng: chúng độc_lập với việc phần_mềm được cài_đặt thế_nào, và vì_thế khi cài_đặt thay_đổi thì các ca_kiểm thử vẫn dùng được, đồng_thời các ca_kiểm thử được phát_triển song_song và độc_lập với việc cài đặt hệ_thống .
-Do_đó, cách tiếp_cận này rút_gọn được thời_gian phát_triển của dự_án .
-Điểm_yếu của cách tiếp_cận này là các ca_kiểm thử thường có_thể có tính dư_thừa đáng_kể trong các ca_kiểm thử và hố_phân_cách .
-
-first==>Hình 1.6 mô_tả các ca_kiểm thử kết_quả xác_định bởi các phương_pháp kiểm thử chức_năng khác_nhau .
-Phương_pháp A xác_định một tập các ca_kiểm thử lớn hơn so với phương_pháp B .
-Lưu_ý rằng đối_với cả_hai phương pháp,_tập các ca_kiểm thử đều chứa trọn trong tập các hành_vi được đặc tả .
-Do các phương_pháp kiểm thử chức_năng đều dựa_trên các hành_vi đặc tả, các phương_pháp này khó có_thể xác_định được các hành_vi không_được đặc tả .
-Trong chương 5 ta sẽ so_sánh các ca_kiểm thử_sinh bởi các phương_pháp kiểm thử chức_năng khác_nhau cho các ví_dụ nêu trong chương 2 .
-
-first==>Trong chương 5, chúng_ta sẽ khảo_sát các cách tiếp_cận chủ_yếu cho các phương_pháp kiểm thử chức_năng bao_gồm phân_tích giá_trị biên, kiểm thử tính bền vững, phân_tích trường_hợp xấu nhất, kiểm thử giá_trị đặc biệt, kiểm thử phân_lớp tương_đương của miền dữ_liệu đầu vào, lớp tương_đương của miền dữ_liệu đầu ra, kiểm thử dựa_trên bảng quyết_định .
-Điều xuyên_suốt trong các kỹ_thuật này là tất_cả đều dựa_trên thông_tin xác_định về các thành_phần đang được kiểm thử .
-Cơ_sở toán_học trình_bày trong chương 3 chủ_yếu được áp_dụng cho cách tiếp_cận kiểm thử chức_năng .
-
-sub-title: Kiểm thử cấu_trúc .
-
-first==>Kiểm thử cấu_trúc (kiểm thử hộp trắng) là cách tiếp_cận khác để xác_định các ca_kiểm thử .
-Trái_ngược với cách tiếp_cận của kiểm thử chức năng, đôi_khi nó được gọi là kiểm thử hộp trắng .
-Biểu_tượng hộp trong_suốt là thích_hợp cho cách tiếp_cận này vì sự_khác_nhau cốt_lõi với kiểm thử hộp_đen là việc cài_đặt của hộp_đen được cho và được dùng_làm cơ_sở để xác_định các ca_kiểm thử .
-Việc biết_được bên_trong của hộp_đen cho_phép người kiểm thử dựa_trên việc cài_đặt của hàm để xác_định ca_kiểm thử .
-
-first==>Kiểm thử cấu_trúc đã trở_thành chủ_đề của một lý_thuyết tương_đối mạnh .
-Để hiểu_rõ kiểm thử cấu trúc, các khái_niệm về lý_thuyết đồ_thị tuyến_tính được trình_bày trong chương 3 là cần_thiết .
-Với những khái_niệm này, người kiểm thử có_thể mô_tả chính_xác các yêu_cầu kiểm_thử và hệ_thống cần kiểm thử .
-Do có cơ_sở lý_thuyết mạnh, kiểm thử cấu_trúc cho_phép định_nghĩa chính_xác và sử_dụng các độ đo về độ bao_phủ .
-Các độ đo về độ phủ cho_phép khẳng_định tường_minh phần_mềm đã được kiểm thử tới mức nào và do_đó giúp cho việc quản_lý quá_trình kiểm thử tốt_hơn .
-
-first==>Hình 1.7 phản_ánh các ca_kiểm thử kết_quả xác_định bởi hai phương_pháp kiểm thử cấu_trúc khác_nhau .
-Giống như trước đây, phương_pháp A xác_định tập các ca_kiểm thử lớn hơn so với phương_pháp B .
-Có chắc là tập các ca_kiểm thử lớn hơn là tốt_hơn không? Đây là một câu_hỏi thú_vị và kiểm thử cấu_trúc cung_cấp các giải_pháp để tìm câu_trả_lời cho vấn_đề này .
-Lưu_ý rằng cả_hai phương_pháp A và B đều cho các tập các ca_kiểm thử nằm trọn trong tập các hành_vi được lập_trình .
-
-first==>Do các ca_kiểm thử của các phương_pháp này được sinh_ra dựa_trên chương_trình nên rất khó để xác_định các lỗi liên_quan đến các hành_vi đã được đặc tả nhưng không_được lập_trình .
-Tuy nhiên, dễ_thấy rằng tập các ca_kiểm thử cấu_trúc là tương_đối nhỏ so với tập tất_cả các hành_vi được lập_trình .
-Ta sẽ trình_bày các so_sánh về các ca_kiểm thử_sinh bởi các phương_pháp kiểm thử cấu_trúc khác_nhau ở mục 1.4.3 .
-Một_số phương_pháp kiểm thử cấu_trúc (kiểm thử dòng điều_khiển và kiểm thử dòng_dữ liệu) sẽ được giới_thiệu chi_tiết trong các Chương 6 và 7 .
-
-sub-title: Tranh_luận về kiểm thử chắc năng so với kiểm thử cấu_trúc .
-
-first==>Cho trước hai phương_pháp khác_nhau để xác_định các ca_kiểm thử, câu_hỏi tự_nhiên được đặt_ra là phương_pháp nào tốt_hơn ?
-Cho đến nay chúng_ta vẫn chưa có câu_trả_lời thỏa đáng cho câu_hỏi này .
-Nói về kiểm thử cấu trúc, Robert_Poston viết: công_cụ này lãng_phí thời_gian của người kiểm thử vì từ những năm_bảy mươi (của thế_kỷ trước) nó chẳng trợ_giúp tốt việc thực_hành kiểm thử phần_mềm và đừng_có đưa nó vào bộ công_cụ của người kiểm thử_[Pos91] .
-Nhằm bảo_vệ cho việc kiểm thử cấu trúc, Edward_Miller [Mil91] viết: Độ bao_phủ nhánh [một_độ đo độ bao_phủ của kiểm thử], nếu đạt được 85% hoặc cao hơn, có_thể xác_định số lỗi gấp_đôi so với số lỗi phát_hiện bởi kiểm thử trực_quan (kiểm thử chức_năng) .
-
-first==>Biểu đồ Venn được mô_tả trong Hình 1.8 có_thể giúp ta trả_lời câu_hỏi mà cuộc tranh_luận này đã đề_cập .
-Chúng_ta cần khẳng_định lại rằng mục_đích của cả_hai cách tiếp_cận là để xác_định các ca_kiểm thử .
-Kiểm thử chức_năng chỉ dùng đặc tả để xác_định ca_kiểm thử, trong_khi kiểm thử cấu_trúc dùng mã nguồn của chương_trình (cài_đặt) để làm cơ_sở xác_định ca_kiểm thử .
-Những bàn_luận trước_đây cho_thấy chẳng có cách tiếp_cận nào_là đủ tốt .
-Xét các hành_vi chương trình: nếu tất_cả các hành_vi được đặc tả vẫn chưa được cài đặt, kiểm thử cấu_trúc sẽ không_thể nhận_biết được điều_đó .
-Ngược lại, nếu các hành_vi được cài_đặt chưa được đặc_tả, điều đó chẳng_khi_nào có_thể được phơi_bày nhờ kiểm thử chức năng. (Một con_vi_rút là một ví_dụ tốt về các hành_vi không_được đặc_tả) .
-Câu_trả_lời sơ_bộ là cả_hai cách tiếp_cận đều là cần_thiết cả; còn câu_trả_lời cẩn_thận hơn là cách kết_hợp khôn_khéo sẽ cung_cấp niềm_tin cho kiểm thử chức_năng và độ đo của kiểm thử cấu_trúc .
-Ta đã khẳng_định ở trên rằng kiểm thử chức_năng có khiếm_khuyết về tính dư_thừa và hố_phân_cách .
-Nếu kiểm thử chức_năng được tiến_hành kết_hợp với các số_đo về độ phủ của kiểm thử cấu_trúc thì khiếm_khuyết trên có_thể được phát_hiện và giải_quyết .
-
-first==>Quan điểm biểu_đồ Venn cho việc kiểm thử cung_cấp một chi_tiết nữa .
-Mối quan_hệ giữa tập T các ca_kiểm thử và các tập_S và P của các hành_vi cài_đặt và đặc tả thế nào?_Rõ ràng, các ca_kiểm thử trong T_được xác_định bởi phương_pháp xác_định ca_kiểm thử được dùng .
-Một câu_hỏi rất hay cần đặt_ra là thế thì phương_pháp này thích_hợp và hiệu_quả ra_sao .
-Ta có_thể đóng lại vòng_luẩn_quẩn này bằng những lời bàn trước_đây .
-Nhắc_lại đường_đi từ lỗi đến sai, thất_bại và sự_cố .
-Nếu ta biết loại lỗi nào ta hay phạm, và loại sai nào_hay có trong phần_mềm được kiểm thử, ta có_thể dùng thông_tin này để lựa_chọn phương_pháp thích_hợp hơn để xác_định các ca_kiểm thử .
-Chính_điểm này làm_cho việc kiểm thử thành một nghệ_thuật .
-
-sub-title: Phân_loại các lỗi và sai .
-
-first==>Các định_nghĩa về lỗi và sai được trình_bày trong mục 1.1 xoay_quanh sự_phân_biệt giữa quy_trình và sản phẩm: quy_trình nói chúng_ta cần làm điều_gì_đó như_thế nào, còn sản_phẩm là kết_quả cuối_cùng của quy_trình .
-Kiểm thử phần_mềm và đảm_bảo chất_lượng phần_mềm (Software Quality_Assurance - SQA) gặp_nhau ở điểm là SQA cố_gắng cải_tiến chất_lượng sản_phẩm bằng việc cải_tiến quy_trình .
-
-first==>Theo_nghĩa này thì kiểm thử là các hoạt_động định_hướng sản_phẩm. SQA quan_tâm nhiều hơn đến việc giảm_thiểu lỗi trong quá_trình phát_triển, còn kiểm thử quan_tâm chủ_yếu đến phát_hiện sai trong sản_phẩm .
-Cả hai nguyên_lý này đều sử_dụng định_nghĩa về các loại sai .
-Các sai được phân_loại theo nhiều cách khác nhau: giai_đoạn phát_triển khi cái sai tương_ứng xuất hiện, các hậu_quả của các thất_bại tương ứng, độ khó cho việc giải quyết, độ rủi_ro của việc không giải_quyết được,_v.v .
-Một_cách phân_loại được ưa_thích là dựa_trên việc xuất_hiện bất_thường: chỉ một lần,_thỉnh thoảng, xuất_hiện lại hoặc lặp đi lặp_lại nhiều lần .
-Hình 1.9 minh_họa một_cách phân_loại sai [Bor84] dựa_trên độ nghiêm_trọng của hậu_quả mà các lỗi gây_ra .
-
-first==>Để xử_lý các loại sai, chúng_ta có_thể tham_khảo [IEE93] về việc phân_loại các chuẩn cho các bất_thường của phần_mềm .
-Chuẩn_IEEE định_nghĩa quy_trình giải_quyết bất_thường một_cách chi_tiết gồm bốn giai đoạn: nhận biết,_khảo sát, hành_động và bố_trí lại .
-Một_số bất_thường phổ_biến được mô_tả trong các bảng từ Bảng 1.1 đến Bảng 1.5 .
-Hầu_hết các bất_thường này đều đã được đề_cập trong chuẩn_IEEE .
-Ngoài ra, chúng_tôi cũng bổ_sung thêm một số bất_thường khác .
-
-sub-title: Các mức kiểm thử .
-
-first==>Một trong các khái_niệm then_chốt của việc kiểm thử là các mức của việc kiểm thử .
-Các mức của việc kiểm thử phản_ánh mức_độ trừu_tượng được thấy trong mô_hình thác_nước của vòng đời của việc phát_triển phần_mềm .
-Dù có một số nhược điểm, mô_hình này vẫn rất hữu_ích cho việc kiểm thử, là phương_tiện để xác_định các mức kiểm thử khác_nhau và làm sáng_tỏ mục_đích của mỗi mức .
-Một dạng của mô_hình thác_nước được trình_bày trong Hình 1.10 .
-Dạng này nhấn_mạnh sự_tương_ứng của việc kiểm thử với các mức thiết_kế .
-Lưu_ý rằng theo các thuật_ngữ của việc kiểm thử chức năng, ba mức của định_nghĩa (đặc tả, thiết_kế sơ_bộ và thiết_kế chi tiết) tương_ứng trực_tiếp với bốn mức của việc kiểm thử là kiểm thử đơn_vị Hình 1.10: Các mức trừu_tượng và mức kiểm thử trong mô_hình thác_nước .
-
-first==>(unit testing), kiểm thử tích_hợp (integration testing), kiểm thử hệ_thống (system_testing) và kiểm thử chấp_nhận (acceptance_testing) .
-Các mức của kiểm thử cũng làm nảy_sinh vấn_đề về thứ_tự kiểm thử: dưới lên, trên xuống hoặc các khả_năng khác .
-
-first==>Các mức kiểm thử có_thể được mô_tả sơ_bộ như sau: • Kiểm thử đơn vị: Kiểm thử đơn_vị là việc kiểm thử các đơn_vị chương_trình một_cách cô_lập .
-Thế_nào là một đơn_vị chương_trình ?
-Câu_trả_lời phụ_thuộc vào ngữ_cảnh công_việc .
-Một đơn_vị chương_trình là một đoạn mã nguồn như hàm hoặc phương_thức của một lớp, có_thể được gọi từ ngoài, và cũng có_thể gọi đến các đơn_vị chương_trình khác .
-Đơn_vị cũng còn được coi là một đơn_thể để kết_hợp .
-Đơn_vị chương_trình cần được kiểm thử riêng_biệt để phát_hiện lỗi trong nội_tại và khắc_phục trước_khi được tích_hợp với các đơn_vị khác .
-Kiểm thử đơn_vị thường được làm bởi chính tác_giả của chương_trình, và có_thể tiến_hành theo hai giai đoạn: kiểm thử đơn_vị tĩnh, sử_dụng các kỹ_thuật ở chương_4, và kiểm thử đơn_vị động, sử các kỹ_thuật ở chương 6 và 7 .
-
-first==>• Kiểm thử tích hợp: Mức kế_tiếp với kiểm thử đơn_vị là kiểm thử tích_hợp .
-
-first==>Sau khi các đơn_vị chương_trình để cấu_thành hệ_thống đã được kiểm thử, chúng cần được kết_nối với_nhau để tạo thành_hệ_thống đầy_đủ và có_thể làm_việc .
-Công_việc này không_hề đơn_giản và có_thể có những lỗi về giao_diện giữa các đơn vị, và cần phẩi kiểm thử để phát_hiện những lỗi này .
-Công_đoạn này gồm hai giai đoạn: giai_đoạn kiểm thử tích_hợp và giai_đoạn kiểm thử hệ_thống .
-Kiểm thử tích_hợp nhằm đảm_bảo hệ_thống làm_việc ổn_định trong môi_trường thí_nghiệm để sẵn_sàng cho việc đưa_vào môi_trường thực_sự bằng cách đặt các đơn_vị với_nhau theo phương_pháp tăng dần .
-Kỹ_thuật kiểm thử tích_hợp sẽ được mô_tả chi_tiết trong chương 10 .
-
-first==>• Kiểm thử hệ_thống: Kiểm thử mức này được áp_dụng khi đã có một hệ_thống đầy_đủ sau khi tất_cả các thành_phần đã được tích_hợp .
-Mục_đích của kiểm thử hệ_thống là để đảm_bảo rằng việc cài_đặt tuân_thủ đầy_đủ các yêu_cầu được đặc_tả của người_dùng .
-Công_việc này tốn nhiều công sức, vì có_nhiều khía_cạnh về yêu_cầu người_dùng cần được kiểm thử .
-Các phương_pháp kiểm thử chức_năng được trình_bày trong chương 5 là thích_hợp_nhất cho việc kiểm thử này .
-Các kỹ_thuật kiểm thử hệ_thống được trình_bày trong chương 10 .
-
-first==>• Kiểm thử chấp nhận: Khi nhóm kiểm thử hệ_thống đã thỏa_mãn với một sản_phẩm, sản_phẩm đó đã sẵn_sàng để đưa_vào sử_dụng .
-Khi đó hệ_thống cần trải_qua giai_đoạn kiểm thử chấp_nhận .
-Kiểm thử chấp_nhận được thực_thi bởi chính các khách_hàng nhằm đảm_bảo rằng sản_phẩm phần_mềm làm_việc đúng như họ mong_đợi .
-Có hai loại kiểm thử chấp nhận: kiểm thử chấp_nhận người dùng, được tiến_hành bởi người dùng, và kiẻm thử chấp_nhận doanh nghiệp, được tiến_hành bởi nhà_sản_xuất ra sản_phẩm phần_mềm .
-Chương 10 mô_tả chi_tiết việc kiểm thử chấp_nhận .
-
-sub-title: Tổng_kết .
-
-first==>Chúng_ta đã trình_bày trong chương này một bức_tranh tổng_thể về việc kiểm thử phần_mềm bao_gồm các thuật_ngữ và khái_niệm cơ_bản trong lĩnh_vực kiểm thử, mục_đích và vai_trò của việc kiểm thử phần_mềm .
-Chúng_ta cũng mô_tả sơ_lược về bài_toán kiểm thử và qui_trình để giải bài_toán này gồm việc phân_tích tĩnh và phân_tích động .
-Đóng_vai tró trung_tâm của phân_tích động là việc xây_dựng các ca_kiểm thử .
-Hai cách tiếp_cận cơ_bản để xác_định các ca_kiểm thử là kiểm thử chức_năng (kiểm thử hộp đen) và kiểm thử cấu_trúc (kiểm thử hộp trắng) .
-Cả hai cách tiếp_cận này bổ_sung cho_nhau để xây_dựng tập các ca_kiểm thử hiệu_quả .
-
-first==>Chúng_ta cũng đã giới_thiệu trong chương này bốn mức kiểm thử, mỗi mức tương_ứng với một giai_đoạn của việc phát_triển phần_mềm .
-Các mức_đó là: kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ_thống và kiểm thử chấp_nhận .
-Chi_tiết về các phương_pháp kiểm thử sẽ được trình_bày trong các chương sau .
+title: Quần_xã và hệ_sinh_thái .
+
+title: Quần_thể .
+
+first==>Các cá_thể sinh_vật thường quần_tụ thành từng đàn (đàn chim), từng nhóm (đồi_cọ) trong môi_trường .
+
+first==>Các tập_hợp cá_thể cùng loài được gọi_là những quần_thể .
+
+first==>Vậy, Quần_thể là một nhóm cá_thể cùng loài cùng sinh_sống trong một khoảng không_gian xác định, vào một thời_điểm nhất_định và có khả_năng giao_phối sinh_ra con_cái (những loài sinh_sản vô_tính hay trinh sản thì không qua giao phối) .
+Mỗi quần_thể được đặc_trưng bởi một_số chỉ_tiêu như mật độ, tỉ_lệ đực cái, tỉ_lệ các nhóm tuổi, sức_sinh sản, tỷ_lệ tử vong, kiểu tăng trưởng, đặc_điểm phân_bố, khả_năng thích_ứng và chống chịu với nhân_tố sinh_thái của môi_trường .
+
+first==>Khi cá_thể hoặc quần_thể không_thể thích_nghi được với sự_thay_đổi của môi trường, chúng sẽ bỏ_đi tìm chỗ thích_hợp hơn hoặc bị tiêu_diệt .
+Những cá_thể của quần_thể khác thích_nghi được với những điều_kiện sống mới sẽ phát_triển và hình_thành một quần_thể thay_thế .
+Ví dụ, ở vùng đất_bồi_tụ khi còn ngập_nước thì thường có các quần_thể bèo ong, bèo Nhật Bản, bèo cái; khi đất_bồi nhô lên thì có nghể, cỏ nến hay lau, cói thay_thế...
+
+sub_title: Ảnh_hưởng của ngoại_cảnh tới quần_thể .
+
+first==>Tác_động tổng_hợp của các nhân_tố ngoại_cảnh sẽ ảnh_hưởng tới sự_phân_bố, sự_biến_động số_lượng và cấu_trúc của quần_thể .
+
+first==>Tập hợp các nhân_tố vô_sinh đã tạo_nên các vùng địa_lý khác_nhau trên trái đất: vùng lạnh, vùng ấm, vùng nóng, vùng sa_mạc...
+Ứng với từng vùng có những quần_thể phân_bố đặc_trưng .
+Các nhân_tố của ngoại_cảnh ảnh_hưởng đến sự_sinh_trưởng và biến_động của quần_thể thông_qua tác_động của sự_sinh_sản (làm tăng số_lượng cá thể), sự_tử_vong (làm giảm số_lượng cá thể) và sự_phát_tán các cá_thể trong quần_thể .
+Không những thế các nhân_tố này còn có_thể ảnh_hưởng tới cấu_trúc quần_thể qua những tác_động làm biến_đổi thành_phần đực, cái, các nhóm_tuổi và mật_độ cá_thể trong quần_thể .
+
+first==>Do tác_động tổng_hợp của các nhân_tố ngoại_cảnh (đặc biệt nạn phá rừng và săn_bắn bừa bãi) mà quần_thể bò xám Kuprey vốn chỉ có ở rừng giáp Việt_Nam, Lào, Thái_Lan, Campuchia_nay chỉ còn thưa_thớt vài chục con .
+
+first==>Trong nhiều trường_hợp sự_tác_động tổng_hợp trong một thời_gian dài làm thay_đổi cả các đặc_điểm cơ_bản của quần thể, thậm_chí dẫn tới huỷ_diệt quần_thể .
+Đacuyn đã nghiên_cứu thấy những cơn_gió mạnh thường_xuyên nổi_lên ở một_số đảo đã thổi_bạt những sâu_bọ bay_là là mặt_đất ra biển_cả .
+Những cá_thể có cánh dài bị loại_bỏ .
+Ngược lại, những quần_thể sâu_bọ cánh ngắn hoặc không có cánh thì tồn_tại và phát_triển .
+Kết_quả là trên đảo Croxet có 14 giống sâu_bọ không có cánh trong_số 17 giống sâu_bọ ở_đây .
+Các nhân_tố hữu sinh cũng ảnh_hưởng lên phân bố, mật độ, sinh_trưởng và cấu_trúc quần_thể qua những tác_động của mối quan_hệ dinh_dưỡng và nơi ở .
+
+sub_title: Sự_biến_động số_lượng cá_thể của quần_thể .
+
+first==>Biến_động do sự_cố bất_thường: Năm nào có mùa_đông giá_rét thì trâu, gà_rừng bị chết_rét nhiều .
+Lụt bão, cháy rừng, dịch_bệnh hoặc môi_trường bị ô_nhiễm nghiêm_trọng sẽ làm_cho số_lượng cá_thể của nhiều quần_thể sinh_vật bị giảm đột_ngột .
+Ngược_lại, số_lượng cá_thể có_thể tăng lên mạnh_mẽ do quần_thể gặp được môi_trường sống thuận_lợi mà không có đối_thủ cạnh_tranh .
+
+first==>Biến_động theo mùa: Ở nước ta biến_động theo mùa là phổ biến: muỗi phát_triển từ thành 3 tới tháng 6; ếch_nhái phát_triển mạnh vào mùa_mưa .
+
+first==>Biến_động theo chu_kỳ nhiều năm: Các loài cá ở bờ_biển Pêru, cứ 7 năm lại một_lần biến_động lớn về số_lượng cá_thể .
+Nguyên_nhân là cứ 7 năm lại có dòng_nước nóng Nino chảy qua bờ_biển Pêru về phía nam làm nhiệt_độ nước tăng 5oC và nồng_độ_muối thay_đổi khiến cho các động_vật_nổi bị chết, làm nước_biển chứa nhiều chất hữu_cơ phân huỷ, nên cá_biển chết nhiều và phải di_cư đi xa .
+
+first==>Nguyên nhân gây biến động: Nguyên_nhân gây biến_động số_lượng cá_thể của quần_thể là do một hoặc một tập_hợp nhân_tố sinh_thái đã tác_động đến tỷ_lệ sinh đẻ, tỷ_lệ tử_vong và sự_phát_tán của quần_thể .
+
+first==>Tác_động của nhân_tố vô_sinh vào mùa sinh_sản hay giai_đoạn còn non của sinh_vật làm_cho quần_thể biến_động mạnh_mẽ nhất .
+
+first==>Tác_động của các nhân_tố hữu sinh thể_hiện rõ ở sức sinh_sản của quần thể, ở mật_độ động_vật ăn thịt, vật_kí sinh, con mồi, loài cạnh_tranh .
+
+first==>Nhân tố quyết_định sự_biến_động số_lượng có_thể khác_nhau tuỳ từng quần_thể và tuỳ từng giai_đoạn trong chu_kỳ sống .
+Ví_dụ, đối_với sâu_bọ ăn thực_vật thì các nhân_tố khí_hậu có vai_trò quyết_định, còn đối_với chim nhân_tố quyết_định lại thường là thức_ăn vào mùa_đông và sự_cạnh_tranh nơi làm_tổ vào mùa hè .
+
+first==>Như_vậy, sự_biến_động số_lượng cá_thể trong quần_thể là kết_quả tác_động tổng_hợp của các nhân_tố sinh_thái của môi trường, trong_đó một hoặc một_số nhân_tố sinh_thái có vai_trò chủ yếu, mặt_khác là phản_ứng thích_nghi của quần_thể đối_với sự_tác_động tổng_thể các điều_kiện của môi_trường .
+
+first==>Trạng thái cân_bằng của quần thể: Mỗi quần_thể sống trong một môi_trường xác_định đều có xu_hướng được điều_chỉnh ở một trạng_thái số_lượng cá_thể ổn_định gọi_là trạng_thái cân_bằng .
+
+first==>Đôi khi quần_thể có biến_động mạnh, ví dụ, tăng số_lượng cá_thể do nguồn thức_ăn phong_phú, vượt_khỏi mức bình_thường .
+Số_lượng cá_thể vọt lên_cao khiến cho sau một thời_gian nguồn thức_ăn trở_nên thiếu_hụt (cây bị phá_hại mạnh, con_mồi hiếm hoi), nơi đẻ và nơi ở không đủ, do_đó nhiều cá_thể bị chết .
+Quần_thể lại được điều_chỉnh về mức 1. Cơ_chế điều_hoà mật_độ của quần_thể là sự_thống_nhất mối tương_quan giữa tỉ_lệ sinh_sản và tỉ_lệ tử vong, nhờ_đó mà tốc_độ sinh_trưởng của quần_thể được điều_chỉnh .
+
+title: Quần_xã sinh_vật .
+
+first==>Từ bao_nhiêu năm_nay Hồ_Tây_(Hà_Nội) là nơi_sinh_sống của nhiều quần_thể rong, tôm,_cua, cá, sâm cầm, cà_cuống... và cây_cối bao_quanh .
+Tất_cả tập_hợp thành quần_xã sinh_vật Hồ_Tây .
+
+first==>Vậy, Quần_xã sinh_vật là một tập_hợp các quần_thể sinh_vật được hình_thành trong một quá_trình lịch_sử, cùng sống trong một không_gian xác_định gọi là sinh cảnh, nhờ các mối liên_hệ sinh_thái tương_hỗ mà gắn_bó với_nhau như một_thể thống_nhất .
+
+first==>Bình_thường, quần_xã có cấu_trúc ổn_định trong từng thời_gian .
+Nhưng sự_thay_đổi của ngoại_cảnh có_thể tác_động lên quần_xã và hình_thành một quần_xã khác .
+Căn_cứ vào thời_gian tồn_tại mà ta phân_biệt quần_xã ổn định, có thời_gian tồn_tại vài trăm_năm và quần_xã nhất_thời có thời_gian tồn_tại khoảng vài ngày, có_khi vài giờ .
+Quần_xã trên xác một con thú nhỏ hay trên một thân_cây đổ là quần_xã nhất_thời .
+
+first==>Quần xã sinh_vật là một cấu_trúc động .
+Các loài trong quần_xã làm biến_đổi môi trường, rồi môi_trường bị biến_đổi này lại tác_động đến cấu_trúc của quấn xã .
+Vào thế_kỷ XIX, ở châu Mĩ, bò_rừng bizông hoạt_động dinh_dưỡng mạnh, làm rừng tàn lụi, đồng_cỏ phát triển, thu_hút nhiều loài_chim thú, sâu_bọ .
+Khi bò_rừng bizông bị tiêu diệt, các thân_cây gỗ nhỏ lại phát_triển .
+Môi_trường mới với cây thân gỗ thay_thế đồng_cỏ đã làm xuất_hiện một hệ_động_vật khác .
+
+first==>Giữa các quần_xã sinh_vật thường có một vùng chuyển_tiếp gọi là vùng đệm .
+Bìa rừng là vùng đệm của quần_xã rừng và quần_xã đồng_ruộng .
+Bãi_lầy là vùng đệm giữa 2 quần_xã rừng và quần_xã đầm .
+
+first==>Ở vùng đệm có một số loài của cả 2 quần_xã .
+Ngoài ra, cũng có những loài riêng .
+Do_đó số loài ở vùng đệm đôi_khi nhiều hơn, với số_lượng cá_thể cũng nhiều hơn so với ở chính ngay trong quần_xã .
+Đặc_điểm này gọi là tác_động rìa .
+
+sub_title: Những tính_chất cơ_bản của quần_xã sinh_vật .
+
+first==>Mỗi quần_xã sinh_vật đều có một_vài quần_thể ưu_thế .
+Thực_vật có hạt_thường là những quần_thể ưu_thế ở các quần_xã sinh_vật ở cạn .
+Cá, tôm, sinh_vật_nổi thường là những quần_thể ưu_thế ở các quần_xã sinh_vật ở nước .
+Trong số các quần_thể ưu_thế_thường có một quần_thể tiêu_biểu nhất cho quần_xã .
+Ví dụ, quần_thể cây cọ trong quần_xã sinh_vật đồi ở Vĩnh_Phú, quần_thể cá_trắm cỏ hoặc cá_mè trong quần_xã ao_hồ nuôi_cá .
+Đó là quần_thể đặc_trưng của quần_xã sinh_vật .
+
+first==>Khi điều_kiện môi_trường thuận_lợi thì quần_xã có_nhiều quần_thể khác_nhau cùng tồn_tại (ví dụ rừng nhiệt_đới) .
+Ngược lại, khi điều_kiện môi_trường khắc_nghiệt thì chỉ có một số_ít quần_thể thích_ứng được mới tồn_tại trong quần_xã (ví_dụ rừng thông phương_Bắc) .
+Như_vậy quần_xã sinh_vật ở những môi_trường thuận_lợi có độ đa_dạng cao, ở nơi có_điều_kiện sống khắc_nghiệt thì có độ đa_dạng thấp .
+
+first==>Mỗi quần_xã sinh_vật có một cấu_trúc đặc_trưng liên_quan tới sự_phân_bố cá_thể của các quần_thể trong không_gian .
+Cấu_trúc thường gặp là kiểu phân tầng thẳng_đứng .
+Rừng mưa nhiệt_đới thường có 5 tầng, gồm: 3 tầng cây_gỗ lớn, tầng cây bụi và tầng cây_cỏ - dương_xỉ .
+
+first==>Sự_phân tầng làm_tăng khả_năng sử_dụng các nguồn_sống trong quần xã, làm_giảm mức_độ cạnh_tranh giữa các cá_thể và giữa các quần_thể .
+
+sub_title: Mối quan_hệ giữa ngoại_cảnh và quần_xã .
+
+first==>Quan hệ giữa ngoại_cảnh và quần_xã là kết_quả tổng_hợp các mối quan_hệ giữa ngoại_cảnh với các quần_thể .
+
+first==>Các nhân_tố khí hậu, tiếp đó là các nhân_tố hữu sinh (thức ăn, kẻ thù,_dịch bệnh) đã tạo_nên tính_chất thay_đổi theo chu_kỳ của quần_xã .
+Quần_xã ở vùng nhiệt_đới thay dổi theo chu_kỳ ngày_đêm rất rõ .
+Ếch nhái, chim cú,_vạc, muỗi... hoạt_động mạnh về ban_đêm .
+Còn quần_xã ở vùng lạnh thay_đổi chu_kỳ theo mùa rõ hơn .
+Chim và nhiều động_vật di_trú vào mùa đông_lạnh giá .
+Rừng cây lá rộng ở vùng ôn_đới rụng_lá vào mùa_khô .
+Tầng thảm tươi dưới rừng của cây dầu trà beng (Dipterocarpus sp.) ở Tây Nguyên_bị khô cháy về mùa khô, đến mùa_mưa lại phát_triển xanh_tươi .
+
+first==>Giữa các quần_thể trong quần_xã thường_xuyên diễn_ra các quan_hệ hỗ_trợ và quan_hệ đối_địch .
+Ví dụ, sâu_bọ phát_triển mạnh khi điều_kiện thuận_lợi (thời tiết ấm áp, có mưa nhỏ, cây_cối phát_triển xanh tươi...) khiến cho số_lượng chim_sâu cũng tăng theo .
+Khi số_lượng chim_sâu tăng quá nhiều, sâu_bọ bị quần_thể chim tiêu_diệt mạnh hơn nên số_lượng sâu_bọ lại giảm đi nhanh .
+Hiện_tượng số_lượng cá_thể của một quần_thể bị số_lượng cá_thể của quần_thể khác kìm_hãm gọi_là hiện_tượng khống_chế sinh_học .
+Sự_khống_chế sinh_học này làm_cho số_lượng cá_thể của mỗi quần_thể dao_động trong một thế cân_bằng, từ_đó toàn_bộ quần_xã sinh_vật cũng dao_động trong thế cân bằng, tạo_nên trạng_thái cân_bằng sinh_học trong quần_xã .
+
+title: Diễn thế sinh_thái .
+
+first==>Trong quá_trình tồn_tại và phát_triển, quần_xã luôn_luôn biến_đổi .
+Diễn thế sinh_thái là quá_trình biến_đổi tuần_tự của quần_xã qua các giai_đoạn khác nhau, từ dạng khởi đầu, được thay_thế lần_lượt bởi các dạng quần_xã tiếp_theo và cuối_cùng thường dẫn tới một quần_xã tương_đối ổn_định .
+
+first==>Diễn thế sinh_thái xảy_ra do những nguyên_nhân sau:
+
+first==>- Tác_động mạnh_mẽ của ngoại_cảnh lên quần_xã .
+
+first==>- Chính tác_động của quần_xã lên ngoại_cảnh làm biến_đổi mạnh_mẽ ngoại_cảnh đến mức gây_ra diễn_thế
+
+first==>- Tác_động vô_ý_thức (đốt, chặt,_phá rừng...) hay có ý_thức (cải tạo_thiên nhiên, khai_thác rừng, lấp_hồ...) của con_người .
+
+first==>Như_vậy, song_song với quá_trình_diễn thế_là quá_trình biến_đổi về khí hậu, thổ nhưỡng, địa_chất .
+
+first==>Trong_diễn thế, hệ thực_vật có vai_trò rất quan_trọng trong việc hình_thành quần_xã mới .
+
+sub_title: Các loại diễn_thế .
+
+first==>Có 3 loại diễn thế: diễn thế nguyên sinh, diễn thế thứ_sinh và diễn thế phân_huỷ .
+
+first==>Diễn thế nguyên sinh: Diễn thế nguyên_sinh là diễn thế khởi_đầu từ môi_trường trống trơn (đảo mới hình_thành trên tro_tàn núi lửa, đất_mới bồi ở lòng_sông) .
+Nhóm sinh_vật đầu_tiên được phát_tán đến đó hình_thành nên quần_xã tiên_phong .
+Tiếp đó là một dãy quần_xã tuần_tự thay_thế nhau .
+Khi có cân_bằng sinh_thái giữa quần_xã và ngoại_cảnh thì quần_xã ổn_định trong một thời_gian tương_đối dài .
+
+first==>Diễn_thế trên cạn: Điển_hình là trường_hợp sinh_vật chiếm_lĩnh lại hòn_đảo Krakatau ở Inđônêxia đã bị núi_lửa phun tàn_phá từ năm 1883 và phủ lên một lớp đá_bọt và tro dày khoảng 30m .
+Từ một đảo tro, đá_bọt vô sinh, sau vài năm có tảo, địa_y, quyết xuất_hiện trước, tiếp đó là thực_vật thân cỏ có hoa, rồi đến các thực_vật thân gỗ cùng các động_vật phổ_biến ở địa_phương .
+Sau 50 năm đã hình_thành lại quần_xã gần_như trước_khi núi_lửa phun .
+
+first==>Diễn thế dưới nước: Trong quá_trình các ao, hồ, sông bị bồi cạn thì các thực_vật có sẵn trong nước đã tham_gia đáng_kể vào sự_khởi_đầu của diễn thế nguyên_sinh .
+Giai_đoạn đầu thường là những quần_thể thực_vật sống trôi_nổi (bèo...) hoặc chìm trong nước (rong...) và những động_vật_sống cùng với các cây này .
+Khi đất_bồi_tụ nhiều làm_thành bãi thì các thực_vật có rễ cắm trong bùn như sen,_súng, trang v.v. xuất_hiện .
+Điều_kiện này chuẩn_bị cho những quần_thể_vật thuỷ_sinh mọc nhô lên khỏi mặt_nước như nghể, cỏ nến,_lau .
+Sau_đó là các cây bụi mọc, lộc_vừng hoặc rừng thấp có_nhiều loại cây dại trong họ Cà_phê .
+Giai_đoạn cuối của quá_trình_diễn thế khi đất cạn đã hình_thành là rừng cây cao_to với những cây 2 lá_mầm chiếm ưu_thế .
+Sự_phát_triển và thay_thế của hệ thực_vật kéo_theo sự_phát_triển và thay_thế hệ_động_vật tương_ứng .
+
+first==>Diễn thế thứ sinh: Diễn thế thứ_sinh là diễn thế xuất_hiện ở một môi_trường đã có một quần_xã sinh_vật nhất_định .
+Quần_xã này vốn tương_đối ổn_định nhưng do thay_đổi lớn về khí hậu, bị xói mòn, bị bão phá_hại hay do con_người chặt cây, đốt_rừng làm_nương rẫy, trồng_cây nhập_nội (ví_dụ, trồng_rừng bạch đàn, rừng keo lá chàm) làm thay_đổi hẳn cấu_trúc quần_xã sinh_vật .
+
+first==>Diễn thế phân huỷ: Diễn thế phân_huỷ là quá_trình không dẫn tới một quần_xã sinh_vật ổn định, mà theo hướng dần_dần bị phân_huỷ dưới tác_dụng của nhân_tố sinh_học .
+Đây là trường_hợp diễn thế của quần_xã sinh_vật trên xác một động_vật hoặc trên một cây đổ .
+
+sub_title: Tầm quan_trọng thực_tế của việc nghiên_cứu diễn_thế .
+
+first==>Nhờ nghiên_cứu diễn thế_mà ta có_thể nắm_được qui luật phát_triển của quần_xã sinh_vật, hình_dung được những quần_xã tồn_tại trước_đó và dự_đoán những dạng quần_xã sẽ thay_thế trong những hoàn_cảnh mới .
+
+first==>Từ những hiểu_biết về diễn thế ta có_thể xây_dựng những qui hoạch dài_hạn về nông, lâm,_ngư nghiệp, tổ_chức những đơn_vị kinh_doanh trên cơ_sở tính_toán khoa_học .
+
+first==>Sự hiểu_biết về diễn thế cho_phép ta chủ_động điều_khiển sự_phát_triển của diễn thế theo hướng có lợi cho con_người bằng những tác_động lên điều_kiện sống như: cải_tạo đất, đẩy_mạnh biện_pháp chăm sóc, phòng trừ sâu bệnh, tiến_hành các biện_pháp thuỷ_lợi,_khai thác, bảo_vệ hợp_lý nguồn tài_nguyên .
+
+title: Hệ_sinh_thái .
+
+first==>Hệ sinh_thái là một hệ_thống hoàn chỉnh, tương_đối ổn định, bao_gồm quần_xã sinh_vật và khu_vực sống của quần_xã (sinh_cảnh) .
+Sự_tác_động qua_lại giữa quần_xã và sinh cảnh tạo_nên những mối quan_hệ dinh_dưỡng xác định, cấu_trúc của tập_hợp loài trong quần xã, chu_trình tuần_hoàn vật_chất giữa các sinh_vật trong quần_xã và các nhân_tố vô_sinh .
+
+first==>Một hệ_sinh_thái hoàn_chỉnh có các thành_phần chủ_yếu sau_đây:
+
+first==>- Các chất_vô_cơ (C,_N2, CO2, H2O...), chất_hữu_cơ (prôtêin,_lipit, gluxit, các chất mùn,...) và chế_độ khí_hậu .
+
+first==>- Sinh_vật sản_xuất (còn gọi là sinh_vật cung_cấp)
+
+first==>- Sinh_vật tiêu_thụ
+
+first==>- Sinh_vật phân_huỷ
+
+sub_title: Các kiểu hệ_sinh_thái .
+
+first==>Các hệ_sinh_thái trong sinh_quyển thuộc 3_nhóm:
+
+first==>Các hệ_sinh_thái trên_cạn gồm có rừng nhiệt đới, truông cây bụi - cỏ nhiệt_đới (savan), hoang_mạc nhiệt_đới và ôn đới, thảo nguyên, rừng_lá ôn đới, rừng thông phương Bắc_(taiga), đồng rêu đới_lạnh,...
+
+first==>Các hệ_sinh_thái nước_mặn gồm có hệ_sinh_thái vùng ven bờ và vùng khơi .
+
+first==>Các hệ_sinh_thái nước_ngọt gồm có hệ_sinh_thái nước_đứng (ao, đầm,_hồ) và hệ_sinh_thái nước chảy (sông,_suối) .
+
+sub_title: Chuỗi thức_ăn và lưới thức_ăn .
+
+first==>Các thành_phần của quần_xã sinh_vật gắn_bó với_nhau bởi nhiều mối quan_hệ, trong_đó quan_hệ dinh_dưỡng có vai_trò cực_kỳ quan_trọng được thực_hiện qua chuỗi và lưới thức_ăn .
+
+sub_title: Chuỗi thức_ăn .
+
+first==>Chuỗi thức_ăn là một dãy nhiều loài sinh_vật có quan_hệ dinh_dưỡng với_nhau .
+Mỗi loài là một mắt xích, vừa là sinh_vật tiêu_thụ mắt_xích phía trước, vừa là sinh_vật bị mắt_xích ở phía_sau tiêu_thụ .
+
+first==>Có 3 loại sinh_vật trong chuỗi thức_ăn:
+
+first==>Sinh vật_sản_xuất (sinh vật_cung cấp) là những sinh_vật tự_dưỡng trong quần_xã (cây_xanh, một_số tảo), có khả_năng tổng_hợp_chất hữu_cơ từ chất vô_cơ .
+
+first==>Sinh_vật tiêu_thụ là những sinh_vật dị_dưỡng ăn thực_vật và có_thể cả những sinh_vật dị_dưỡng khác .
+Chúng không tự tổng_hợp được chất_hữu_cơ mà phải sử_dụng các chất hữu_cơ của nhóm sinh_vật sản_xuất .
+
+first==>Thường thì một_chuỗi thức_ăn có một số mắt_xích tiêu_thụ:
+
+first==>- Sinh_vật tiêu_thụ bậc 1 có_thể la` động_vật ăn thực_vật, hay kí sinh trên thực_vật .
+
+first==>- Sinh_vật tiêu_thụ bậc 2 là sinh_vật ăn_thịt hay kí sinh trên sinh_vật tiêu_thụ bậc 1. trong 1 chuỗi, có_thể có sinh_vật tiêu_thụ bậc 3, bậc_4...
+
+first==>Sinh vật phân_huỷ là những vi_khuẩn dị_dưỡng và nấm, có khả_năng phân_huỷ chất_hữu_cơ thành chất vô_cơ .
+
+sub_title: Lưới thức_ăn .
+
+first==>Mỗi_loài trong quần_xã sinh_vật thường là mắt_xích của nhiều chuỗi thức_ăn .
+Các chuỗi thức_ăn có_nhiều mắt_xích chung tạo_thành một lưới thức_ăn .
+
+sub_title:_Sự trao_đổi vật_chất và năng_lượng trong hệ_sinh_thái .
+
+first==>Qui luật hình_tháp sinh_thái
+
+first==>Thực vật có diệp_lục là yếu_tố ban_đầu trong quần_xã đã sử_dụng năng_lượng ánh_sáng mặt_trời và tiếp_nhận chất dinh_dưỡng từ_khí quyển, đất .
+Các chất_dinh_dưỡng và năng_lượng của ánh_sáng mặt_trời được tích_luỹ trong thực_vật, qua toàn_bộ lưới thức_ăn sẽ được phân_phối dần ở mỗi bậc theo các mắt_xích .
+
+first==>Cần lưu_ý rằng hệ_số sử_dụng có lợi của thức_ăn trong cơ_thể bao_giờ cũng nhỏ hơn 100% rất nhiều .
+Do_đó sinh_khối của sinh_vật_sản xuất thức_ăn bao_giờ cũng lớn hơn sinh_khối của sinh_vật tiêu_thụ bậc 1, và sinh_khối của nó lại lớn hơn sinh_khối của sinh_vật tiêu_thụ bậc 2,_v.v. .
+Nói cách khác, sinh_vật mắt_lưới nào càng xa vị_trí của sinh_vật_sản_xuất thì có sinh_khối trung_bình càng nhỏ .
+Đây là qui luật hình_tháp sinh_thái .
+
+title: Chu_trình sinh_địa hoá các chất .
+
+first==>Các vật_chất tạo_nên thức_ăn sẽ đi_qua toàn_bộ lưới thức_ăn của quần_xã rồi nhờ các sinh_vật phân_huỷ trở_về đất ở trạng_thái ban_đầu, sau_đó lại tham_gia vào quá_trình tổng_hợp nhờ các sinh_vật sản_xuất .
+Như_vậy, trong quần_xã luôn_luôn có sự_tuần_hoàn vật_chất (kèm theo năng lượng) .
+
+first==>Chu trình vật_chất được thực_hiện trên cơ_sở tự điều_hoà của quần_xã .
+Chúng_ta hãy phân_tích chu_trình sinh_địa hoá của nước .
+
+first==>Nước tham_gia vào các mắt_lưới trong lưới thức_ăn .
+Cây hút_nước từ đất .
+Các sinh_vật tiêu_thụ khác đều sử_dụng nước và qua quá_trình trao_đổi chất, một phần nước lại quay về đất hoặc khí_quyển .
+Trong cơ_thể sinh_vật dị_dưỡng nước được sử_dụng một phần để tổng_hợp lại các chất hữu_cơ .
+Trong quá_trình dinh_dưỡng của các sinh_vật dị_dưỡng yếm_khí thì các hợp_chất hữu_cơ cuối_cùng được phân_huỷ thành nước,_CO2 và muối khoáng; chúng sẽ được tái sử_dụng bởi các sinh_vật tự_dưỡng .
+
+first==>Để thực_hiện được chu_trình vật_chất này cần có năng_lượng .
+Nguồn năng_lượng chính là năng_lượng của ánh_sáng mặt_trời .
+
+first==>Sau đây là chu_trình sinh_địa hoá của cácbon và nitơ trong thiên_nhiên .
+
+first==>Như vậy, có_thể thấy rằng, quần_xã sinh_vật cũng_như những hệ_thống sống khác là những hệ mở tự điều chỉnh, luôn_luôn trao_đổi vật_chất và năng_lượng với môi_trường xung_quanh .
+
+title: Hiệu_suất sinh_thái .
+
+first==>Ví_dụ có một hệ_sinh_thái nhận_được năng_lượng mặt_trời là 106 kcal/m2/ngày .
+Chỉ_có 2,5% số năng_lượng đã được dùng trong quang_hợp .
+Như_vậy sản_lượng sinh_vật toàn_phần ở sinh_vật_sản xuất có_thể đạt tới 2,5 x 104 kcal (tính ra năng_lượng tương_đương) .
+
+first==>Trong thực_tế số năng_lượng mất đi do hô_hấp là 90% nên sản_lượng sinh_vật thực ở sinh_vật_sản_xuất là 2,5 x 103 kcal .
+
+first==>Sinh_vật tiêu_thụ bậc 1 chỉ sử_dụng được 1%, tức_là 25 kcal .
+
+first==>Sinh_vật tiêu_thụ bậc 2 chỉ sử_dụng được 10% sản_lượng toàn_phần của vật tiêu_thụ bậc 1 tức_là 2,5 kcal .
+
+first==>Như_vậy, sự_tiêu_phí năng_lượng qua mỗi bậc dinh_dưỡng trong chuỗi thức_ăn là rất lớn và chỉ có rất ít năng_lượng được sử_dụng ở mỗi bậc dinh_dưỡng .
+Nói cách khác, hiệu_suất sinh_thái của dòng năng_lượng trong các điểm khác_nhau của chuỗi thức_ăn là rất nhỏ .
+Vậy: Hiệu_suất sinh_thái là tỉ_lệ % chuyển_hoá năng_lượng giữa các bậc dinh_dưỡng .
+
+title: Sinh_Quyển và Con_Người .
+
+title: Sinh_quyển và tài_nguyên .
+
+sub_title: Sinh_quyển .
+
+first==>Trái đất được bao_quanh bởi nhiều lớp vật_chất khác_nhau .
+Lớp vỏ ngoài cứng nhất là thạch_quyển .
+Toàn_bộ đại_dương, biển,_sông, suối,_ao, hồ hợp_thành thuỷ_quyển .
+Thuỷ_quyển chiếm 70,8% bề_mặt trái_đất .
+Chiều_sâu trung_bình của đại_dương là 3,8km, nơi sâu nhất_là 11,034km .
+Bao ngoài thuỷ_quyển và thạch_quyển là lớp không_khí dày tới 100km gọi_là khí_quyển .
+Lớp ngoài cùng, từ trên 45km, là lớp ôzôn (O3), có tác_dụng như một lớp phản_chiếu các tia vũ trụ, các tia_tử_ngoại từ mặt_trời toả xuống .
+
+first==>Sinh_quyển là khoảng không_gian có sinh_vật cư trú, bao_phủ bề_mặt_trái đất, sâu tới 100m trong thạch quyển, toàn_bộ thuỷ_quyển tới đáy_biển sâu trên 8km, lên_cao tới 20km trong khí_quyển .
+Ước_tính có tới hai triệu loài sinh_vật cư_trú trong sinh_quyển
+
+sub_title: Nguồn tài_nguyên không tái_sinh và tái_sinh .
+
+first==>Tài nguyên không tái_sinh tự_nhiên được là khoáng_sản và tài_nguyên tái_sinh được la`_đất, rừng, biển và các tài_nguyên nông_nghiệp
+
+sub_title: Tài_nguyên khoáng_sản và tình_hình sử_dụng .
+
+first==>Khoáng sản là nguyên_liệu tự nhiên, có nguồn_gốc hữu_cơ hoặc vô_cơ, phần_lớn nằm_trong đất .
+Sự_hình thành khoáng_sản có liên_quan mật_thiết với các quá_trình địa_chất trong một thời_gian dài .
+
+first==>Khoáng sản_nhiên liệu: Than_đá có nguồn_gốc từ xác cây hoá_đá .
+Ba nước có trữ_lượng lớn trên 1000 tỉ tấn là Liên Xô_(cũ), Mĩ và Trung_Quốc. Ở nước ta than_đá là một khoảng sản quan_trọng .
+
+first==>Dầu mỏ và khí cháy cũng có nguồn_gốc từ thực_vật hoặc các chất hữu_cơ phân hủy dở_dang ở trong đất .
+Khu_vực có trữ_lượng lớn nhất_là Trung_Cận Đông, châu Phi và Liên Xô_(cũ) .
+Cho tới nay, con_người đã khai_thác trên 50 tỉ tấn dầu_mỏ và hàng chục ngàn tỉ mét khối khí cháy .
+
+first==>Ngoài_ra, trong sinh_quyển còn có năng_lượng ánh_sáng mặt trời, gió, sóng biển, thuỷ_triều .
+Con_người đã nghiên_cứu sử_dụng được một phần các loại năng_lượng này để có_thể thay_thế dần các nhiên_liệu trong đất đang cạn_kiệt và cũng hạn_chế được tình_trạng ô_nhiễm môi_trường .
+
+first==>Khoáng sản nguyên liệu: Đồng_vàng là 2 kim_loại được sử_dụng đầu_tiên vào thế_kỷ V và IV trước công_nguyên .
+Nhiều nước ở châu Á, châu Phi và châu Mĩ giàu khoáng_sản đã trở_thành thuộc địa, bị các nước tư_bản phát_triển khai_thác và làm bần_cùng .
+Việc khai_thác nhiều khoáng_sản như vàng,_đồng, chì, nhôm... đã ảnh_hưởng mạnh_mẽ tới môi trường, tác_động rất lớn tới cuộc_sống và sản_xuất của con_người .
+Việc đa`o đãi_vàng trong hơn chục năm gần_đây ở nhiều vùng trên đất_nước ta như Bắc_Thái, Tây_Nguyên... đã phá_hoại nhiều hoa màu,_làng mạc, sông_núi .
+
+first==>Việc khai_thác tận_lực khoáng_sản đang đặt_ra nguy_cơ tài_nguyên cạn_kiệt và ô_nhiễm môi_trường ngày_càng tăng .
+
+title: Tài_nguyên tái_sinh và tình_hình sử_dụng .
+
+sub_title: Rừng và lâm_nghiệp .
+
+first==>Khi con_người chưa hình thành, rừng bao_phủ hầu khắp lục_địa .
+Con_người với dân_số ngày_càng tăng, hoạt_động sống càng phong_phú thì rừng ngày_càng bị thu_hẹp ( phá rừng lấy đất trồng trọt, chặt_cây làm thuyền, làm nhà, làm nguyên_liệu công_nghiệp...) .
+Hiện nay, mỗi năm cây_xanh chỉ còn sản_sinh ra được 100 tỉ tấn chất hữu_cơ .
+
+first==>Ngoài việc cung_cấp gỗ, rừng còn có tác_dụng rất lớn trong việc điều_hoà lượng nước trên mặt đất: làm tăng độ ẩm không khí, làm giảm lượng nước chảy, hạn_chế lũ lụt, hạn_chế xói_mòn .
+
+first==>Loại_rừng hỗn_giao gồm nhiều loại cây, thuộc nhiều lứa tuổi, tuy sản_lượng thấp nhưng lại có_ý nghĩa sinh_thái lớn hơn rừng độc_canh .
+Việc quản_lý rừng bao_gồm cả động_vật, có_ý nghĩa sinh_thái to_lớn đối_với sinh_giới nói_chung và con_người nói_riêng .
+
+sub_title: Đất và nông_nghiệp .
+
+first==>Đất là nơi sản_xuất ra lương thực, thực_phẩm cho con_người và gia_súc .
+Đất còn là nơi để xây nhà, xây_dựng các khu công_nghiệp, làm_đường xá...
+
+first==>Đất nông_nghiệp đang bị thu_hẹp vì mật_độ dân_số tăng nhanh, do bị lấy để xây dựng; phát_triển công_nghiệp giao_thông vận_tải .
+Một phần_đất bị thoái_hoá do không_biết chăm_bón tốt nên bị xa mạc hoá .
+
+first==>Đất nông_nghiệp của Việt_Nam bình_quân đầu_người khoảng 0,1ha .
+
+first==>Phần lớn đất nông_nghiệp của ta hiện_nay được trồng lúa (64%) khoảng 20% trồng_màu, 8% trồng_cây lâu năm, 4% trồng_cỏ, 3% là kênh mương, ao_hồ .
+Nhiều vùng đất ở trung_du đang bị xói mòn, thoái_hoá (đất feralit); 46 vạn ha đất_cát và nhiều vùng đất_phèn chưa có điều_kiện cải_tạo tốt .
+
+sub_title: Tài_nguyên thuỷ_sản .
+
+first==>Tài nguyên vùng cửa sông, ven_biển rất đa_dạng và phong_phú, gồm nhiều sinh_vật ở nước và trên_cạn .
+Môi_trường cửa_sông có_nhiều loài động_vật, thực_vật chịu mặn và ưa lợ có giá_trị kinh_tế cao .
+Sản_lượng hải_sản ở vùng cửa_sông của Mỹ và Mêhicô cao gấp 20 lần vùng biển_khơi .
+Thành_phần cơ_bản của năng_suất vùng ven_biển là tảo hiển vi, chúng vừa là nguồn thức ăn, vừa là nguồn_cung_cấp ôxi to_lớn cho các sinh_vật trong nước. tảo nâu (rong mơ), tảo đỏ (rau câu)...là nguồn_thức ăn, nguồn dược_liệu (chế biến iốt, brôm,_thạch,...) và nguồn phân_bón có giá_trị .
+
+first==>Nhiều động_vật đáy ở ven_biển có giá_trị kinh_tế cao như trai,_sò, tôm, cua,_sao biển, hải_sâm .
+Cá là nguồn tài_nguyên phong_phú ở vùng ven bờ và thềm lục_địa .
+Chúng thường ăn nổi_va` đi từng đàn tuỳ thời_tiết và theo mùa .
+Rùa biển, rắn biển, chim biển, thú biển đều là nguồn_lợi ven_biển .
+Chim biển có trên 200 loài, rùa biển (vích, dồi mồi, bà tam...) vừa là thực_phẩm có giá trị, vừa là mặt_hàng mỹ_nghệ quí .
+
+first==>Tài nguyên_sinh vật biển vô_cùng to_lớn va` được khai_thác hàng năm tới 70 triệu tấn .
+Nhiều loại bị đánh_bắt quá mức như cá_voi, cá heo, cá thu, cá ngừ, cá chim, tôm_hùm ... đã trở_nên hiếm .
+
+first==>Tài nguyên nước_ngọt ở Việt nam đóng vai trò hết_sức quan_trọng trong đời_sống hàng_ngày của nhân_dân .
+Hiện_nay có tới 500 loài cá_nước ngọt, trong_đó có trên 50 loài có giá_trị kinh_tế lớn (chép,_trắm, trôi, mè,_quả...) .
+Phần lớn số loài cá_sống trong các dòng_chảy (sông, suối), chỉ có khoảng 50 loài cá phổ_biến trong các ao, hồ .
+Tôm,_cua, trai, ốc cũng là tài_nguyên đáng_kể của vùng_nước_ngọt .
+
+first==>Tài_nguyên ao, hồ đóng_góp một phần rất quan_trọng và thiết_thực đối_với đời_sống của nhân_dân .
+Phong_trào VAC (Vườn-Ao-Chuồng) đã góp_phần phát_triển tài_nguyên ao, hồ hiện_nay đã xây_dựng một_chuỗi thức_ăn ngắn, nhằm nhanh_chóng nâng_cao sản_lượng cá, tôm...; sử_dụng phân bón, thức_ăn và cá_con ương nhân_tạo theo qui trình; xử_lý nguồn chất_thải để biến_chất ô_nhiễm thành tài_nguyên .
+Hạn_chế việc sử_dụng thuốc trừ_sâu bằng các chất_độc hoá_học và thay_thế dần bằng thuốc trừ_sâu thảo_mộc nhằm phục_hồi nguồn tài_nguyên nước_ngọt .
+
+title: Tác_động của con_người và hậu_quả của nó đối_với sinh_quyển .
+
+sub_title: Tác_động của con_người tới sinh_quyển dân_số và môi_trường .
+
+first==>Trong suốt thời_gian tồn tại, con_người đã thường_xuyên tác_động trực_tiếp tới thiên_nhiên và cải_biến môi_trường sống .
+Loài_người đã khai_thác khoảng 50 tỉ tấn than đá, 2 tỉ tấn sắt và hàng triệu tấn kim_loại khác .
+Con_người đã nắn dòng sông, đa`o kênh, bạt núi, xây_dựng các trạm thuỷ_điện với các hồ_chứa_nước nhân tạo...Những hoạt_động đó đã ảnh_hưởng tới khí hậu, từ_đó tác_động mạnh tới sinh_quyển .
+Trước_đây rừng che_phủ trên 50% diện_tích trái đất,_nay chỉ còn khoảng 34% tổng_diện tích. Ở Việt_Nam cũng vậy, trước_đây ¾ đất_đai là rừng,_nay chỉ còn ¼ là rừng .
+Nhiều loại gỗ quí như gụ,_lát hoa, giáng hương,_sến, táu... đã bị khai_thác đến mức gần_như cạn_kiệt .
+
+first==>Rừng bị triệt_hạ nhiều làm_cho lượng ôxi trong không_khí và lượng_chất hữu_cơ sản_sinh bị giảm_sút rõ_rệt .
+Lượng nước dự_trữ do rừng giữ_lại ngày_càng ít dần, làm_cho quá_trình sa_mạc hoá và thảo_nguyên hoá càng tăng_nhanh .
+Đất trồng được nay chỉ còn chiếm 10% lục_địa .
+Quá_trình đô_thị hoá nhanh làm_cho diện_tích đất trồng ngày_càng bị thu_hẹp .
+Sự_phân_phối nước_ngọt cho người và cho vật nuôi, cây_trồng cũng bị hạn_chế .
+Có tới 60% diện_tích đất trồng trên thế_giới thiếu nước_ngọt .
+Tiến_bộ khoa_học kĩ_thuật được ứng_dụng tích_cực vào sản_xuất đã kéo_theo sự_nhiễm_bẩn của tất_cả các quyển .
+Do đốt_than và dầu_mỏ mà khói và khí đốt từ các nhà_máy đã thải vào khí_quyển hàng_năm 6.109 tấn CO2 và gần 108 tấn_SO2 .
+Nhiều thành_phố lớn ở Tây_Âu và Mỹ đã có hiện_tượng “sương mù hoá chất” gây độc_hại cho người và sinh_vật .
+Các chất_thải của nhà_máy làm_cho các hồ, ao, sông ngòi,_cửa biển, cảng và biển_cả bị nhiễm_bẩn ngày_càng nhiều .
+Các tàu_biển đã thải_ra biển va` đại_dương hàng năm chừng hơn 2 triệu tấn dầu, làm_chết nhiều sinh_vật_nổi và những sinh_vật khác ăn sinh_vật_nổi cũng chết_theo...
+
+first==>Dân số tăng quá nhanh trong mấy chục năm gần đây, với độ gia_tăng từ 1,7% đến 2% .
+Năm 1987 dân_số thế_giới đã tới 5 tỷ và ước_tính sẽ lên tới 6,5 tỷ vào năm 2000 .
+Nạn dân_số tăng quá nhanh làm ảnh_hưởng trước_tiên là diện_tích rừng va` đất trồng và làm_tăng ô_nhiễm môi_trường sống .
+
+sub_title: Vấn_đề ô_nhiễm môi_trường .
+
+first==>Ô nhiễm là sự_làm thay_đổi không mong muốn, tính_chất vật_lý, hoá học, sinh_học của không khí, đất,_nước của môi_trường sống, gây tác_động nguy_hại tức_thời hoặc trong tương_lai đến sức_khỏe va`đời sống con người, làm ảnh_hưởng đến quá_trình sản xuất, đến các tài_sản văn_hoá và làm tổn_thất nguồn tài_nguyên dự_trữ của con_người .
+
+first==>Mức ô_nhiễm được xác_định bằng 3 yếu_tố:
+
+first==>- Nguồn tài_nguyên bị mất_mát do dùng quá phí phạm, tạo_ra lượng_chất phế_thải quá lớn .
+
+first==>- Mức đầu_tư để trừ_khử và phòng_ngừa nạn ô_nhiễm .
+
+first==>- Mức giảm sức_khoẻ con_người .
+
+sub_title: Các chất gây ô_nhiễm .
+
+first==>Các khí_công_nghiệp phổ biến:_Ôxit cacbon (CO),_khí sunfurơ (SO2),_khí cacbonic (CO2), ôxit_nitơ (NO2), các loại hiđrô cacbua thoát ra từ máy nổ, khi có ánh_sáng mặt_trời đã liên_kết_lại và tạo_thành hợp_chất mới, độc hơn với tên “khói mù quang_hoá học” .
+
+first==>Thuốc trừ sâu và chất_độc hoá học:_DDT và các chất_độc hoá_học được sử_dụng rộng_rãi đã làm ô_nhiễm sinh_quyển .
+Chúng phát_tán theo nước và không khí, được tích_luỹ khi di_chuyển theo chuỗi thức ăn, từ thực_vật sang động_vật ăn thực_vật rồi sang động_vật ăn_thịt .
+
+first==>Các_chất này đã tàn_phá nhiều quần_xã sinh_vật ở nhiều vùng trên thế_giới .
+
+first==>Thuốc_diệt cỏ: Có 2 nhóm thuốc diệt cỏ: nhóm hợp_chất simazon_monoron gây_rối loạn quá_trình quang_hợp và nhóm 2,_4D và 2,_4, 5 – T_làm rụng_lá cây và huỷ_diệt có hệ_thống khi dùng với nồng_độ cao .
+Tuy nhiên, loại thuốc diệt_cỏ nguy_hiểm nhất lại là sản_phẩm cuối_cùng khi sản_xuất 2,_4, 5 – T_tức_là chất_điôxin .
+Chất này ở nồng_độ thấp cũng gây_ra quái_thai .
+
+first==>Các chất diệt_cỏ 2,_4D và 2,_4, 5 – T có điôxin đã bị đế_quốc Mĩ sử_dụng bừa_bãi để huỷ_diệt rừng và hoa_màu ở miền_Nam nước_ta từ tháng 8 – 1961 đến tháng 12 – 1970, trên một diện_tích hơn 6 triệu ha, làm_cho 50% số cây bị diệt, 1 triệu 62 vạn_người bị nhiễm độc, nhiều người bị ung thư, chửa trứng và hàng nghìn trẻ_em quái_thai ra_đời .
+
+first==>Các yếu_tố gây đột_biến: Sự_phát_triển mạnh_mẽ công_nghiệp hoá_học đã tạo những hợp_chất tổng_hợp dùng trong cuộc_sống hàng ngày, trong_đó có một số chất có khả_năng gây đột_biến .
+Việc sử_dụng năng_lượng nguyên_tử và các chất phóng_xạ trong khoa học, y học, kĩ_thuật và nông_nghiệp đã làm tăng tác_động của bức_xạ và yếu_tố hoá_học gây đột biến, ảnh_hưởng tới khả_năng di_truyền của con_người và những sinh_vật khác .
+
+first==>Sự tác_động của các yếu_tố gây đột_biến đối_với động_vật và cây_cối tạo nguồn nguyên_liệu cho quá_trình chọn_lọc tự_nhiên, còn đối_với con_người thì tác_động này làm xuất_hiện những đột_biến có hại, gây chết cho trẻ sơ_sinh hoặc làm ảnh_hưởng tới sự_phát_triển bình_thường về trí_khôn và tâm lí của trẻ .
+Những kết_quả nghiên_cứu trên khỉ và tế_bào người được nuôi_cấy chỉ ra rằng, đối_với người đã 30 tuổi nếu tiếp_nhận thêm 10 rơnghen nữa thì số đột_biến sẽ tăng_lên gấp đôi, do_đó số trẻ_em quái_dị do khuyết_tật di_truyền cũng tăng_lên rõ_rệt .
+Sau mỗi vụ nổ hạt nhân, các chất đồng_vị phóng_xạ sẽ thâm_nhập_vào thực_vật qua không khí, nước va`_đất .
+Các chất này qua chuỗi thức_ăn sẽ tích_tụ trong cơ_thể người và gây đột_biến di_truyền .
+Vụ nổ bom_nguyên_tử ở Hirôshima và Nagasaki đã làm thiệt_mạng hàng triệu người, cho tới bây_giờ vẫn còn nạn_nhân của đột_biến di_truyền do vụ nổ bom 35 năm về trước .
+Loài_người tiến_bộ đang đấu_tranh chống các vụ nổ hạt_nhân .
+Ngay trong hoà bình, việc sử_dụng năng_lượng hạt_nhân cũng phải rất thận_trọng .
+
+title: Bảo_vệ môi_trường và phát_triển bền_vững .
+
+sub_title: Các biện_pháp chống ô_nhiễm môi_trường .
+
+first==>Các biện_pháp hoá – công_nghệ: Sản_xuất theo chu_kỳ khép kín; khử, lọc_nước và khí thải; nghiên_cứu những nhiên_liệu mới không hoặc ít gây ô nhiễm; thay_thế dần các nhà_máy công_nghiệp đang dùng bằng các nhà_máy có hệ_thống cung_cấp nước khép_kín .
+
+first==>Các biện_pháp sinh – kĩ_thuật: Đảm_bảo lọc_nước theo hệ_thống ao lọc; phủ xanh các cơ_sở công_nghiệp; vận_dụng mạnh_mẽ hơn các biện_pháp đấu_tranh sinh học; xây_dựng những vùng liên_hợp kinh_tế rừng – săn_bắn, đồng_cỏ - săn bắn, hồ nuôi – đánh_bắt cá, xây_dựng nhiều khu rừng quốc gia. Ở những vùng liên_hợp kinh_tế này phải nghiên_cứu song_song việc qui hoạch nuôi_trồng và khai_thác theo phương_án tối_ưu .
+
+first==>Việc bảo_vệ rừng và thiên_nhiên hoang dại: Rừng không_chỉ là nguồn sản_xuất ra gỗ mà còn là một cỗ máy khổng_lồ của thiên_nhiên làm điều_hoà_khí hậu, giữ ẩm cho đất, góp_phần ngăn_chặn các nạn lũ lụt, xói_mòn đất_đai .
+Rừng còn là nơi lưu trữ, nuôi_sống và làm phát_triển nhiều loài cây va` động_vật hoang_dại quí hiếm .
+Do_đó việc bảo_vệ rừng và thiên_nhiên hoang_dại phải là một quốc sách, một công_việc chiến_lược của loài_người .
+
+first==>Mỗi quốc_gia cần có qui hoạch tổng_thể khoa học, vừa khai_thác rừng, vừa trồng_rừng, vừa bảo_vệ và nuôi động_vật hoang dại, vừa cho_phép săn_bắn một lượng đã tính_toán không làm ảnh_hưởng tới quần thể...Chính nhờ các biện_pháp tổ_chức kinh_tế này mà nhiều nước công_nghiệp đã gây lại được nhiều cây, con quí hiếm .
+
+first==>Nhiều nước đã trồng_rừng quanh các thành_phố lớn để cải_tạo khí_hậu, chống ô_nhiễm môi_trường đô_thị .
+Việc bảo_vệ rừng bao gồm: xây_dựng các khu rừng_cấm quốc gia, qui_định khai_thác và nuôi giữ hợp_lý các cây va` động_vật cư_trú trong rừng, tăng_cường sử_dụng các biện_pháp đấu_tranh sinh_học, bảo_đảm sự_cân_bằng sinh_học trong rừng; sử_dụng thuốc trừ_sâu hợp_lý khi cần_thiết và chống nạn cháy_rừng .
+
+first==>Sự cải_biến khí_hậu và khử_mặn nước biển: Con_người đã có_nhiều cố_gắng trong việc cải_biến khí_hậu theo các hướng:
+
+first==>- Tăng_cường trồng_rừng ở vùng đồi_trọc (Việt nam, Thái_Lan, Nhật_Bản, Inđônêxia...), ở sa_mạc (Ôman,_Angiêri...) .
+
+first==>- Tạo_nên những kênh đa`o nhân_tạo (điển_hình là kênh Suêz) vì mục_đích giao thông, thuỷ_lợi; cải_tạo các vùng hoang và cải_tạo khí_hậu .
+Việc xây_dựng các nhà_máy thuỷ_điện cũng có tác_dụng gián_tiếp cải_tạo khí_hậu .
+Tuy_nhiên cần chú_ý tới việc điều_hoà lượng nước cung_cấp cho vùng hạ_lưu chống sự_xâm_nhập của nước_biển .
+Ví dụ, vùng Xuân Thuỷ (hạ_lưu của nhà_máy thuỷ_điện Hoà Bình) và vùng duyên_hải thành_phố Hồ_Chí_Minh (hạ_lưu của nhà_máy thuỷ_điện Trị_An) .
+
+first==> Con_người cũng đã thử “thay trời làm mưa” .
+Tuy nhiên, kết_quả có_khi ngược lại: tuy_có tạo được mưa tức_thời nhưng cả mùa hè lượng_mưa lại giảm .
+Dường_như mưa nhân_tạo đã làm trời trở_lạnh, hạn_chế sự_hình_thành mây của những cơn_mưa_rào .
+
+first==> Một_số nước công_nghiệp phát_triển đã khử_mặn nước_biển với qui_mô nhỏ để lấy nước_ăn cho vùng dân_cư đông_đúc ven_biển .
+Tuy_nhiên khi khử_mặn nước_biển với qui_mô lớn để lấy nước_ngọt dùng_cho công_nghiệp và nông_nghiệp thì lại nảy_sinh vấn_đề giá_thành nước_ngọt để sử_dụng trong sản_xuất quá đắt, thêm nữa chỗ muối bị tích_tụ_lại gây nhiễm_bẩn môi_trường .
+
+first==>Các hệ_sinh_thái trao_đổi_chất nhân_tạo: Cùng với tiến_bộ khoa_học kĩ thuật, con_người đi tới những nơi chưa_từng có_người ở, không có đất để trồng (ở Bắc_Cực, Nam_Cực và những đảo_đá) .
+Để trồng_rau ở những nơi đó (nguồn vitamin tự nhiên), các nhà_khoa_học đã nghiên_cứu thành_công một môi_trường nước nhân_tạo để thay đất (môi trường dung_dịch muối khoáng),_dùng đe`n điện để bảo_đảm đủ ánh_sáng và nhiệt_độ thích hợp, sử_dụng biện_pháp làm_cho không_khí bão_hoà CO2 .
+Từ lượng thực_vật được sản_sinh người_ta đã chế_biến được nhiều loại thức_ăn khác_nhau .
+
+first==>Thành tựu trồng_cây trong môi_trường nước cũng tạo_ra khả_năng giải_quyết vấn_đề thức_ăn trong du_hành vũ_trụ .
+
+sub_title: Sử_dụng hợp_lý, bảo_vệ và phục_hồi nguồn tài_nguyên thiên_nhiên .
+
+first==>1 .
+Sử_dụng các biện_pháp nhằm nâng_cao năng_suất sinh_học của hệ_sinh_thái:
+
+first==>- Bảo_vệ rừng già, rừng trên nguồn và trên sườn đồi, núi để ngăn lũ; không cày xới_đất khi làm ruộng_nương trên sườn đồi dốc quá 15o .
+Tiến_hành trồng_cây gây_rừng .
+
+first==>- Cải_tạo điều_kiện tự_nhiên của hệ_sinh_thái (bón phân, làm thuỷ_lợi); luân_canh hợp lý, chọn giống thích_hợp và có năng_suất cao .
+
+first==>- Đẩy_mạnh việc thuần hoá động_vật, thực_vật .
+
+first==>- Đẩy_mạnh biện_pháp đấu_tranh sinh_học, bảo_đảm sự_cân_bằng sinh_học trong tự_nhiên .
+
+first==>2 .
+Đẩy_mạnh cải_tạo_thiên nhiên, hoang mạc, sông ngòi, biển nhằm mở_rộng diện_tích nuôi_trồng .
+Sa_mạc Karacum, sa_mạc Nội Mông và Tân Cương (Trung Quốc), sa_mạc Sahara đã được cải_tạo một bộ_phận; kế_hoạch cải_tạo Bắc_Băng_Dương - một vùng rất giàu khoáng sản, đang được đề_xuất .
+
+first==>3 .
+Xây_dựng các khu bảo_vệ tự_nhiên và các khu rừng_cấm .
+Nhiều nước xây_dựng các vườn_quốc_gia hoặc rừng_cấm như kiểu Vườn quốc_gia Cúc Phương để bảo_vệ các nguồn quí; bảo_vệ và khai_thác hợp_lý các khu_vực sông, hồ,_ven biển... tiến_tới mở_rộng các bãi nuôi nhân_tạo...
+
+sub_title: Luật bảo_vệ môi_trường .
+
+first==>Việc sử_dụng bừa_bãi nguồn năng_lượng và các nguồn tài_nguyên khác trên trái_đất đã gây nên nhiều hậu_quả nặng_nề (tầng_ôzôn bị phá huỷ; đất đai, không khí, nguồn_nước bị ô_nhiễm nghiêm trọng; các vụ nổ hạt_nhân và dò rỉ ở các nhà_máy điện nguyên_tử làm nhiều vùng trái_đất bị nhiễm_xạ...) .
+Việc bảo_vệ môi_trường đã trở_thành một yêu_cầu cấp_bách của thế_giới .
+
+first==>Năm 1971, tổ_chức UNESCO đã thông_qua chương_trình sinh_học quốc_tế mang tên “Con người và sinh quyển”, nghiên_cứu những đổi_thay của sinh_quyển và tài_nguyên dưới những tác_động của con_người .
+Năm 1975, hội_nghị an_ninh và hợp_tác Châu_Âu họp ở Helsinki_(Phần Lan) đã ghi_rõ trong hiệp_ước là phải hết_sức bảo_vệ môi_trường và sử_dụng hợp_lý nguồn tài_nguyên của thiên_nhiên .
+
+first==>Nhiều nước đã công_bố luật bảo_vệ môi_trường và ra những sách đỏ, cấm không_được săn bắn, thu hái những động_vật và thực_vật quí hiếm trong_nước .
+Năm_1963, nhà_nước ta đã ban_hành “Điều_lệ tạm_thời về săn_bắt chim, thú_rừng và khai_thác, bảo_vệ nguồn_lợi thuỷ_sản” ngăn_cấm việc phá rừng, khai_thác gỗ bừa_bãi va` đốt_rừng .
+
+first==>Đất nước ta sau hơn 30 năm bị tàn_phá huỷ_diệt nặng_nề, nhân_dân chưa có thói_quen và ý_thức bảo_vệ môi_trường .
+Luật bảo_vệ môi_trường của nước ta đã được quốc_hội thông_qua năm 1993 nêu_lên những qui_định tập_trung vào các vấn_đề sau: bảo_vệ các thành_phần cơ_bản của môi trường, bảo_vệ môi_trường tổng_hợp tại các khu_vực khác nhau, phòng_chống ô_nhiễm và tai_biến môi_trường .
+
+first==>Luật bảo_vệ môi_trường bao_gồm các qui_định về việc sử_dụng hợp_lý tài_nguyên thiên_nhiên và môi_trường, ngăn_chặn các tác_động tiêu cực, phục_hồi các tổn thất, không ngừng cải_thiện tiềm_năng tài_nguyên thiên_nhiên và chất_lượng môi trường, nhằm nâng_cao đời_sống vật_chất và tinh_thần của nhân_dân .
+Bảo_vệ môi_trường bằng pháp_luật là biện_pháp hết_sức quan_trọng .
+
+first==>Mỗi học_sinh phải có trách_nhiệm bảo_vệ môi_trường, tuyên_truyền mọi_người có_ý_thức và hành_động bảo_vệ môi_trường theo luật, cụ_thể là:
+
+first==>- Phải tuyên_truyền, giáo_dục cho mọi_người có những hiểu_biết cần_thiết về môi trường, về sinh_thái_học và di_truyền_học .
+
+first==>- Tuyên_truyền và tham_gia việc chống thử và sử_dụng vũ_khí hoá_học và vũ_khí hạt_nhân .
+
+first==>- Tuyên_truyền và thực_hiện luật bảo_vệ môi_trường .

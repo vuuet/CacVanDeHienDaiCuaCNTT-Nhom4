@@ -1,334 +1,523 @@
-title: Tổng quan về kiểm thử .
-
-first==>Mục đích của kiểm thử là đánh giá chất lượng hoặc tính chấp nhận được của sản phẩm .
-Tính chấp nhận được ở đây có thể hiểu là sản phẩm dùng được, có ích ở một mức độ nào đó .
-Kiểm thử cũng nhằm phát hiện sai sót hoặc các vấn đề về sản phẩm .
-Một số kiểm thử viên đôi khi nghĩ kiểm thử là tìm sai sót và khi kiểm tra chương trình chỉ chú trọng vào việc tìm các vấn đề của sản phẩm hơn là kiểm tra mức độ đúng đắn của chương trình .
-Quan điểm này đôi khi rất thực tế, vì họ nghĩ phần chạy đúng của chương trình người lập trình đã làm rồi, đã chạy thử rồi, xong mới chuyển cho kiểm thử viên kiểm tra lại .
-Do đó họ tập trung vào kiểm tra những trường hợp mà người lập trình chưa tính đến .
-Chúng ta cần kiểm thử vì kinh nghiệm cho thấy con người luôn có thể mắc lỗi .
-Điều này đặc biệt hay xảy ra trong lĩnh vực phát triển phần mềm .
-Chương này sẽ phác họa một bức tranh tổng thể về kiểm thử phần mềm .
-Các chương còn lại sẽ mô tả bức tranh này chi tiết hơn .
-
-sub-title: Các thuật ngữ và định nghĩa cơ bản về kiểm thử .
-
-first==>Kỹ nghệ kiểm thử đã phát triển và tiến hoá hàng chục năm nhưng các thuật ngữ trong các tài liệu khác nhau vẫn chưa thực sự thống nhất, trong cả tiếng Anh lẫn tiếng Việt .
-Các thuật ngữ được trình bày trong cuốn sách này dựa vào các thuật ngữ chuẩn được phát triển bởi IEEE (Viện Kỹ nghệ điện và điện tử) với việc chọn lọc cẩn thận các thuật ngữ tiếng Việt tương ứng .
-
-first==>Lỗi (Error): Con người luôn có thể phạm lỗi .
-Khi lập trình viên phạm lỗi trong lập trình, họ đã tạo ra các bug (con bọ), hay nói chung là các sai sót .
-Lỗi có thể phát tán .
-Chẳng hạn, một lỗi về xác định yêu cầu có thể dẫn đến sai sót trong bản thiết kế và nó lại gây sai tiếp khi lập trình theo thiết kế này .
-Lỗi là nguyên nhân dẫn đến sai .
-
-first==>Sai sót (Fault): Sai sót, đôi khi chúng ta sẽ gọi ngắn gọn là sai, là kết quả của lỗi .
-Nói khác đi, khi chúng ta mắc lỗi thì chúng ta đã tạo ra sai sót .
-Cũng có thể nói sai sót là một biểu hiện của lỗi ở dạng cụ thể, chẳng hạn chương trình, văn bản, sơ đồ dòng dữ liệu, biểu đồ lớp, v.v .
-Sai sót nhiều khi rất khó phát hiện .
-Sai sót có hai loại: sai và sót .
-Khi người thực hiện làm không đúng việc đáng phải làm họ đã gây ra sai về nhiệm vụ .
-Khi người thực hiện mắc lỗi quên, làm thiếu thì họ đã làm sót .
-Ví dụ khi người thu thập yêu cầu ghi chép thiếu yêu cầu của khách hàng thì họ đã mắc lỗi làm sót .
-Hay khi người thiết kế mắc lỗi quên, làm thiếu trong quá trình thiết kế thì kết quả của lỗi này là thiết kế bị thiếu một phần nào đó .
-Loại sai do quên khó phát hiện và khó sửa hơn loại sai về nhiệm vụ .
-Một số thuật ngữ khác cũng được dùng cho sai sót là khiếm khuyết (defect), hay bọ (bug) .
-
-first==>Có lẽ cần phải nói rằng trên thực tế chúng ta thường sử dụng từ lỗi thay cho từ sai .
-Khi phát hiện sai sót trong chương trình, chúng ta hay nói chương trình có lỗi, hay hàm này có lỗi, hay dòng lệnh này có lỗi. Ở đây chúng ta đều cùng hiểu đúng ý nghĩa của từ lỗi này - chỉ là cách dùng từ đôi khi chưa cần chính xác để phân biệt hành động mắc lỗi, và sản phẩm của việc mắc lỗi đó .
-
-first==>Thất bại (Failure): Giả sử chúng ta có một chương trình có một sai sót ở dòng lệnh số 10 .
-Khi chúng ta chạy chương trình và câu lệnh ở dòng số 10 này được thực hiện thì chúng ta nói là một sai đã được thực thi .
-Khi một sai được thực thi thì một thất bại đã xảy ra .
-Có hai điều cần lưu ý ở đây: một là thất bại chỉ xuất hiện ở dạng sai có thể thực thi được mà thông thường là mã nguồn, hai là các thất bại chỉ liên kết với các lỗi về nhiệm vụ .
-
-first==>Một câu hỏi đặt ra là các thất bại do lỗi quên thì được xử lý thế nào và những lỗi không bao giờ được thực thi, hoặc không được thực thi trong khoảng thời gian dài cần được xử lý ra sao ?
-Vi-rút Michaelangelo là một ví dụ về lỗi loại này .
-Nó chỉ được tiến hành vào ngày sinh của Michael Angelo, tức ngày 6/3 mà thôi .
-Câu trả lời nằm ở chỗ: việc khảo sát, tức là phân tích và duyệt mã, thiết kế hoặc đặc tả có thể ngăn chặn nhiều thất bại bằng cách phát hiện ra các lỗi thuộc cả hai loại .
-
-first==>Sự cố (Incident): Khi một thất bại xảy ra đôi khi khi người dùng hoặc người kiểm thử không nhìn thấy được .
-Khi thất bại là nhìn thấy được thì chúng ta gọi nó là sự cố .
-Như vậy sự cố là triệu chứng của thất bại và người dùng hoặc người kiểm thử có thể dựa trên các triệu chứng này để nhận biết ra thất bại .
-Ví dụ lỗi người lập trình quên giải phóng một vùng bộ nhớ sẽ gây ra thất bại là bị mất bộ nhớ (memory leak) .
-Khi chương trình chạy, thất bại xảy ra là bộ nhớ bị mất nhưng người dùng và người kiểm thử đều không nhận thấy ngay .
-Chỉ sau một thời gian đủ dài thì bộ nhớ mới bị hết và lúc này mới gây ra sự cố là chương trình thông báo lỗi hoặc có các biểu hiện không bình thường nhận thấy được .
-
-first==>Kiểm thử: Rõ ràng việc kiểm thử liên quan đến các khái niệm trên: lỗi, sai, thất bại và sự cố .
-Tuy nhiên cũng có hai mục đích của một phép thử: tìm thất bại hoặc chứng tỏ phần mềm là chạy đúng đắn .
-Việc tìm thất bại đa số dựa trên việc phát hiện sự cố .
-
-first==>Ca kiểm thử: Mỗi ca kiểm thử có một tên (định danh) và được gắn với một hành vi của chương trình .
-Một ca kiểm thử gồm một bộ dữ liệu đầu vào và một danh sách các giá trị đầu ra mong đợi mà phần mềm sẽ tạo ra với bộ dữ liệu đầu vào đó .
-
-first==>Yêu cầu của khách hàng và đặc tả của phần mềm: Phần mềm được viết để thực hiện các nhu cầu của khách hàng .
-Các nhu cầu của khách hàng được thu thập, phân tích và khảo cứu và là cơ sở để quyết định chính xác các chức năng mà sản phẩm phần mềm cần phải có .
-Dựa trên nhu cầu của khách hàng và các yêu cầu bắt buộc khác, tài liệu đặc tả được xây dựng để mô tả chính xác các yêu cầu mà sản phẩm phần mềm cần đáp ứng, và có giao diện thế nào .
-Tài liệu đặc tả là cơ sở để đội ngũ phát triển phần mềm xây dựng sản phẩm phần mềm .
-Khi chúng ta nói đến thất bại ở trên là chúng ta nói đến việc sản phẩm phần mềm khộng hoạt động đúng như đặc tả .
-Do đó, lỗi do quên được coi là tương ứng với các lỗi khi xây dựng đặc tả .
-
-first==>Kiểm chứng và thẩm định: Kiểm chứng (verification) và thẩm định (validation) hay được dùng lẫn lộn, nhưng thực ra chúng có ý nghĩa khác nhau .
-Kiểm chứng là quá trình để đảm bảo rằng một sản phẩm phần mềm thỏa mãn đặc tả của nó .
-Còn thẩm định là quá trình để đảm bảo rằng sản phẩm đáp ứng được yêu cầu của người dùng .
-Trong thực tế, chúng ta cần thực hiện kiểm chứng trước khi thực hiện việc thẩm định .
-Vì vậy, chúng ta có thuật ngữ V&V (Verification & Validation) .
-Lý do của việc này là chúng ta cần đảm bảo sản phẩm đúng với đặc tả trước .
-Nếu thực hiện việc thẩm định trước thì khi phát hiện ra lỗi chúng ta không thể xác định được lỗi này do đặc tả sai hay do lập trình sai so với đặc tả .
-
-first==>Chất lượng và độ tin cậy của phần mềm: Theo từ điển, chất lượng của một sản phẩm được thể hiện bằng các đặc trưng phù hợp với đặc tả của nó .
-Theo cách hiểu này, chất lượng của một sản phẩm phần mềm là sự đáp ứng các yêu cầu về chức năng, sự hoàn thiện và các chuẩn đã được đặc tả, cùng các đặc trưng mong chờ từ mọi sản phẩm phần mềm chuyên nghiệp .
-Chất lượng phần mềm đặc trưng cho “độ tốt, độ tuyệt hảo” của phần mềm, và gồm có các yếu tố về chất lượng như: tính đúng đắn (hành vi đúng như đặc tả), tính hiệu quả (tiết kiệm thời gian và tiền bạc), độ tin cậy, tính khả kiểm thử (kiểm thử được và dễ), dễ học, dễ sử dụng, dễ bảo trì, v.v .
-
-first==>Như vậy, độ tin cậy chỉ là một yếu tố để đánh giá chất lượng phầm mềm .
-Người kiểm thử hay nhầm lẫn độ tin cậy với chất lượng .
-Khi kiểm thử đạt tới mức phần mềm chạy ổn định, có thể tin và dựa vào nó được (theo thuật ngữ công nghệ phần mềm là có thể phụ thuộc vào nó), người kiểm thử thường cho rằng phần mềm đã đạt chất lượng cao .
-Các yếu tố về mặt chất lượng mà liên quan trực tiếp đến việc phát triển phần mềm được gọi là các tiêu chuẩn chất luợng như tính có cấu trúc, tính đơn thể, tính khả kiểm thử, v.v .
-
-first==>Độ tin cậy của phần mềm là xác suất để phần mềm chạy không có thất bại trong một khoảng thời gian nhất định .
-Nó được xem là một yếu tố quan trọng của chất lượng phần mềm .
-Ngoài ra, thời gian trung bình cho việc khắc phục một sự cố cũng là một thông số quan trọng trong việc đánh giá độ tin cậy của sản phẩm phần mềm .
-
-first==>Vai trò của kiểm thử phần mềm: Kiểm thử phần mềm đóng vai trò quan trọng trong việc đánh giá và nâng cao chất lượng của sản phẩm phần mềm trong quá trình phát triển .
-Một mặt, thông qua chu trình “kiểm thử - tìm lỗi - sửa lỗi” ta hy vọng chất lượng của sản phẩm phần mềm sẽ được cải tiến .
-Mặt khác, thông qua việc tiến hành kiểm thử mức hệ thống trước khi cho lưu hành sản phẩm, ta biết được sản phẩm của ta tốt ở mức nào .
-Vì thế, nhiều tác giả đã mô tả việc kiểm thử phần mềm là một qui trình kiểm chứng để đánh giá và tăng cường chất lượng của sản phẩm phần mềm .
-Qui trình này gồm hai công việc chính là phân tích động và phân tích tĩnh .
-
-first==>• Phân tích tĩnh: Việc phân tích tĩnh được làm dựa trên việc khảo sát các tài liệu được xây dựng trong quá trình phát triển sản phẩm như tài liệu đặc tả yêu cầu người dùng, mô hình phần mềm, hồ sơ thiết kế và mã nguồn phần mềm .
-Các phương pháp phân tích tĩnh truyền thống bao gồm việc khảo sát đặc tả và mã nguồn cùng các tài liệu thiết kế .
-Các kỹ thuật khảo sát này sẽ được giới thiệu trong Chương 4 .
-Ta cũng có thể dùng các kỹ thuật phân tích hình thức như kiểm chứng mô hình (model checking) và chứng minh định lý (theorem proving) để chứng minh tính đúng đắn của thiết kế và mã nguồn .
-
-first==>Các kỹ thuật này tương đối phức tạp và nằm ngoài khuôn khổ của cuốn giáo trình này .
-Đặc điểm chung của các phương pháp phân tích tĩnh là ta không cần thực thi chương trình phần mềm mà chỉ duyệt, lý giải về tất cả các hành vi có thể của chương trình khi nó được thực thi .
-Tối ưu hóa của chương trình dịch là một ví dụ về phân tích tĩnh .
-
-first==>• Phân tích động: Phân tích động cần thực thi chương trình để phát hiện những thất bại có thể có của chương trình .
-Vì gần như không thể thực thi chương trình với tất cả các dữ liệu vào có thể, ta chỉ có thể chọn một tập con các dữ liệu vào để thực thi, gọi là các “ca kiểm thử” .
-Chọn như thế nào để được một tập các bộ dữ liệu vào hiệu quả (tức là các bộ dữ liệu có xác suất phát hiện thất bại (nếu có) cao hơn) là công việc cần suy nghĩ và là nội dung cơ bản của các giáo trình này .
-
-first==>Bằng việc phân tích tĩnh và động, người kiểm thử muốn phát hiện nhiều thất bại nhất có thể được để chúng có thể được sửa ở các giai đoạn sớm nhất trong quá trình phát triển .
-Phân tích tĩnh và động là hai kỹ thuật bổ sung cho nhau và cần được làm lặp đi lặp lại nhiều trong quá trình kiểm thử .
-
-first==>Hình 1.1 mô tả một mô hình vòng đời kiểm thử .
-Chúng ta có thể thấy trong quá trình phát triển phần mềm có ba giai đoạn chúng ta có thể mắc lỗi: lúc đặc tả, lúc thiết kế và lúc lập trình .
-Lỗi ở giai đoạn trước tạo ra sai lan truyền sang các giai đoạn sau của quá trình phát triển .
-Một nhà kiểm thử lỗi lạc đã tóm tắt vòng đời này như sau: Ba giai đoạn đầu là “gây ra sai”, giai đoạn kiểm thử là để tìm sai, và ba giai đoạn cuối là để “sửa sai” [Pos90] .
-Bước sửa sai lại có thể không những không sửa được sai mà còn gây ra các sai mới, hoặc sửa được sai nhưng lại gây ra sai khác .
-Tức là việc sửa sai có thể làm cho phần mềm đang đúng trở thành sai .
-
-first==>Chúng ta sẽ thảo luận thêm việc này trong phần kiểm thử hồi quy ở Chương 10 .
-
-first==>Các khái niệm mô tả các thuật ngữ trên đây cho thấy các ca kiểm thử chiếm vị trí trung tâm trong kiểm thử dựa trên phân tích động .
-Quá trình kiểm thử dựa trên phân tích động được chia thành các bước sau: lập kế hoạch kiểm thử, phát triển ca kiểm thử, chạy các ca kiểm thử, và đánh giá kết quả kiểm thử .
-Tiêu điểm của cuốn giáo trình này là việc xác định tập hiệu quả các ca kiểm thử, tức là các ca kiểm thử giúp ta giảm chi phí phát hiện sai sót trong phần mềm và khẳng định chất lượng của phần mềm .
-
-sub-title: Ca kiểm thử .
-
-first==>Cốt lõi của kiểm thử phần mềm là việc xác định một tập các ca kiểm thử cho phần tử cần kiểm thử .
-Vậy các ca kiểm thử cần có những thông tin gì ?
-Hiển nhiên nhất là đầu vào .
-Đầu vào có hai kiểu: tiền điều kiện (pre-condition) - tức là điều kiện cần thỏa mãn trước khi tiến hành ca kiểm thử - và dữ liệu đầu vào thực sự được xác định bởi phương pháp kiểm thử .
-Thông tin tiếp theo của ca kiểm thử là đầu ra mong đợi .
-Cũng có hai loại đầu ra: hậu điều kiện (post-condition) và dữ liệu đầu ra thực sự .
-Phần đầu ra của ca kiểm thử thường hay bị xem nhẹ vì nó là phần khó xác định .
-Ví dụ ta cần kiểm thử phần mềm tìm đường đi tối ưu cho máy bay khi cho trước các ràng buộc về hành lang bay và dữ liệu về thời tiết trong ngày của chuyến bay .
-Đường đi tối ưu thực sự là gì? Có nhiều câu trả lời cho câu hỏi này .
-
-first==>Câu trả lời của giới học giả sẽ là: tồn tại một đường đi tối ưu .
-Câu trả lời trên thực tế cho bài toán này, được gọi là kiểm thử tham chiếu, là hệ thống được kiểm thử dưới sự giám sát của các chuyên gia về lĩnh vực ứng dụng của phần mềm và người này sẽ kết luận kết quả đầu ra đối với dữ liệu đầu vào đó có chấp nhận được hay không .
-
-first==>Hoạt động kiểm thử kéo theo các việc thiết lập các tiền điều kiện cần thiết, cung cấp đầu vào của ca kiểm thử, quan sát các đầu ra và so sánh các đầu ra với các đầu ra mong đợi để kết luận kiểm thử đã đạt (passed) hay trượt (failed) .
-
-first==>Hình 1.2 mô tả các thông tin cơ bản của một ca kiểm thử .
-Các trường thông tin này chủ yếu phục vụ việc quản lí kiểm thử .
-Các ca kiểm thử cần phải có mã số và lý do tồn tại (theo đặc tả yêu cầu cũng là một lý do tốt) .
-Lịch sử tiến hành của một ca kiểm thử bao gồm cả việc chúng được chạy bởi ai và chạy khi nào, kết quả của mỗi lần chạy ra sao, đạt hay trượt và được chạy trên phiên bản nào của phần mềm cũng là thông tin hữu ích .
-Với các ca kiểm thử cho các hoạt động kiểm thử giao diện người dùng, ngoài thông tin về đầu vào, chúng ta cần bổ sung thêm các thông tin về trình tự nhập các đầu vào cho giao diện .
-Tóm lại, ta cần nhận thức rằng ca kiểm thử ít nhất cũng quan trọng như mã nguồn .
-Các ca kiểm thử cần được phát triển, khảo duyệt (review), sử dụng, quản lý và lưu trữ một cách khoa học .
-
-sub-title: Mô tả bài toán kiểm thử qua biểu đồ Venn .
-
-first==>Kiểm thử chủ yếu quan tâm đến hành vi của chương trình; mà hành vi lại độc lập với cấu trúc của chương trình - góc nhìn chính của người lập trình .
-Góc nhìn cấu trúc tập trung vào “nó là cái gì”, còn góc nhìn hành vi lại tập trung vào “nó làm gì” .
-
-first==>Một trong những khó khăn của người kiểm thử là các tài liệu họ sử dụng thường được người phát triển viết ra và viết cho họ (người phát triển), nên chúng thiên về thông tin cấu trúc và coi nhẹ thông tin về hành vi .
-Chuúng ta sẽ sử dụng một biểu đồ Venn để làm rõ một số băn khoăn về kiểm thử và chương trình .
-Khái biệm biểu đồ Venn được trình bày trong Chương 3 .
-
-first==>Xét một vũ trụ các hành vi chương trình .
-Cho một chương trình cùng đặc tả của nó .
-Gọi S là tập các hành vi được đặc tả và P là tập các hành vi của chương trình .
-Hình 1.3 mô tả mối quan hệ giữa vũ trụ các hành vi, các hành vi được lập trình và các hành vi được đặc tả .
-Trong vũ trụ các hành vi, những hành vi được đặc tả nằm trong vòng tròn với nhãn S, còn những hành vi được lập trình nằm trong vòng tròn với nhãn P  .
-Từ biểu đồ này, ta thấy rõ các bài toán mà người kiểm thử phải giải quyết .
-Nếu có hành vi được đặc tả nhưng không được lập trình thì đây là những sai do quên .
-Ngượ lại, nếu có những hành vi được lập trình nhưng không được đặc tả, thì đây là sai về nhiệm vụ (commission) - làm sai nên hành vi không đúng như mong muốn .
-Phần giao giữa S và P là phần "‘đúng đắn"’, các hành vi vừa được đặc tả vừa được cài đặt .
-Chú ý rằng tính đúng đắn phải gắn với đặc tả và cài đặt và là khái niệm tương đối, không phải tuyệt đối .
-
-first==>Vòng tròn mới (vòng tròn T ) trong Hình 1.4 là hành vi của các ca kiểm thử .
-
-first==>Lưu ý rằng tập các hành vi của chương trình nằm trọn trong vũ trụ hành vi của ta. Ở đây một ca kiểm thử cũng được coi là xác định một hành vi .
-Xét mối quan hệ giữa S, P và T  .
-Có thể có các hành vi được đặc tả mà không được kiểm thử (các miền 2 và 5), các hành vi được đặc tả và được kiểm thử (các miền 1 và 4), và các ca kiểm thử tương ứng với các hành vi không được đặc tả (các miền 3 và 7) .
-
-first==>Tương tự, có thể có các hành vi được lập trình mà không được kiểm thử (các miền 2 và 6), các hành vi được lập trình và được kiểm thử (các miền 1 và 3), và các ca kiểm thử tương ứng với các hành vi không được lập trình (các miền 4 và 7) .
-
-first==>Việc xem xét tất cả các miền này là hết sức quan trọng .
-Nếu có các hành vi được đặc tả mà không có các ca kiểm thử tương ứng, việc kiểm thử là chưa đầy đủ .
-Nếu có các ca kiểm thử tương ứng với các hành vi không được đặc tả, có thể có hai khả năng: hoặc đặc tả còn thiếu hoặc ca kiểm thử không đảm bảo .
-Theo kinh nghiệm, một người kiểm thử tốt sẽ thường cho các ca kiểm thử thuộc loại đầu, và đấy chính là lý do người kiểm thử cần tham gia vào giai đoạn khảo duyệt đặc tả và thiết kế (xem chương 4) .
-
-first==>Ta có thể thấy việc kiểm thử như là công việc của một nghệ nhân: người kiểm thử có thể làm gì để làm cho miền tương tương giao của các tập (miền 1) là lớn nhất có thể ?
-Làm thế nào để xác định các ca kiểm thử trong tập T  ?
-Câu trả lời là các ca kiểm thử cần được xác định bởi một phương pháp kiểm thử .
-Chính khuôn khổ này cho phép ta so sánh tính hiệu quả của các phương pháp kiểm thử khác nhau như sẽ được giới thiệu trong các chương 5, 6 và 7 .
-
-sub-title: Việc xác định các ca kiểm thử .
-
-first==>Có hai cách tiếp cận cơ bản để xác định các ca kiểm thử là kiểm thử chức năng hay kiểm thử hộp đen (black-box testing) và kiểm thử cấu trúc (kiểm thử hộp trắng - white-box testing) .
-Mỗi cách tiếp cận có phương pháp xác định ca kiểm thử khác nhau và được gọi chung là phương pháp kiểm thử .
-
-sub-title: Kiểm thử chức năng .
-
-first==>Kiểm thử chức năng (kiểm thử hộp đen) dựa trên quan niệm rằng bất kỳ chương trình nào cũng được coi là một hàm ánh xạ các giá trị từ miền dữ liệu đầu vào vào miền dữ liệu đầu ra của nó .
-Khái niệm này được dùng chung trong kỹ thuật khi các hệ thống đều được coi là các hộp đen .
-Chính điều này dẫn đến thuật ngữ kiểm thử hộp đen, trong đó nội dung của hộp đen (việc cài đặt) không được biết, và chức năng của hộp đen được hiểu theo các dữ liệu đầu vào và dữ liệu đầu ra của nó .
-Trong thực tế, chúng ta thường thao tác hiệu quả với những kiến thức về hộp đen .
-Chính điều này là trung tâm của khái niệm định hướng đối tượng .
-Chẳng hạn, hầu hết mọi người lái xe thành thạo với kiến thức hộp đen .
-
-first==>Với cách tiếp cận của kiểm thử chức năng, để xác định các ca kiểm thử, thông tin duy nhất được dùng là đặc tả của phần mềm cần kiểm thử .
-Có hai lợi điểm chính của các ca kiểm thử được sinh ra bởi cách tiếp cận kiểm thử chức năng: chúng độc lập với việc phần mềm được cài đặt thế nào, và vì thế khi cài đặt thay đổi thì các ca kiểm thử vẫn dùng được, đồng thời các ca kiểm thử được phát triển song song và độc lập với việc cài đặt hệ thống .
-Do đó, cách tiếp cận này rút gọn được thời gian phát triển của dự án .
-Điểm yếu của cách tiếp cận này là các ca kiểm thử thường có thể có tính dư thừa đáng kể trong các ca kiểm thử và hố phân cách .
-
-first==>Hình 1.6 mô tả các ca kiểm thử kết quả xác định bởi các phương pháp kiểm thử chức năng khác nhau .
-Phương pháp A xác định một tập các ca kiểm thử lớn hơn so với phương pháp B .
-Lưu ý rằng đối với cả hai phương pháp, tập các ca kiểm thử đều chứa trọn trong tập các hành vi được đặc tả .
-Do các phương pháp kiểm thử chức năng đều dựa trên các hành vi đặc tả, các phương pháp này khó có thể xác định được các hành vi không được đặc tả .
-Trong chương 5 ta sẽ so sánh các ca kiểm thử sinh bởi các phương pháp kiểm thử chức năng khác nhau cho các ví dụ nêu trong chương 2 .
-
-first==>Trong chương 5, chúng ta sẽ khảo sát các cách tiếp cận chủ yếu cho các phương pháp kiểm thử chức năng bao gồm phân tích giá trị biên, kiểm thử tính bền vững, phân tích trường hợp xấu nhất, kiểm thử giá trị đặc biệt, kiểm thử phân lớp tương đương của miền dữ liệu đầu vào, lớp tương đương của miền dữ liệu đầu ra, kiểm thử dựa trên bảng quyết định .
-Điều xuyên suốt trong các kỹ thuật này là tất cả đều dựa trên thông tin xác định về các thành phần đang được kiểm thử .
-Cơ sở toán học trình bày trong chương 3 chủ yếu được áp dụng cho cách tiếp cận kiểm thử chức năng .
-
-sub-title: Kiểm thử cấu trúc .
-
-first==>Kiểm thử cấu trúc (kiểm thử hộp trắng) là cách tiếp cận khác để xác định các ca kiểm thử .
-Trái ngược với cách tiếp cận của kiểm thử chức năng, đôi khi nó được gọi là kiểm thử hộp trắng .
-Biểu tượng hộp trong suốt là thích hợp cho cách tiếp cận này vì sự khác nhau cốt lõi với kiểm thử hộp đen là việc cài đặt của hộp đen được cho và được dùng làm cơ sở để xác định các ca kiểm thử .
-Việc biết được bên trong của hộp đen cho phép người kiểm thử dựa trên việc cài đặt của hàm để xác định ca kiểm thử .
-
-first==>Kiểm thử cấu trúc đã trở thành chủ đề của một lý thuyết tương đối mạnh .
-Để hiểu rõ kiểm thử cấu trúc, các khái niệm về lý thuyết đồ thị tuyến tính được trình bày trong chương 3 là cần thiết .
-Với những khái niệm này, người kiểm thử có thể mô tả chính xác các yêu cầu kiểm thử và hệ thống cần kiểm thử .
-Do có cơ sở lý thuyết mạnh, kiểm thử cấu trúc cho phép định nghĩa chính xác và sử dụng các độ đo về độ bao phủ .
-Các độ đo về độ phủ cho phép khẳng định tường minh phần mềm đã được kiểm thử tới mức nào và do đó giúp cho việc quản lý quá trình kiểm thử tốt hơn .
-
-first==>Hình 1.7 phản ánh các ca kiểm thử kết quả xác định bởi hai phương pháp kiểm thử cấu trúc khác nhau .
-Giống như trước đây, phương pháp A xác định tập các ca kiểm thử lớn hơn so với phương pháp B .
-Có chắc là tập các ca kiểm thử lớn hơn là tốt hơn không? Đây là một câu hỏi thú vị và kiểm thử cấu trúc cung cấp các giải pháp để tìm câu trả lời cho vấn đề này .
-Lưu ý rằng cả hai phương pháp A và B đều cho các tập các ca kiểm thử nằm trọn trong tập các hành vi được lập trình .
-
-first==>Do các ca kiểm thử của các phương pháp này được sinh ra dựa trên chương trình nên rất khó để xác định các lỗi liên quan đến các hành vi đã được đặc tả nhưng không được lập trình .
-Tuy nhiên, dễ thấy rằng tập các ca kiểm thử cấu trúc là tương đối nhỏ so với tập tất cả các hành vi được lập trình .
-Ta sẽ trình bày các so sánh về các ca kiểm thử sinh bởi các phương pháp kiểm thử cấu trúc khác nhau ở mục 1.4.3 .
-Một số phương pháp kiểm thử cấu trúc (kiểm thử dòng điều khiển và kiểm thử dòng dữ liệu) sẽ được giới thiệu chi tiết trong các Chương 6 và 7 .
-
-sub-title: Tranh luận về kiểm thử chắc năng so với kiểm thử cấu trúc .
-
-first==>Cho trước hai phương pháp khác nhau để xác định các ca kiểm thử, câu hỏi tự nhiên được đặt ra là phương pháp nào tốt hơn ?
-Cho đến nay chúng ta vẫn chưa có câu trả lời thỏa đáng cho câu hỏi này .
-Nói về kiểm thử cấu trúc, Robert Poston viết: công cụ này lãng phí thời gian của người kiểm thử vì từ những năm bảy mươi (của thế kỷ trước) nó chẳng trợ giúp tốt việc thực hành kiểm thử phần mềm và đừng có đưa nó vào bộ công cụ của người kiểm thử [Pos91] .
-Nhằm bảo vệ cho việc kiểm thử cấu trúc, Edward Miller [Mil91] viết: Độ bao phủ nhánh [một độ đo độ bao phủ của kiểm thử], nếu đạt được 85% hoặc cao hơn, có thể xác định số lỗi gấp đôi so với số lỗi phát hiện bởi kiểm thử trực quan (kiểm thử chức năng) .
-
-first==>Biểu đồ Venn được mô tả trong Hình 1.8 có thể giúp ta trả lời câu hỏi mà cuộc tranh luận này đã đề cập .
-Chúng ta cần khẳng định lại rằng mục đích của cả hai cách tiếp cận là để xác định các ca kiểm thử .
-Kiểm thử chức năng chỉ dùng đặc tả để xác định ca kiểm thử, trong khi kiểm thử cấu trúc dùng mã nguồn của chương trình (cài đặt) để làm cơ sở xác định ca kiểm thử .
-Những bàn luận trước đây cho thấy chẳng có cách tiếp cận nào là đủ tốt .
-Xét các hành vi chương trình: nếu tất cả các hành vi được đặc tả vẫn chưa được cài đặt, kiểm thử cấu trúc sẽ không thể nhận biết được điều đó .
-Ngược lại, nếu các hành vi được cài đặt chưa được đặc tả, điều đó chẳng khi nào có thể được phơi bày nhờ kiểm thử chức năng. (Một con vi rút là một ví dụ tốt về các hành vi không được đặc tả) .
-Câu trả lời sơ bộ là cả hai cách tiếp cận đều là cần thiết cả; còn câu trả lời cẩn thận hơn là cách kết hợp khôn khéo sẽ cung cấp niềm tin cho kiểm thử chức năng và độ đo của kiểm thử cấu trúc .
-Ta đã khẳng định ở trên rằng kiểm thử chức năng có khiếm khuyết về tính dư thừa và hố phân cách .
-Nếu kiểm thử chức năng được tiến hành kết hợp với các số đo về độ phủ của kiểm thử cấu trúc thì khiếm khuyết trên có thể được phát hiện và giải quyết .
-
-first==>Quan điểm biểu đồ Venn cho việc kiểm thử cung cấp một chi tiết nữa .
-Mối quan hệ giữa tập T các ca kiểm thử và các tập S và P của các hành vi cài đặt và đặc tả thế nào? Rõ ràng, các ca kiểm thử trong T được xác định bởi phương pháp xác định ca kiểm thử được dùng .
-Một câu hỏi rất hay cần đặt ra là thế thì phương pháp này thích hợp và hiệu quả ra sao .
-Ta có thể đóng lại vòng luẩn quẩn này bằng những lời bàn trước đây .
-Nhắc lại đường đi từ lỗi đến sai, thất bại và sự cố .
-Nếu ta biết loại lỗi nào ta hay phạm, và loại sai nào hay có trong phần mềm được kiểm thử, ta có thể dùng thông tin này để lựa chọn phương pháp thích hợp hơn để xác định các ca kiểm thử .
-Chính điểm này làm cho việc kiểm thử thành một nghệ thuật .
-
-sub-title: Phân loại các lỗi và sai .
-
-first==>Các định nghĩa về lỗi và sai được trình bày trong mục 1.1 xoay quanh sự phân biệt giữa quy trình và sản phẩm: quy trình nói chúng ta cần làm điều gì đó như thế nào, còn sản phẩm là kết quả cuối cùng của quy trình .
-Kiểm thử phần mềm và đảm bảo chất lượng phần mềm (Software Quality Assurance - SQA) gặp nhau ở điểm là SQA cố gắng cải tiến chất lượng sản phẩm bằng việc cải tiến quy trình .
-
-first==>Theo nghĩa này thì kiểm thử là các hoạt động định hướng sản phẩm. SQA quan tâm nhiều hơn đến việc giảm thiểu lỗi trong quá trình phát triển, còn kiểm thử quan tâm chủ yếu đến phát hiện sai trong sản phẩm .
-Cả hai nguyên lý này đều sử dụng định nghĩa về các loại sai .
-Các sai được phân loại theo nhiều cách khác nhau: giai đoạn phát triển khi cái sai tương ứng xuất hiện, các hậu quả của các thất bại tương ứng, độ khó cho việc giải quyết, độ rủi ro của việc không giải quyết được, v.v .
-Một cách phân loại được ưa thích là dựa trên việc xuất hiện bất thường: chỉ một lần, thỉnh thoảng, xuất hiện lại hoặc lặp đi lặp lại nhiều lần .
-Hình 1.9 minh họa một cách phân loại sai [Bor84] dựa trên độ nghiêm trọng của hậu quả mà các lỗi gây ra .
-
-first==>Để xử lý các loại sai, chúng ta có thể tham khảo [IEE93] về việc phân loại các chuẩn cho các bất thường của phần mềm .
-Chuẩn IEEE định nghĩa quy trình giải quyết bất thường một cách chi tiết gồm bốn giai đoạn: nhận biết, khảo sát, hành động và bố trí lại .
-Một số bất thường phổ biến được mô tả trong các bảng từ Bảng 1.1 đến Bảng 1.5 .
-Hầu hết các bất thường này đều đã được đề cập trong chuẩn IEEE .
-Ngoài ra, chúng tôi cũng bổ sung thêm một số bất thường khác .
-
-sub-title: Các mức kiểm thử .
-
-first==>Một trong các khái niệm then chốt của việc kiểm thử là các mức của việc kiểm thử .
-Các mức của việc kiểm thử phản ánh mức độ trừu tượng được thấy trong mô hình thác nước của vòng đời của việc phát triển phần mềm .
-Dù có một số nhược điểm, mô hình này vẫn rất hữu ích cho việc kiểm thử, là phương tiện để xác định các mức kiểm thử khác nhau và làm sáng tỏ mục đích của mỗi mức .
-Một dạng của mô hình thác nước được trình bày trong Hình 1.10 .
-Dạng này nhấn mạnh sự tương ứng của việc kiểm thử với các mức thiết kế .
-Lưu ý rằng theo các thuật ngữ của việc kiểm thử chức năng, ba mức của định nghĩa (đặc tả, thiết kế sơ bộ và thiết kế chi tiết) tương ứng trực tiếp với bốn mức của việc kiểm thử là kiểm thử đơn vị Hình 1.10: Các mức trừu tượng và mức kiểm thử trong mô hình thác nước .
-
-first==>(unit testing), kiểm thử tích hợp (integration testing), kiểm thử hệ thống (system testing) và kiểm thử chấp nhận (acceptance testing) .
-Các mức của kiểm thử cũng làm nảy sinh vấn đề về thứ tự kiểm thử: dưới lên, trên xuống hoặc các khả năng khác .
-
-first==>Các mức kiểm thử có thể được mô tả sơ bộ như sau: • Kiểm thử đơn vị: Kiểm thử đơn vị là việc kiểm thử các đơn vị chương trình một cách cô lập .
-Thế nào là một đơn vị chương trình ?
-Câu trả lời phụ thuộc vào ngữ cảnh công việc .
-Một đơn vị chương trình là một đoạn mã nguồn như hàm hoặc phương thức của một lớp, có thể được gọi từ ngoài, và cũng có thể gọi đến các đơn vị chương trình khác .
-Đơn vị cũng còn được coi là một đơn thể để kết hợp .
-Đơn vị chương trình cần được kiểm thử riêng biệt để phát hiện lỗi trong nội tại và khắc phục trước khi được tích hợp với các đơn vị khác .
-Kiểm thử đơn vị thường được làm bởi chính tác giả của chương trình, và có thể tiến hành theo hai giai đoạn: kiểm thử đơn vị tĩnh, sử dụng các kỹ thuật ở chương 4, và kiểm thử đơn vị động, sử các kỹ thuật ở chương 6 và 7 .
-
-first==>• Kiểm thử tích hợp: Mức kế tiếp với kiểm thử đơn vị là kiểm thử tích hợp .
-
-first==>Sau khi các đơn vị chương trình để cấu thành hệ thống đã được kiểm thử, chúng cần được kết nối với nhau để tạo thành hệ thống đầy đủ và có thể làm việc .
-Công việc này không hề đơn giản và có thể có những lỗi về giao diện giữa các đơn vị, và cần phẩi kiểm thử để phát hiện những lỗi này .
-Công đoạn này gồm hai giai đoạn: giai đoạn kiểm thử tích hợp và giai đoạn kiểm thử hệ thống .
-Kiểm thử tích hợp nhằm đảm bảo hệ thống làm việc ổn định trong môi trường thí nghiệm để sẵn sàng cho việc đưa vào môi trường thực sự bằng cách đặt các đơn vị với nhau theo phương pháp tăng dần .
-Kỹ thuật kiểm thử tích hợp sẽ được mô tả chi tiết trong chương 10 .
-
-first==>• Kiểm thử hệ thống: Kiểm thử mức này được áp dụng khi đã có một hệ thống đầy đủ sau khi tất cả các thành phần đã được tích hợp .
-Mục đích của kiểm thử hệ thống là để đảm bảo rằng việc cài đặt tuân thủ đầy đủ các yêu cầu được đặc tả của người dùng .
-Công việc này tốn nhiều công sức, vì có nhiều khía cạnh về yêu cầu người dùng cần được kiểm thử .
-Các phương pháp kiểm thử chức năng được trình bày trong chương 5 là thích hợp nhất cho việc kiểm thử này .
-Các kỹ thuật kiểm thử hệ thống được trình bày trong chương 10 .
-
-first==>• Kiểm thử chấp nhận: Khi nhóm kiểm thử hệ thống đã thỏa mãn với một sản phẩm, sản phẩm đó đã sẵn sàng để đưa vào sử dụng .
-Khi đó hệ thống cần trải qua giai đoạn kiểm thử chấp nhận .
-Kiểm thử chấp nhận được thực thi bởi chính các khách hàng nhằm đảm bảo rằng sản phẩm phần mềm làm việc đúng như họ mong đợi .
-Có hai loại kiểm thử chấp nhận: kiểm thử chấp nhận người dùng, được tiến hành bởi người dùng, và kiẻm thử chấp nhận doanh nghiệp, được tiến hành bởi nhà sản xuất ra sản phẩm phần mềm .
-Chương 10 mô tả chi tiết việc kiểm thử chấp nhận .
-
-sub-title: Tổng kết .
-
-first==>Chúng ta đã trình bày trong chương này một bức tranh tổng thể về việc kiểm thử phần mềm bao gồm các thuật ngữ và khái niệm cơ bản trong lĩnh vực kiểm thử, mục đích và vai trò của việc kiểm thử phần mềm .
-Chúng ta cũng mô tả sơ lược về bài toán kiểm thử và qui trình để giải bài toán này gồm việc phân tích tĩnh và phân tích động .
-Đóng vai tró trung tâm của phân tích động là việc xây dựng các ca kiểm thử .
-Hai cách tiếp cận cơ bản để xác định các ca kiểm thử là kiểm thử chức năng (kiểm thử hộp đen) và kiểm thử cấu trúc (kiểm thử hộp trắng) .
-Cả hai cách tiếp cận này bổ sung cho nhau để xây dựng tập các ca kiểm thử hiệu quả .
-
-first==>Chúng ta cũng đã giới thiệu trong chương này bốn mức kiểm thử, mỗi mức tương ứng với một giai đoạn của việc phát triển phần mềm .
-Các mức đó là: kiểm thử đơn vị, kiểm thử tích hợp, kiểm thử hệ thống và kiểm thử chấp nhận .
-Chi tiết về các phương pháp kiểm thử sẽ được trình bày trong các chương sau .
+title: Quần xã và hệ sinh thái .
+
+title: Quần thể .
+
+first==>Các cá thể sinh vật thường quần tụ thành từng đàn (đàn chim), từng nhóm (đồi cọ) trong môi trường .
+
+first==>Các tập hợp cá thể cùng loài được gọi là những quần thể .
+
+first==>Vậy, Quần thể là một nhóm cá thể cùng loài cùng sinh sống trong một khoảng không gian xác định, vào một thời điểm nhất định và có khả năng giao phối sinh ra con cái (những loài sinh sản vô tính hay trinh sản thì không qua giao phối) .
+Mỗi quần thể được đặc trưng bởi một số chỉ tiêu như mật độ, tỉ lệ đực cái, tỉ lệ các nhóm tuổi, sức sinh sản, tỷ lệ tử vong, kiểu tăng trưởng, đặc điểm phân bố, khả năng thích ứng và chống chịu với nhân tố sinh thái của môi trường .
+
+first==>Khi cá thể hoặc quần thể không thể thích nghi được với sự thay đổi của môi trường, chúng sẽ bỏ đi tìm chỗ thích hợp hơn hoặc bị tiêu diệt .
+Những cá thể của quần thể khác thích nghi được với những điều kiện sống mới sẽ phát triển và hình thành một quần thể thay thế .
+Ví dụ, ở vùng đất bồi tụ khi còn ngập nước thì thường có các quần thể bèo ong, bèo Nhật Bản, bèo cái; khi đất bồi nhô lên thì có nghể, cỏ nến hay lau, cói thay thế...
+
+sub_title: Ảnh hưởng của ngoại cảnh tới quần thể  .
+
+first==>Tác động tổng hợp của các nhân tố ngoại cảnh sẽ ảnh hưởng tới sự phân bố, sự biến động số lượng và cấu trúc của quần thể .
+
+first==>Tập hợp các nhân tố vô sinh đã tạo nên các vùng địa lý khác nhau trên trái đất: vùng lạnh, vùng ấm, vùng nóng, vùng sa mạc...
+Ứng với từng vùng có những quần thể phân bố đặc trưng .
+Các nhân tố của ngoại cảnh ảnh hưởng đến sự sinh trưởng và biến động của quần thể thông qua tác động của sự sinh sản (làm tăng số lượng cá thể), sự tử vong (làm giảm số lượng cá thể) và sự phát tán các cá thể trong quần thể .
+Không những thế các nhân tố này còn có thể ảnh hưởng tới cấu trúc quần thể qua những tác động làm biến đổi thành phần đực, cái, các nhóm tuổi và mật độ cá thể trong quần thể .
+
+first==>Do tác động tổng hợp của các nhân tố ngoại cảnh (đặc biệt nạn phá rừng và săn bắn bừa bãi) mà quần thể bò xám Kuprey vốn chỉ có ở rừng giáp Việt Nam, Lào, Thái Lan, Campuchia nay chỉ còn thưa thớt vài chục con .
+
+first==>Trong nhiều trường hợp sự tác động tổng hợp trong một thời gian dài làm thay đổi cả các đặc điểm cơ bản của quần thể, thậm chí dẫn tới huỷ diệt quần thể .
+Đacuyn đã nghiên cứu thấy những cơn gió mạnh thường xuyên nổi lên ở một số đảo đã thổi bạt những sâu bọ bay là là mặt đất ra biển cả .
+Những cá thể có cánh dài bị loại bỏ .
+Ngược lại, những quần thể sâu bọ cánh ngắn hoặc không có cánh thì tồn tại và phát triển .
+Kết quả là trên đảo Croxet có 14 giống sâu bọ không có cánh trong số 17 giống sâu bọ ở đây .
+Các nhân tố hữu sinh cũng ảnh hưởng lên phân bố, mật độ, sinh trưởng và cấu trúc quần thể qua những tác động của mối quan hệ dinh dưỡng và nơi ở .
+
+sub_title: Sự biến động số lượng cá thể của quần thể  .
+
+first==>Biến động do sự cố bất thường: Năm nào có mùa đông giá rét thì trâu, gà rừng bị chết rét nhiều .
+Lụt bão, cháy rừng, dịch bệnh hoặc môi trường bị ô nhiễm nghiêm trọng sẽ làm cho số lượng cá thể của nhiều quần thể sinh vật bị giảm đột ngột .
+Ngược lại, số lượng cá thể có thể tăng lên mạnh mẽ do quần thể gặp được môi trường sống thuận lợi mà không có đối thủ cạnh tranh .
+
+first==>Biến động theo mùa: Ở nước ta biến động theo mùa là phổ biến: muỗi phát triển từ thành 3 tới tháng 6; ếch nhái phát triển mạnh vào mùa mưa .
+
+first==>Biến động theo chu kỳ nhiều năm: Các loài cá ở bờ biển Pêru, cứ 7 năm lại một lần biến động lớn về số lượng cá thể .
+Nguyên nhân là cứ 7 năm lại có dòng nước nóng Nino chảy qua bờ biển Pêru về phía nam làm nhiệt độ nước tăng 5oC và nồng độ muối thay đổi khiến cho các động vật nổi bị chết, làm nước biển chứa nhiều chất hữu cơ phân huỷ, nên cá biển chết nhiều và phải di cư đi xa .
+
+first==>Nguyên nhân gây biến động: Nguyên nhân gây biến động số lượng cá thể của quần thể là do một hoặc một tập hợp nhân tố sinh thái đã tác động đến tỷ lệ sinh đẻ, tỷ lệ tử vong và sự phát tán của quần thể .
+
+first==>Tác động của nhân tố vô sinh vào mùa sinh sản hay giai đoạn còn non của sinh vật làm cho quần thể biến động mạnh mẽ nhất .
+
+first==>Tác động của các nhân tố hữu sinh thể hiện rõ ở sức sinh sản của quần thể, ở mật độ động vật ăn thịt, vật kí sinh, con mồi, loài cạnh tranh .
+
+first==>Nhân tố quyết định sự biến động số lượng có thể khác nhau tuỳ từng quần thể và tuỳ từng giai đoạn trong chu kỳ sống .
+Ví dụ, đối với sâu bọ ăn thực vật thì các nhân tố khí hậu có vai trò quyết định, còn đối với chim nhân tố quyết định lại thường là thức ăn vào mùa đông và sự cạnh tranh nơi làm tổ vào mùa hè .
+
+first==>Như vậy, sự biến động số lượng cá thể trong quần thể là kết quả tác động tổng hợp của các nhân tố sinh thái của môi trường, trong đó một hoặc một số nhân tố sinh thái có vai trò chủ yếu, mặt khác là phản ứng thích nghi của quần thể đối với sự tác động tổng thể các điều kiện của môi trường .
+
+first==>Trạng thái cân bằng của quần thể: Mỗi quần thể sống trong một môi trường xác định đều có xu hướng được điều chỉnh ở một trạng thái số lượng cá thể ổn định gọi là trạng thái cân bằng .
+
+first==>Đôi khi quần thể có biến động mạnh, ví dụ, tăng số lượng cá thể do nguồn thức ăn phong phú, vượt khỏi mức bình thường .
+Số lượng cá thể vọt lên cao khiến cho sau một thời gian nguồn thức ăn trở nên thiếu hụt (cây bị phá hại mạnh, con mồi hiếm hoi), nơi đẻ và nơi ở không đủ, do đó nhiều cá thể bị chết .
+Quần thể lại được điều chỉnh về mức 1. Cơ chế điều hoà mật độ của quần thể là sự thống nhất mối tương quan giữa tỉ lệ sinh sản và tỉ lệ tử vong, nhờ đó mà tốc độ sinh trưởng của quần thể được điều chỉnh .
+
+title: Quần xã sinh vật .
+
+first==>Từ bao nhiêu năm nay Hồ Tây (Hà Nội) là nơi sinh sống của nhiều quần thể rong, tôm, cua, cá, sâm cầm, cà cuống... và cây cối bao quanh .
+Tất cả tập hợp thành quần xã sinh vật Hồ Tây .
+
+first==>Vậy, Quần xã sinh vật là một tập hợp các quần thể sinh vật được hình thành trong một quá trình lịch sử, cùng sống trong một không gian xác định gọi là sinh cảnh, nhờ các mối liên hệ sinh thái tương hỗ mà gắn bó với nhau như một thể thống nhất .
+
+first==>Bình thường, quần xã có cấu trúc ổn định trong từng thời gian .
+Nhưng sự thay đổi của ngoại cảnh có thể tác động lên quần xã và hình thành một quần xã khác .
+Căn cứ vào thời gian tồn tại mà ta phân biệt quần xã ổn định, có thời gian tồn tại vài trăm năm và quần xã nhất thời có thời gian tồn tại khoảng vài ngày, có khi vài giờ .
+Quần xã trên xác một con thú nhỏ hay trên một thân cây đổ là quần xã nhất thời .
+
+first==>Quần xã sinh vật là một cấu trúc động .
+Các loài trong quần xã làm biến đổi môi trường, rồi môi trường bị biến đổi này lại tác động đến cấu trúc của quấn xã .
+Vào thế kỷ XIX, ở châu Mĩ, bò rừng bizông hoạt động dinh dưỡng mạnh, làm rừng tàn lụi, đồng cỏ phát triển, thu hút nhiều loài chim thú, sâu bọ .
+Khi bò rừng bizông bị tiêu diệt, các thân cây gỗ nhỏ lại phát triển .
+Môi trường mới với cây thân gỗ thay thế đồng cỏ đã làm xuất hiện một hệ động vật khác .
+
+first==>Giữa các quần xã sinh vật thường có một vùng chuyển tiếp gọi là vùng đệm .
+Bìa rừng là vùng đệm của quần xã rừng và quần xã đồng ruộng .
+Bãi lầy là vùng đệm giữa 2 quần xã rừng và quần xã đầm .
+
+first==>Ở vùng đệm có một số loài của cả 2 quần xã .
+Ngoài ra, cũng có những loài riêng .
+Do đó số loài ở vùng đệm đôi khi nhiều hơn, với số lượng cá thể cũng nhiều hơn so với ở chính ngay trong quần xã .
+Đặc điểm này gọi là tác động rìa .
+
+sub_title: Những tính chất cơ bản của quần xã sinh vật .
+
+first==>Mỗi quần xã sinh vật đều có một vài quần thể ưu thế .
+Thực vật có hạt thường là những quần thể ưu thế ở các quần xã sinh vật ở cạn .
+Cá, tôm, sinh vật nổi thường là những quần thể ưu thế ở các quần xã sinh vật ở nước .
+Trong số các quần thể ưu thế thường có một quần thể tiêu biểu nhất cho quần xã .
+Ví dụ, quần thể cây cọ trong quần xã sinh vật đồi ở Vĩnh Phú, quần thể cá trắm cỏ hoặc cá mè trong quần xã ao hồ nuôi cá .
+Đó là quần thể đặc trưng của quần xã sinh vật .
+
+first==>Khi điều kiện môi trường thuận lợi thì quần xã có nhiều quần thể khác nhau cùng tồn tại (ví dụ rừng nhiệt đới) .
+Ngược lại, khi điều kiện môi trường khắc nghiệt thì chỉ có một số ít quần thể thích ứng được mới tồn tại trong quần xã (ví dụ rừng thông phương Bắc) .
+Như vậy quần xã sinh vật ở những môi trường thuận lợi có độ đa dạng cao, ở nơi có điều kiện sống khắc nghiệt thì có độ đa dạng thấp .
+
+first==>Mỗi quần xã sinh vật có một cấu trúc đặc trưng liên quan tới sự phân bố cá thể của các quần thể trong không gian .
+Cấu trúc thường gặp là kiểu phân tầng thẳng đứng .
+Rừng mưa nhiệt đới thường có 5 tầng, gồm: 3 tầng cây gỗ lớn, tầng cây bụi và tầng cây cỏ - dương xỉ .
+
+first==>Sự phân tầng làm tăng khả năng sử dụng các nguồn sống trong quần xã, làm giảm mức độ cạnh tranh giữa các cá thể và giữa các quần thể .
+
+sub_title: Mối quan hệ giữa ngoại cảnh và quần xã .
+
+first==>Quan hệ giữa ngoại cảnh và quần xã là kết quả tổng hợp các mối quan hệ giữa ngoại cảnh với các quần thể .
+
+first==>Các nhân tố khí hậu, tiếp đó là các nhân tố hữu sinh (thức ăn, kẻ thù, dịch bệnh) đã tạo nên tính chất thay đổi theo chu kỳ của quần xã .
+Quần xã ở vùng nhiệt đới thay dổi theo chu kỳ ngày đêm rất rõ .
+Ếch nhái, chim cú, vạc, muỗi... hoạt động mạnh về ban đêm .
+Còn quần xã ở vùng lạnh thay đổi chu kỳ theo mùa rõ hơn .
+Chim và nhiều động vật di trú vào mùa đông lạnh giá .
+Rừng cây lá rộng ở vùng ôn đới rụng lá vào mùa khô .
+Tầng thảm tươi dưới rừng của cây dầu trà beng (Dipterocarpus sp.) ở Tây Nguyên bị khô cháy về mùa khô, đến mùa mưa lại phát triển xanh tươi .
+
+first==>Giữa các quần thể trong quần xã thường xuyên diễn ra các quan hệ hỗ trợ và quan hệ đối địch .
+Ví dụ, sâu bọ phát triển mạnh khi điều kiện thuận lợi (thời tiết ấm áp, có mưa nhỏ, cây cối phát triển xanh tươi...) khiến cho số lượng chim sâu cũng tăng theo .
+Khi số lượng chim sâu tăng quá nhiều, sâu bọ bị quần thể chim tiêu diệt mạnh hơn nên số lượng sâu bọ lại giảm đi nhanh .
+Hiện tượng số lượng cá thể của một quần thể bị số lượng cá thể của quần thể khác kìm hãm gọi là hiện tượng khống chế sinh học .
+Sự khống chế sinh học này làm cho số lượng cá thể của mỗi quần thể dao động trong một thế cân bằng, từ đó toàn bộ quần xã sinh vật cũng dao động trong thế cân bằng, tạo nên trạng thái cân bằng sinh học trong quần xã .
+
+title: Diễn thế sinh thái .
+
+first==>Trong quá trình tồn tại và phát triển, quần xã luôn luôn biến đổi .
+Diễn thế sinh thái là quá trình biến đổi tuần tự của quần xã qua các giai đoạn khác nhau, từ dạng khởi đầu, được thay thế lần lượt bởi các dạng quần xã tiếp theo và cuối cùng thường dẫn tới một quần xã tương đối ổn định .
+
+first==>Diễn thế sinh thái xảy ra do những nguyên nhân sau:
+
+first==>- Tác động mạnh mẽ của ngoại cảnh lên quần xã .
+
+first==>- Chính tác động của quần xã lên ngoại cảnh làm biến đổi mạnh mẽ ngoại cảnh đến mức gây ra diễn thế
+
+first==>- Tác động vô ý thức (đốt, chặt, phá rừng...) hay có ý thức (cải tạo thiên nhiên, khai thác rừng, lấp hồ...) của con người .
+
+first==>Như vậy, song song với quá trình diễn thế là quá trình biến đổi về khí hậu, thổ nhưỡng, địa chất .
+
+first==>Trong diễn thế, hệ thực vật có vai trò rất quan trọng trong việc hình thành quần xã mới .
+
+sub_title: Các loại diễn thế  .
+
+first==>Có 3 loại diễn thế: diễn thế nguyên sinh, diễn thế thứ sinh và diễn thế phân huỷ .
+
+first==>Diễn thế nguyên sinh: Diễn thế nguyên sinh là diễn thế khởi đầu từ môi trường trống trơn (đảo mới hình thành trên tro tàn núi lửa, đất mới bồi ở lòng sông) .
+Nhóm sinh vật đầu tiên được phát tán đến đó hình thành nên quần xã tiên phong .
+Tiếp đó là một dãy quần xã tuần tự thay thế nhau .
+Khi có cân bằng sinh thái giữa quần xã và ngoại cảnh thì quần xã ổn định trong một thời gian tương đối dài .
+
+first==>Diễn thế trên cạn: Điển hình là trường hợp sinh vật chiếm lĩnh lại hòn đảo Krakatau ở Inđônêxia đã bị núi lửa phun tàn phá từ năm 1883 và phủ lên một lớp đá bọt và tro dày khoảng 30m .
+Từ một đảo tro, đá bọt vô sinh, sau vài năm có tảo, địa y, quyết xuất hiện trước, tiếp đó là thực vật thân cỏ có hoa, rồi đến các thực vật thân gỗ cùng các động vật phổ biến ở địa phương .
+Sau 50 năm đã hình thành lại quần xã gần như trước khi núi lửa phun .
+
+first==>Diễn thế dưới nước: Trong quá trình các ao, hồ, sông bị bồi cạn thì các thực vật có sẵn trong nước đã tham gia đáng kể vào sự khởi đầu của diễn thế nguyên sinh .
+Giai đoạn đầu thường là những quần thể thực vật sống trôi nổi (bèo...) hoặc chìm trong nước (rong...) và những động vật sống cùng với các cây này .
+Khi đất bồi tụ nhiều làm thành bãi thì các thực vật có rễ cắm trong bùn như sen, súng, trang v.v. xuất hiện .
+Điều kiện này chuẩn bị cho những quần thể vật thuỷ sinh mọc nhô lên khỏi mặt nước như nghể, cỏ nến, lau .
+Sau đó là các cây bụi mọc, lộc vừng hoặc rừng thấp có nhiều loại cây dại trong họ Cà phê .
+Giai đoạn cuối của quá trình diễn thế khi đất cạn đã hình thành là rừng cây cao to với những cây 2 lá mầm chiếm ưu thế .
+Sự phát triển và thay thế của hệ thực vật kéo theo sự phát triển và thay thế hệ động vật tương ứng .
+
+first==>Diễn thế thứ sinh: Diễn thế thứ sinh là diễn thế xuất hiện ở một môi trường đã có một quần xã sinh vật nhất định .
+Quần xã này vốn tương đối ổn định nhưng do thay đổi lớn về khí hậu, bị xói mòn, bị bão phá hại hay do con người chặt cây, đốt rừng làm nương rẫy, trồng cây nhập nội (ví dụ, trồng rừng bạch đàn, rừng keo lá chàm) làm thay đổi hẳn cấu trúc quần xã sinh vật .
+
+first==>Diễn thế phân huỷ: Diễn thế phân huỷ là quá trình không dẫn tới một quần xã sinh vật ổn định, mà theo hướng dần dần bị phân huỷ dưới tác dụng của nhân tố sinh học .
+Đây là trường hợp diễn thế của quần xã sinh vật trên xác một động vật hoặc trên một cây đổ .
+
+sub_title: Tầm quan trọng thực tế của việc nghiên cứu diễn thế .
+
+first==>Nhờ nghiên cứu diễn thế mà ta có thể nắm được qui luật phát triển của quần xã sinh vật, hình dung được những quần xã tồn tại trước đó và dự đoán những dạng quần xã sẽ thay thế trong những hoàn cảnh mới .
+
+first==>Từ những hiểu biết về diễn thế ta có thể xây dựng những qui hoạch dài hạn về nông, lâm, ngư nghiệp, tổ chức những đơn vị kinh doanh trên cơ sở tính toán khoa học .
+
+first==>Sự hiểu biết về diễn thế cho phép ta chủ động điều khiển sự phát triển của diễn thế theo hướng có lợi cho con người bằng những tác động lên điều kiện sống như: cải tạo đất, đẩy mạnh biện pháp chăm sóc, phòng trừ sâu bệnh, tiến hành các biện pháp thuỷ lợi, khai thác, bảo vệ hợp lý nguồn tài nguyên .
+
+title: Hệ sinh thái .
+
+first==>Hệ sinh thái là một hệ thống hoàn chỉnh, tương đối ổn định, bao gồm quần xã sinh vật và khu vực sống của quần xã (sinh cảnh) .
+Sự tác động qua lại giữa quần xã và sinh cảnh tạo nên những mối quan hệ dinh dưỡng xác định, cấu trúc của tập hợp loài trong quần xã, chu trình tuần hoàn vật chất giữa các sinh vật trong quần xã và các nhân tố vô sinh .
+
+first==>Một hệ sinh thái hoàn chỉnh có các thành phần chủ yếu sau đây:
+
+first==>- Các chất vô cơ (C, N2, CO2, H2O...), chất hữu cơ (prôtêin, lipit, gluxit, các chất mùn,...) và chế độ khí hậu .
+
+first==>- Sinh vật sản xuất (còn gọi là sinh vật cung cấp)
+
+first==>- Sinh vật tiêu thụ
+
+first==>- Sinh vật phân huỷ
+
+sub_title: Các kiểu hệ sinh thái  .
+
+first==>Các hệ sinh thái trong sinh quyển thuộc 3 nhóm:
+
+first==>Các hệ sinh thái trên cạn gồm có rừng nhiệt đới, truông cây bụi - cỏ nhiệt đới (savan), hoang mạc nhiệt đới và ôn đới, thảo nguyên, rừng lá ôn đới, rừng thông phương Bắc (taiga), đồng rêu đới lạnh,...
+
+first==>Các hệ sinh thái nước mặn gồm có hệ sinh thái vùng ven bờ và vùng khơi .
+
+first==>Các hệ sinh thái nước ngọt gồm có hệ sinh thái nước đứng (ao, đầm, hồ) và hệ sinh thái nước chảy (sông, suối) .
+
+sub_title: Chuỗi thức ăn và lưới thức ăn .
+
+first==>Các thành phần của quần xã sinh vật gắn bó với nhau bởi nhiều mối quan hệ, trong đó quan hệ dinh dưỡng có vai trò cực kỳ quan trọng được thực hiện qua chuỗi và lưới thức ăn .
+
+sub_title: Chuỗi thức ăn .
+
+first==>Chuỗi thức ăn là một dãy nhiều loài sinh vật có quan hệ dinh dưỡng với nhau .
+Mỗi loài là một mắt xích, vừa là sinh vật tiêu thụ mắt xích phía trước, vừa là sinh vật bị mắt xích ở phía sau tiêu thụ .
+
+first==>Có 3 loại sinh vật trong chuỗi thức ăn:
+
+first==>Sinh vật sản xuất (sinh vật cung cấp) là những sinh vật tự dưỡng trong quần xã (cây xanh, một số tảo), có khả năng tổng hợp chất hữu cơ từ chất vô cơ .
+
+first==>Sinh vật tiêu thụ là những sinh vật dị dưỡng ăn thực vật và có thể cả những sinh vật dị dưỡng khác .
+Chúng không tự tổng hợp được chất hữu cơ mà phải sử dụng các chất hữu cơ của nhóm sinh vật sản xuất .
+
+first==>Thường thì một chuỗi thức ăn có một số mắt xích tiêu thụ:
+
+first==>- Sinh vật tiêu thụ bậc 1 có thể la` động vật ăn thực vật, hay kí sinh trên thực vật .
+
+first==>- Sinh vật tiêu thụ bậc 2 là sinh vật ăn thịt hay kí sinh trên sinh vật tiêu thụ bậc 1. trong 1 chuỗi, có thể có sinh vật tiêu thụ bậc 3, bậc 4...
+
+first==>Sinh vật phân huỷ là những vi khuẩn dị dưỡng và nấm, có khả năng phân huỷ chất hữu cơ thành chất vô cơ .
+
+sub_title: Lưới thức ăn .
+
+first==>Mỗi loài trong quần xã sinh vật thường là mắt xích của nhiều chuỗi thức ăn .
+Các chuỗi thức ăn có nhiều mắt xích chung tạo thành một lưới thức ăn .
+
+sub_title: Sự trao đổi vật chất và năng lượng trong hệ sinh thái .
+
+first==>Qui luật hình tháp sinh thái
+
+first==>Thực vật có diệp lục là yếu tố ban đầu trong quần xã đã sử dụng năng lượng ánh sáng mặt trời và tiếp nhận chất dinh dưỡng từ khí quyển, đất .
+Các chất dinh dưỡng và năng lượng của ánh sáng mặt trời được tích luỹ trong thực vật, qua toàn bộ lưới thức ăn sẽ được phân phối dần ở mỗi bậc theo các mắt xích .
+
+first==>Cần lưu ý rằng hệ số sử dụng có lợi của thức ăn trong cơ thể bao giờ cũng nhỏ hơn 100% rất nhiều .
+Do đó sinh khối của sinh vật sản xuất thức ăn bao giờ cũng lớn hơn sinh khối của sinh vật tiêu thụ bậc 1, và sinh khối của nó lại lớn hơn sinh khối của sinh vật tiêu thụ bậc 2, v.v. .
+Nói cách khác, sinh vật mắt lưới nào càng xa vị trí của sinh vật sản xuất thì có sinh khối trung bình càng nhỏ .
+Đây là qui luật hình tháp sinh thái .
+
+title: Chu trình sinh địa hoá các chất  .
+
+first==>Các vật chất tạo nên thức ăn sẽ đi qua toàn bộ lưới thức ăn của quần xã rồi nhờ các sinh vật phân huỷ trở về đất ở trạng thái ban đầu, sau đó lại tham gia vào quá trình tổng hợp nhờ các sinh vật sản xuất .
+Như vậy, trong quần xã luôn luôn có sự tuần hoàn vật chất (kèm theo năng lượng) .
+
+first==>Chu trình vật chất được thực hiện trên cơ sở tự điều hoà của quần xã .
+Chúng ta hãy phân tích chu trình sinh địa hoá của nước .
+
+first==>Nước tham gia vào các mắt lưới trong lưới thức ăn .
+Cây hút nước từ đất .
+Các sinh vật tiêu thụ khác đều sử dụng nước và qua quá trình trao đổi chất, một phần nước lại quay về đất hoặc khí quyển .
+Trong cơ thể sinh vật dị dưỡng nước được sử dụng một phần để tổng hợp lại các chất hữu cơ .
+Trong quá trình dinh dưỡng của các sinh vật dị dưỡng yếm khí thì các hợp chất hữu cơ cuối cùng được phân huỷ thành nước, CO2 và muối khoáng; chúng sẽ được tái sử dụng bởi các sinh vật tự dưỡng .
+
+first==>Để thực hiện được chu trình vật chất này cần có năng lượng .
+Nguồn năng lượng chính là năng lượng của ánh sáng mặt trời .
+
+first==>Sau đây là chu trình sinh địa hoá của cácbon và nitơ trong thiên nhiên .
+
+first==>Như vậy, có thể thấy rằng, quần xã sinh vật cũng như những hệ thống sống khác là những hệ mở tự điều chỉnh, luôn luôn trao đổi vật chất và năng lượng với môi trường xung quanh .
+
+title: Hiệu suất sinh thái  .
+
+first==>Ví dụ có một hệ sinh thái nhận được năng lượng mặt trời là 106 kcal/m2/ngày .
+Chỉ có 2,5% số năng lượng đã được dùng trong quang hợp .
+Như vậy sản lượng sinh vật toàn phần ở sinh vật sản xuất có thể đạt tới 2,5 x 104 kcal (tính ra năng lượng tương đương) .
+
+first==>Trong thực tế số năng lượng mất đi do hô hấp là 90% nên sản lượng sinh vật thực ở sinh vật sản xuất là 2,5 x 103 kcal .
+
+first==>Sinh vật tiêu thụ bậc 1 chỉ sử dụng được 1%, tức là 25 kcal .
+
+first==>Sinh vật tiêu thụ bậc 2 chỉ sử dụng được 10% sản lượng toàn phần của vật tiêu thụ bậc 1 tức là 2,5 kcal .
+
+first==>Như vậy, sự tiêu phí năng lượng qua mỗi bậc dinh dưỡng trong chuỗi thức ăn là rất lớn và chỉ có rất ít năng lượng được sử dụng ở mỗi bậc dinh dưỡng .
+Nói cách khác, hiệu suất sinh thái của dòng năng lượng trong các điểm khác nhau của chuỗi thức ăn là rất nhỏ .
+Vậy: Hiệu suất sinh thái là tỉ lệ % chuyển hoá năng lượng giữa các bậc dinh dưỡng .
+
+title: Sinh Quyển và Con Người .
+
+title: Sinh quyển và tài nguyên .
+
+sub_title: Sinh quyển  .
+
+first==>Trái đất được bao quanh bởi nhiều lớp vật chất khác nhau .
+Lớp vỏ ngoài cứng nhất là thạch quyển .
+Toàn bộ đại dương, biển, sông, suối, ao, hồ hợp thành thuỷ quyển .
+Thuỷ quyển chiếm 70,8% bề mặt trái đất .
+Chiều sâu trung bình của đại dương là 3,8km, nơi sâu nhất là 11,034km .
+Bao ngoài thuỷ quyển và thạch quyển là lớp không khí dày tới 100km gọi là khí quyển .
+Lớp ngoài cùng, từ trên 45km, là lớp ôzôn (O3), có tác dụng như một lớp phản chiếu các tia vũ trụ, các tia tử ngoại từ mặt trời toả xuống .
+
+first==>Sinh quyển là khoảng không gian có sinh vật cư trú, bao phủ bề mặt trái đất, sâu tới 100m trong thạch quyển, toàn bộ thuỷ quyển tới đáy biển sâu trên 8km, lên cao tới 20km trong khí quyển .
+Ước tính có tới hai triệu loài sinh vật cư trú trong sinh quyển
+
+sub_title: Nguồn tài nguyên không tái sinh và tái sinh  .
+
+first==>Tài nguyên không tái sinh tự nhiên được là khoáng sản và tài nguyên tái sinh được la` đất, rừng, biển và các tài nguyên nông nghiệp
+
+sub_title: Tài nguyên khoáng sản và tình hình sử dụng  .
+
+first==>Khoáng sản là nguyên liệu tự nhiên, có nguồn gốc hữu cơ hoặc vô cơ, phần lớn nằm trong đất .
+Sự hình thành khoáng sản có liên quan mật thiết với các quá trình địa chất trong một thời gian dài .
+
+first==>Khoáng sản nhiên liệu: Than đá có nguồn gốc từ xác cây hoá đá .
+Ba nước có trữ lượng lớn trên 1000 tỉ tấn là Liên Xô (cũ), Mĩ và Trung Quốc. Ở nước ta than đá là một khoảng sản quan trọng .
+
+first==>Dầu mỏ và khí cháy cũng có nguồn gốc từ thực vật hoặc các chất hữu cơ phân hủy dở dang ở trong đất .
+Khu vực có trữ lượng lớn nhất là Trung Cận Đông, châu Phi và Liên Xô (cũ) .
+Cho tới nay, con người đã khai thác trên 50 tỉ tấn dầu mỏ và hàng chục ngàn tỉ mét khối khí cháy .
+
+first==>Ngoài ra, trong sinh quyển còn có năng lượng ánh sáng mặt trời, gió, sóng biển, thuỷ triều .
+Con người đã nghiên cứu sử dụng được một phần các loại năng lượng này để có thể thay thế dần các nhiên liệu trong đất đang cạn kiệt và cũng hạn chế được tình trạng ô nhiễm môi trường .
+
+first==>Khoáng sản nguyên liệu: Đồng vàng là 2 kim loại được sử dụng đầu tiên vào thế kỷ V và IV trước công nguyên .
+Nhiều nước ở châu Á, châu Phi và châu Mĩ giàu khoáng sản đã trở thành thuộc địa, bị các nước tư bản phát triển khai thác và làm bần cùng .
+Việc khai thác nhiều khoáng sản như vàng, đồng, chì, nhôm... đã ảnh hưởng mạnh mẽ tới môi trường, tác động rất lớn tới cuộc sống và sản xuất của con người .
+Việc đa`o đãi vàng trong hơn chục năm gần đây ở nhiều vùng trên đất nước ta như Bắc Thái, Tây Nguyên... đã phá hoại nhiều hoa màu, làng mạc, sông núi .
+
+first==>Việc khai thác tận lực khoáng sản đang đặt ra nguy cơ tài nguyên cạn kiệt và ô nhiễm môi trường ngày càng tăng .
+
+title: Tài nguyên tái sinh và tình hình sử dụng  .
+
+sub_title: Rừng và lâm nghiệp  .
+
+first==>Khi con người chưa hình thành, rừng bao phủ hầu khắp lục địa .
+Con người với dân số ngày càng tăng, hoạt động sống càng phong phú thì rừng ngày càng bị thu hẹp ( phá rừng lấy đất trồng trọt, chặt cây làm thuyền, làm nhà, làm nguyên liệu công nghiệp...) .
+Hiện nay, mỗi năm cây xanh chỉ còn sản sinh ra được 100 tỉ tấn chất hữu cơ .
+
+first==>Ngoài việc cung cấp gỗ, rừng còn có tác dụng rất lớn trong việc điều hoà lượng nước trên mặt đất: làm tăng độ ẩm không khí, làm giảm lượng nước chảy, hạn chế lũ lụt, hạn chế xói mòn .
+
+first==>Loại rừng hỗn giao gồm nhiều loại cây, thuộc nhiều lứa tuổi, tuy sản lượng thấp nhưng lại có ý nghĩa sinh thái lớn hơn rừng độc canh .
+Việc quản lý rừng bao gồm cả động vật, có ý nghĩa sinh thái to lớn đối với sinh giới nói chung và con người nói riêng .
+
+sub_title: Đất và nông nghiệp  .
+
+first==>Đất là nơi sản xuất ra lương thực, thực phẩm cho con người và gia súc .
+Đất còn là nơi để xây nhà, xây dựng các khu công nghiệp, làm đường xá...
+
+first==>Đất nông nghiệp đang bị thu hẹp vì mật độ dân số tăng nhanh, do bị lấy để xây dựng; phát triển công nghiệp giao thông vận tải .
+Một phần đất bị thoái hoá do không biết chăm bón tốt nên bị xa mạc hoá .
+
+first==>Đất nông nghiệp của Việt Nam bình quân đầu người khoảng 0,1ha .
+
+first==>Phần lớn đất nông nghiệp của ta hiện nay được trồng lúa (64%) khoảng 20% trồng màu, 8% trồng cây lâu năm, 4% trồng cỏ, 3% là kênh mương, ao hồ .
+Nhiều vùng đất ở trung du đang bị xói mòn, thoái hoá (đất feralit); 46 vạn ha đất cát và nhiều vùng đất phèn chưa có điều kiện cải tạo tốt .
+
+sub_title: Tài nguyên thuỷ sản  .
+
+first==>Tài nguyên vùng cửa sông, ven biển rất đa dạng và phong phú, gồm nhiều sinh vật ở nước và trên cạn .
+Môi trường cửa sông có nhiều loài động vật, thực vật chịu mặn và ưa lợ có giá trị kinh tế cao .
+Sản lượng hải sản ở vùng cửa sông của Mỹ và Mêhicô cao gấp 20 lần vùng biển khơi .
+Thành phần cơ bản của năng suất vùng ven biển là tảo hiển vi, chúng vừa là nguồn thức ăn, vừa là nguồn cung cấp ôxi to lớn cho các sinh vật trong nước. tảo nâu (rong mơ), tảo đỏ (rau câu)...là nguồn thức ăn, nguồn dược liệu (chế biến iốt, brôm, thạch,...) và nguồn phân bón có giá trị .
+
+first==>Nhiều động vật đáy ở ven biển có giá trị kinh tế cao như trai, sò, tôm, cua, sao biển, hải sâm .
+Cá là nguồn tài nguyên phong phú ở vùng ven bờ và thềm lục địa .
+Chúng thường ăn nổi va` đi từng đàn tuỳ thời tiết và theo mùa .
+Rùa biển, rắn biển, chim biển, thú biển đều là nguồn lợi ven biển .
+Chim biển có trên 200 loài, rùa biển (vích, dồi mồi, bà tam...) vừa là thực phẩm có giá trị, vừa là mặt hàng mỹ nghệ quí .
+
+first==>Tài nguyên sinh vật biển vô cùng to lớn va` được khai thác hàng năm tới 70 triệu tấn .
+Nhiều loại bị đánh bắt quá mức như cá voi, cá heo, cá thu, cá ngừ, cá chim, tôm hùm ... đã trở nên hiếm .
+
+first==>Tài nguyên nước ngọt ở Việt nam đóng vai trò hết sức quan trọng trong đời sống hàng ngày của nhân dân .
+Hiện nay có tới 500 loài cá nước ngọt, trong đó có trên 50 loài có giá trị kinh tế lớn (chép, trắm, trôi, mè, quả...) .
+Phần lớn số loài cá sống trong các dòng chảy (sông, suối), chỉ có khoảng 50 loài cá phổ biến trong các ao, hồ .
+Tôm, cua, trai, ốc cũng là tài nguyên đáng kể của vùng nước ngọt .
+
+first==>Tài nguyên ao, hồ đóng góp một phần rất quan trọng và thiết thực đối với đời sống của nhân dân .
+Phong trào VAC (Vườn-Ao-Chuồng) đã góp phần phát triển tài nguyên ao, hồ hiện nay đã xây dựng một chuỗi thức ăn ngắn, nhằm nhanh chóng nâng cao sản lượng cá, tôm...; sử dụng phân bón, thức ăn và cá con ương nhân tạo theo qui trình; xử lý nguồn chất thải để biến chất ô nhiễm thành tài nguyên .
+Hạn chế việc sử dụng thuốc trừ sâu bằng các chất độc hoá học và thay thế dần bằng thuốc trừ sâu thảo mộc nhằm phục hồi nguồn tài nguyên nước ngọt .
+
+title: Tác động của con người và hậu quả của nó đối với sinh quyển .
+
+sub_title: Tác động của con người tới sinh quyển dân số và môi trường  .
+
+first==>Trong suốt thời gian tồn tại, con người đã thường xuyên tác động trực tiếp tới thiên nhiên và cải biến môi trường sống .
+Loài người đã khai thác khoảng 50 tỉ tấn than đá, 2 tỉ tấn sắt và hàng triệu tấn kim loại khác .
+Con người đã nắn dòng sông, đa`o kênh, bạt núi, xây dựng các trạm thuỷ điện với các hồ chứa nước nhân tạo...Những hoạt động đó đã ảnh hưởng tới khí hậu, từ đó tác động mạnh tới sinh quyển .
+Trước đây rừng che phủ trên 50% diện tích trái đất, nay chỉ còn khoảng 34% tổng diện tích. Ở Việt Nam cũng vậy, trước đây ¾ đất đai là rừng, nay chỉ còn ¼ là rừng .
+Nhiều loại gỗ quí như gụ, lát hoa, giáng hương, sến, táu... đã bị khai thác đến mức gần như cạn kiệt .
+
+first==>Rừng bị triệt hạ nhiều làm cho lượng ôxi trong không khí và lượng chất hữu cơ sản sinh bị giảm sút rõ rệt .
+Lượng nước dự trữ do rừng giữ lại ngày càng ít dần, làm cho quá trình sa mạc hoá và thảo nguyên hoá càng tăng nhanh .
+Đất trồng được nay chỉ còn chiếm 10% lục địa .
+Quá trình đô thị hoá nhanh làm cho diện tích đất trồng ngày càng bị thu hẹp .
+Sự phân phối nước ngọt cho người và cho vật nuôi, cây trồng cũng bị hạn chế .
+Có tới 60% diện tích đất trồng trên thế giới thiếu nước ngọt .
+Tiến bộ khoa học kĩ thuật được ứng dụng tích cực vào sản xuất đã kéo theo sự nhiễm bẩn của tất cả các quyển .
+Do đốt than và dầu mỏ mà khói và khí đốt từ các nhà máy đã thải vào khí quyển hàng năm 6.109 tấn CO2 và gần 108 tấn SO2 .
+Nhiều thành phố lớn ở Tây Âu và Mỹ đã có hiện tượng “sương mù hoá chất” gây độc hại cho người và sinh vật .
+Các chất thải của nhà máy làm cho các hồ, ao, sông ngòi, cửa biển, cảng và biển cả bị nhiễm bẩn ngày càng nhiều .
+Các tàu biển đã thải ra biển va` đại dương hàng năm chừng hơn 2 triệu tấn dầu, làm chết nhiều sinh vật nổi và những sinh vật khác ăn sinh vật nổi cũng chết theo...
+
+first==>Dân số tăng quá nhanh trong mấy chục năm gần đây, với độ gia tăng từ 1,7% đến 2% .
+Năm 1987 dân số thế giới đã tới 5 tỷ và ước tính sẽ lên tới 6,5 tỷ vào năm 2000 .
+Nạn dân số tăng quá nhanh làm ảnh hưởng trước tiên là diện tích rừng va` đất trồng và làm tăng ô nhiễm môi trường sống .
+
+sub_title: Vấn đề ô nhiễm môi trường  .
+
+first==>Ô nhiễm là sự làm thay đổi không mong muốn, tính chất vật lý, hoá học, sinh học của không khí, đất, nước của môi trường sống, gây tác động nguy hại tức thời hoặc trong tương lai đến sức khỏe va`đời sống con người, làm ảnh hưởng đến quá trình sản xuất, đến các tài sản văn hoá và làm tổn thất nguồn tài nguyên dự trữ của con người .
+
+first==>Mức ô nhiễm được xác định bằng 3 yếu tố:
+
+first==>- Nguồn tài nguyên bị mất mát do dùng quá phí phạm, tạo ra lượng chất phế thải quá lớn .
+
+first==>- Mức đầu tư để trừ khử và phòng ngừa nạn ô nhiễm .
+
+first==>- Mức giảm sức khoẻ con người .
+
+sub_title: Các chất gây ô nhiễm .
+
+first==>Các khí công nghiệp phổ biến: Ôxit cacbon (CO), khí sunfurơ (SO2), khí cacbonic (CO2), ôxit nitơ (NO2), các loại hiđrô cacbua thoát ra từ máy nổ, khi có ánh sáng mặt trời đã liên kết lại và tạo thành hợp chất mới, độc hơn với tên “khói mù quang hoá học” .
+
+first==>Thuốc trừ sâu và chất độc hoá học: DDT và các chất độc hoá học được sử dụng rộng rãi đã làm ô nhiễm sinh quyển .
+Chúng phát tán theo nước và không khí, được tích luỹ khi di chuyển theo chuỗi thức ăn, từ thực vật sang động vật ăn thực vật rồi sang động vật ăn thịt .
+
+first==>Các chất này đã tàn phá nhiều quần xã sinh vật ở nhiều vùng trên thế giới .
+
+first==>Thuốc diệt cỏ: Có 2 nhóm thuốc diệt cỏ: nhóm hợp chất simazon monoron gây rối loạn quá trình quang hợp và nhóm 2, 4D và 2, 4, 5 – T làm rụng lá cây và huỷ diệt có hệ thống khi dùng với nồng độ cao .
+Tuy nhiên, loại thuốc diệt cỏ nguy hiểm nhất lại là sản phẩm cuối cùng khi sản xuất 2, 4, 5 – T tức là chất điôxin .
+Chất này ở nồng độ thấp cũng gây ra quái thai .
+
+first==>Các chất diệt cỏ 2, 4D và 2, 4, 5 – T có điôxin đã bị đế quốc Mĩ sử dụng bừa bãi để huỷ diệt rừng và hoa màu ở miền Nam nước ta từ tháng 8 – 1961 đến tháng 12 – 1970, trên một diện tích hơn 6 triệu ha, làm cho 50% số cây bị diệt, 1 triệu 62 vạn người bị nhiễm độc, nhiều người bị ung thư, chửa trứng và hàng nghìn trẻ em quái thai ra đời .
+
+first==>Các yếu tố gây đột biến: Sự phát triển mạnh mẽ công nghiệp hoá học đã tạo những hợp chất tổng hợp dùng trong cuộc sống hàng ngày, trong đó có một số chất có khả năng gây đột biến .
+Việc sử dụng năng lượng nguyên tử và các chất phóng xạ trong khoa học, y học, kĩ thuật và nông nghiệp đã làm tăng tác động của bức xạ và yếu tố hoá học gây đột biến, ảnh hưởng tới khả năng di truyền của con người và những sinh vật khác .
+
+first==>Sự tác động của các yếu tố gây đột biến đối với động vật và cây cối tạo nguồn nguyên liệu cho quá trình chọn lọc tự nhiên, còn đối với con người thì tác động này làm xuất hiện những đột biến có hại, gây chết cho trẻ sơ sinh hoặc làm ảnh hưởng tới sự phát triển bình thường về trí khôn và tâm lí của trẻ .
+Những kết quả nghiên cứu trên khỉ và tế bào người được nuôi cấy chỉ ra rằng, đối với người đã 30 tuổi nếu tiếp nhận thêm 10 rơnghen nữa thì số đột biến sẽ tăng lên gấp đôi, do đó số trẻ em quái dị do khuyết tật di truyền cũng tăng lên rõ rệt .
+Sau mỗi vụ nổ hạt nhân, các chất đồng vị phóng xạ sẽ thâm nhập vào thực vật qua không khí, nước va` đất .
+Các chất này qua chuỗi thức ăn sẽ tích tụ trong cơ thể người và gây đột biến di truyền .
+Vụ nổ bom nguyên tử ở Hirôshima và Nagasaki đã làm thiệt mạng hàng triệu người, cho tới bây giờ vẫn còn nạn nhân của đột biến di truyền do vụ nổ bom 35 năm về trước .
+Loài người tiến bộ đang đấu tranh chống các vụ nổ hạt nhân .
+Ngay trong hoà bình, việc sử dụng năng lượng hạt nhân cũng phải rất thận trọng .
+
+title: Bảo vệ môi trường và phát triển bền vững .
+
+sub_title: Các biện pháp chống ô nhiễm môi trường  .
+
+first==>Các biện pháp hoá – công nghệ: Sản xuất theo chu kỳ khép kín; khử, lọc nước và khí thải; nghiên cứu những nhiên liệu mới không hoặc ít gây ô nhiễm; thay thế dần các nhà máy công nghiệp đang dùng bằng các nhà máy có hệ thống cung cấp nước khép kín .
+
+first==>Các biện pháp sinh – kĩ thuật: Đảm bảo lọc nước theo hệ thống ao lọc; phủ xanh các cơ sở công nghiệp; vận dụng mạnh mẽ hơn các biện pháp đấu tranh sinh học; xây dựng những vùng liên hợp kinh tế rừng – săn bắn, đồng cỏ - săn bắn, hồ nuôi – đánh bắt cá, xây dựng nhiều khu rừng quốc gia. Ở những vùng liên hợp kinh tế này phải nghiên cứu song song việc qui hoạch nuôi trồng và khai thác theo phương án tối ưu .
+
+first==>Việc bảo vệ rừng và thiên nhiên hoang dại: Rừng không chỉ là nguồn sản xuất ra gỗ mà còn là một cỗ máy khổng lồ của thiên nhiên làm điều hoà khí hậu, giữ ẩm cho đất, góp phần ngăn chặn các nạn lũ lụt, xói mòn đất đai .
+Rừng còn là nơi lưu trữ, nuôi sống và làm phát triển nhiều loài cây va` động vật hoang dại quí hiếm .
+Do đó việc bảo vệ rừng và thiên nhiên hoang dại phải là một quốc sách, một công việc chiến lược của loài người .
+
+first==>Mỗi quốc gia cần có qui hoạch tổng thể khoa học, vừa khai thác rừng, vừa trồng rừng, vừa bảo vệ và nuôi động vật hoang dại, vừa cho phép săn bắn một lượng đã tính toán không làm ảnh hưởng tới quần thể...Chính nhờ các biện pháp tổ chức kinh tế này mà nhiều nước công nghiệp đã gây lại được nhiều cây, con quí hiếm .
+
+first==>Nhiều nước đã trồng rừng quanh các thành phố lớn để cải tạo khí hậu, chống ô nhiễm môi trường đô thị .
+Việc bảo vệ rừng bao gồm: xây dựng các khu rừng cấm quốc gia, qui định khai thác và nuôi giữ hợp lý các cây va` động vật cư trú trong rừng, tăng cường sử dụng các biện pháp đấu tranh sinh học, bảo đảm sự cân bằng sinh học trong rừng; sử dụng thuốc trừ sâu hợp lý khi cần thiết và chống nạn cháy rừng .
+
+first==>Sự cải biến khí hậu và khử mặn nước biển: Con người đã có nhiều cố gắng trong việc cải biến khí hậu theo các hướng:
+
+first==>- Tăng cường trồng rừng ở vùng đồi trọc (Việt nam, Thái Lan, Nhật Bản, Inđônêxia...), ở sa mạc (Ôman, Angiêri...) .
+
+first==>- Tạo nên những kênh đa`o nhân tạo (điển hình là kênh Suêz) vì mục đích giao thông, thuỷ lợi; cải tạo các vùng hoang và cải tạo khí hậu .
+Việc xây dựng các nhà máy thuỷ điện cũng có tác dụng gián tiếp cải tạo khí hậu .
+Tuy nhiên cần chú ý tới việc điều hoà lượng nước cung cấp cho vùng hạ lưu chống sự xâm nhập của nước biển .
+Ví dụ, vùng Xuân Thuỷ (hạ lưu của nhà máy thuỷ điện Hoà Bình) và vùng duyên hải thành phố Hồ Chí Minh (hạ lưu của nhà máy thuỷ điện Trị An) .
+
+first==> Con người cũng đã thử “thay trời làm mưa” .
+Tuy nhiên, kết quả có khi ngược lại: tuy có tạo được mưa tức thời nhưng cả mùa hè lượng mưa lại giảm .
+Dường như mưa nhân tạo đã làm trời trở lạnh, hạn chế sự hình thành mây của những cơn mưa rào .
+
+first==> Một số nước công nghiệp phát triển đã khử mặn nước biển với qui mô nhỏ để lấy nước ăn cho vùng dân cư đông đúc ven biển .
+Tuy nhiên khi khử mặn nước biển với qui mô lớn để lấy nước ngọt dùng cho công nghiệp và nông nghiệp thì lại nảy sinh vấn đề giá thành nước ngọt để sử dụng trong sản xuất quá đắt, thêm nữa chỗ muối bị tích tụ lại gây nhiễm bẩn môi trường .
+
+first==>Các hệ sinh thái trao đổi chất nhân tạo: Cùng với tiến bộ khoa học kĩ thuật, con người đi tới những nơi chưa từng có người ở, không có đất để trồng (ở Bắc Cực, Nam Cực và những đảo đá) .
+Để trồng rau ở những nơi đó (nguồn vitamin tự nhiên), các nhà khoa học đã nghiên cứu thành công một môi trường nước nhân tạo để thay đất (môi trường dung dịch muối khoáng), dùng đe`n điện để bảo đảm đủ ánh sáng và nhiệt độ thích hợp, sử dụng biện pháp làm cho không khí bão hoà CO2 .
+Từ lượng thực vật được sản sinh người ta đã chế biến được nhiều loại thức ăn khác nhau .
+
+first==>Thành tựu trồng cây trong môi trường nước cũng tạo ra khả năng giải quyết vấn đề thức ăn trong du hành vũ trụ .
+
+sub_title: Sử dụng hợp lý, bảo vệ và phục hồi nguồn tài nguyên thiên nhiên  .
+
+first==>1 .
+Sử dụng các biện pháp nhằm nâng cao năng suất sinh học của hệ sinh thái:
+
+first==>- Bảo vệ rừng già, rừng trên nguồn và trên sườn đồi, núi để ngăn lũ; không cày xới đất khi làm ruộng nương trên sườn đồi dốc quá 15o .
+Tiến hành trồng cây gây rừng .
+
+first==>- Cải tạo điều kiện tự nhiên của hệ sinh thái (bón phân, làm thuỷ lợi); luân canh hợp lý, chọn giống thích hợp và có năng suất cao .
+
+first==>- Đẩy mạnh việc thuần hoá động vật, thực vật .
+
+first==>- Đẩy mạnh biện pháp đấu tranh sinh học, bảo đảm sự cân bằng sinh học trong tự nhiên .
+
+first==>2 .
+Đẩy mạnh cải tạo thiên nhiên, hoang mạc, sông ngòi, biển nhằm mở rộng diện tích nuôi trồng .
+Sa mạc Karacum, sa mạc Nội Mông và Tân Cương (Trung Quốc), sa mạc Sahara đã được cải tạo một bộ phận; kế hoạch cải tạo Bắc Băng Dương - một vùng rất giàu khoáng sản, đang được đề xuất .
+
+first==>3 .
+Xây dựng các khu bảo vệ tự nhiên và các khu rừng cấm .
+Nhiều nước xây dựng các vườn quốc gia hoặc rừng cấm như kiểu Vườn quốc gia Cúc Phương để bảo vệ các nguồn quí; bảo vệ và khai thác hợp lý các khu vực sông, hồ, ven biển... tiến tới mở rộng các bãi nuôi nhân tạo...
+
+sub_title: Luật bảo vệ môi trường  .
+
+first==>Việc sử dụng bừa bãi nguồn năng lượng và các nguồn tài nguyên khác trên trái đất đã gây nên nhiều hậu quả nặng nề (tầng ôzôn bị phá huỷ; đất đai, không khí, nguồn nước bị ô nhiễm nghiêm trọng; các vụ nổ hạt nhân và dò rỉ ở các nhà máy điện nguyên tử làm nhiều vùng trái đất bị nhiễm xạ...) .
+Việc bảo vệ môi trường đã trở thành một yêu cầu cấp bách của thế giới .
+
+first==>Năm 1971, tổ chức UNESCO đã thông qua chương trình sinh học quốc tế mang tên “Con người và sinh quyển”, nghiên cứu những đổi thay của sinh quyển và tài nguyên dưới những tác động của con người .
+Năm 1975, hội nghị an ninh và hợp tác Châu Âu họp ở Helsinki (Phần Lan) đã ghi rõ trong hiệp ước là phải hết sức bảo vệ môi trường và sử dụng hợp lý nguồn tài nguyên của thiên nhiên .
+
+first==>Nhiều nước đã công bố luật bảo vệ môi trường và ra những sách đỏ, cấm không được săn bắn, thu hái những động vật và thực vật quí hiếm trong nước .
+Năm 1963, nhà nước ta đã ban hành “Điều lệ tạm thời về săn bắt chim, thú rừng và khai thác, bảo vệ nguồn lợi thuỷ sản” ngăn cấm việc phá rừng, khai thác gỗ bừa bãi va` đốt rừng .
+
+first==>Đất nước ta sau hơn 30 năm bị tàn phá huỷ diệt nặng nề, nhân dân chưa có thói quen và ý thức bảo vệ môi trường .
+Luật bảo vệ môi trường của nước ta đã được quốc hội thông qua năm 1993 nêu lên những qui định tập trung vào các vấn đề sau: bảo vệ các thành phần cơ bản của môi trường, bảo vệ môi trường tổng hợp tại các khu vực khác nhau, phòng chống ô nhiễm và tai biến môi trường .
+
+first==>Luật bảo vệ môi trường bao gồm các qui định về việc sử dụng hợp lý tài nguyên thiên nhiên và môi trường, ngăn chặn các tác động tiêu cực, phục hồi các tổn thất, không ngừng cải thiện tiềm năng tài nguyên thiên nhiên và chất lượng môi trường, nhằm nâng cao đời sống vật chất và tinh thần của nhân dân .
+Bảo vệ môi trường bằng pháp luật là biện pháp hết sức quan trọng .
+
+first==>Mỗi học sinh phải có trách nhiệm bảo vệ môi trường, tuyên truyền mọi người có ý thức và hành động bảo vệ môi trường theo luật, cụ thể là:
+
+first==>- Phải tuyên truyền, giáo dục cho mọi người có những hiểu biết cần thiết về môi trường, về sinh thái học và di truyền học .
+
+first==>- Tuyên truyền và tham gia việc chống thử và sử dụng vũ khí hoá học và vũ khí hạt nhân .
+
+first==>- Tuyên truyền và thực hiện luật bảo vệ môi trường .
