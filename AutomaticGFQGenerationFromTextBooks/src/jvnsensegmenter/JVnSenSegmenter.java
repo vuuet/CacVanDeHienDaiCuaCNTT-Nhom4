@@ -138,9 +138,9 @@ public class JVnSenSegmenter {
     public static void main(String args[]){
     	args = new String[4];
     	args[0] = "-modeldir";
-    	args[1] = "models\\jvnsensegmenter";
+    	args[1] = "models/jvnsensegmenter";
     	args[2] = "-inputfile";
-    	args[3] = "input\\input.txt";
+    	args[3] = "input/input.txt";
         if (args.length != 4){            
             displayHelp();
             System.exit(1);

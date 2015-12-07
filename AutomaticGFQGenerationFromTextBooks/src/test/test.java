@@ -4,21 +4,15 @@
 package test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.TreeMap;
 
+import core.GapSelection;
+import core.GenerateFeature;
 import core.Lesson;
-import core.SentSelection;
-import file.FileLoader;
-import file.PrepareInput;
-import jvnsegmenter.WordSegmenting;
-import jvnsensegmenter.JVnSenSegmenter;
+import jvntextpro.util.StopWord;
 
 public class test {
 
@@ -43,28 +37,67 @@ public class test {
 		Map<String, String> title_content = lesson.getTitle_content();
 		
 		int dem = 0;
+		
+		String content = "";
+		
+		for(String sent : sent_title.keySet()){
+			content += sent_title.get(sent) + "|";
+		}
 		for( String sent : sent_weight.keySet() ){
-			if( sent_weight.get(sent) > 3.0){
-				System.out.println(sent+"==>"+sent_weight.get(sent));
+			if( sent_weight.get(sent) > 3.5){
+				GapSelection.computeWeight(sent, sent_title.get(sent), title_content.get(sent_title.get(sent)));
+				
+				String selectedWord = GapSelection.bestKey();
+				String selectedSentence = sent;
+				System.out.println(sent.replaceFirst(selectedWord, "_________"));
+				System.out.println("=>"+selectedWord);
+				String [] sentenceContents = content.split("\\|");
+				HashMap<String,Float> maps = new HashMap<String,Float>();
+				for(String currentSentence : sentenceContents){
+					
+					if(currentSentence.equals(sent) || currentSentence.length() < 2)
+						continue;
+					
+					String [] tokens = currentSentence.split(" ");
+					for(String currentWord : tokens){
+						if(currentSentence.length() < 2)
+							continue;
+						if(StopWord.stopWords.contains(currentWord.toLowerCase()))
+							continue;
+						if(currentWord.split("_").length < 2)
+							continue;
+						if(currentWord.equals(selectedWord))
+							continue;
+						if(currentWord.startsWith("first==>"))
+							continue;
+						float w = GenerateFeature.comparisonFeature(selectedWord, selectedSentence, content, currentWord, currentSentence);
+						//System.out.println(currentWord + " : " + w + " : " + selectedWord);
+						maps.put(currentWord, w);
+					}
+					
+				}
+				
+				TreeMap<String, Float> sortedMap = test.SortByValue(maps);
+				int k = 0;
+				for(String key : sortedMap.keySet()){
+					if(k > 2)
+						break;
+					System.out.println(key);
+					k++;
+				}
+				System.out.println("------------------------------------------------------------");
 				dem++;
 			}
 		}
 		System.out.println("Total: "+dem);
-		
-		//Sort RelaProducts map
-		/* Set<Entry<String, Integer>> set = sent_weight.entrySet();
-		List<Entry<String, Integer>> list = new ArrayList<Entry<String, Integer>>(set);
-		Collections.sort( list, new Comparator<Map.Entry<String, Integer>>()
-		{
-			public int compare( Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2 )
-		    {
-		    	return (o2.getValue()).compareTo( o1.getValue() );
-		    }
-		 } );
-		        
-		 for(Map.Entry<String, Integer> entry:list){
-
-		 }*/
 	}
+	
+	public static TreeMap<String, Float> SortByValue(HashMap<String, Float> maps) {
+		ValueComparator vc = new ValueComparator(maps);
+		TreeMap<String, Float> sortedMap = new TreeMap<String, Float>(vc);
+		sortedMap.putAll(maps);
+		return sortedMap;
+	}
+	
 
 }
